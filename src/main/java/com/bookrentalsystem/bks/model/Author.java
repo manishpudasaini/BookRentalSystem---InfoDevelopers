@@ -21,6 +21,7 @@ public class Author {
 
     @Column(name = "author_name",nullable = false)
     private String name;
+
     @Column(name = "email",length = 60)
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE)
@@ -28,8 +29,6 @@ public class Author {
 
     @Column(name = "phone_number",length = 10)
     private String number;
-
-
 
 
 }

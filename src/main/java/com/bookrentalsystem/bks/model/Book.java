@@ -6,45 +6,54 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "book",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_book_name",columnNames = "book_name"),
-        @UniqueConstraint(name = "uk_book_isbn",columnNames = "isbn_number")
+@Table(name = "book", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_book_name", columnNames = "book_name"),
+        @UniqueConstraint(name = "uk_book_isbn", columnNames = "isbn_number")
 })
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
 
-    @Column(name = "book_name",length = 100,nullable = false)
+    @Column(name = "book_name", length = 100, nullable = false)
     private String name;
 
     @Column(name = "page_number")
     private Integer page;
 
-    @Column(name = "isbn_number",length = 30,nullable = false)
+    @Column(name = "isbn_number", length = 30, nullable = false)
     private String isbn;
 
     @Column(name = "book_rating")
     private Double rating;
 
-    @Column(name = "book_stock",nullable = false)
+    @Column(name = "book_stock", nullable = false)
     private Integer stock;
 
-    @Column(name = "published_date",nullable = false)
+    @Column(name = "published_date", nullable = false)
     private Date published_date;
 
-    @Column(name = "image_path",nullable = false,length = 100)
+    @Column(name = "image_path", nullable = false, length = 100)
     private String image_path;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_book_categoryId"))
     private Category category;
+
+    @ManyToMany(targetEntity = Author.class)
+    @JoinTable(name = "book_author_table",
+            foreignKey = @ForeignKey(name = "fk_book_authorId"),
+            inverseForeignKey = @ForeignKey(name = "fk_author_bookId")
+    )
+
+    private List<Author> authors;
 
 
 }
