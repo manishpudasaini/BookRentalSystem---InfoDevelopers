@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class BookResponse {
     private String isbn;
     private Double rating;
     private Integer stock;
-    private LocalDate published_date;
+    private LocalDateTime published_date;
     private String image_path;
     private CategoryResponse category;
     private List<AuthorResponse> authors;

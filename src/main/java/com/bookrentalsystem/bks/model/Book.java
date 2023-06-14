@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class Book {
     private Integer stock;
 
     @Column(name = "published_date", nullable = false)
-    private LocalDate published_date;
+    private LocalDateTime published_date;
 
     @Column(name = "image_path", nullable = false, length = 150)
     private String image_path;
