@@ -2,15 +2,18 @@ package com.bookrentalsystem.bks.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "book", uniqueConstraints = {
@@ -38,12 +41,12 @@ public class Book {
     private Integer stock;
 
     @Column(name = "published_date", nullable = false)
-    private Date published_date;
+    private LocalDate published_date;
 
-    @Column(name = "image_path", nullable = false, length = 100)
+    @Column(name = "image_path", nullable = false, length = 150)
     private String image_path;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_book_categoryId"))
     private Category category;
 
@@ -52,7 +55,6 @@ public class Book {
             foreignKey = @ForeignKey(name = "fk_book_authorId"),
             inverseForeignKey = @ForeignKey(name = "fk_author_bookId")
     )
-
     private List<Author> authors;
 
 
