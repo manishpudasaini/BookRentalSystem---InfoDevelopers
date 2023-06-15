@@ -1,0 +1,47 @@
+
+
+body {
+
+    background-color: #F5F5F5;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+
+.sidebar {
+    min-height: 100vh;
+    padding-left: 0;
+    padding-right: 0;
+    height: auto;
+    background-image: url(7084.jpg);
+    background-position:center ;
+    background-size: cover;
+}
+
+
+.list-group-item {
+    color:#141618;
+    padding: 10px;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    background: none;
+    border: none;
+    margin-top: 50px;
+    font-size: 600;
+    margin-left:40px ;
+}
+
+.service{
+    font-size: 2rem;
+    color: rgb(35, 160, 160);
+    font-weight: bolder;
+}
+#creatBtn{
+    padding: 6px;
+}
+
+#inputForm{
+    width: 40%;
+    margin-left: 23rem;
+    margin-top: 120px;
+}

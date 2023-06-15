@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar fragment</title>
+</head>
+<body>
+  <div >
+      <div class="col-md-2 sidebar m-0" th:fragment="sidebar">
+        <div class="mx-auto mt-5 text-center">
+          <div class="service">Book Rental Service</div>
+        </div>
+
+        <ul class="list-group mt-5">
+          <li class="list-group-item  ">
+                        <span class="dropdown" style="width: 100%;">
+                            <span class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Master Data Setup
+                            </span>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" >Author Setup</a></li>
+                                <li><a class="dropdown-item" href="#">Book Setup</a></li>
+                                <li><a class="dropdown-item" href="#">Category Setup</a></li>
+                            </ul>
+                        </span>
+
+          </li>
+
+          <li class="list-group-item ">
+                        <span class="dropdown" style="width: 100%;">
+                            <span class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Transaction
+                            </span>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item">Member Setup</a></li>
+                                <li><a class="dropdown-item" href="#">Rent A Book</a></li>
+                                <li><a class="dropdown-item" href="#">Return A Book</a></li>
+                            </ul>
+                        </span>
+          </li>
+        </ul>
+
+      </div>
+
+  </div>
+</body>
+</html>

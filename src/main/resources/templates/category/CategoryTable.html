@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Category Table')}"></th:block>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
+
+        <div class="col-md-10 content border mx-auto">
+            <div class="user_table_post  mt-5">
+                <div class="desc">Book list</div>
+                <table class="table table-bordered table-striped mt-3" >
+                    <thead>
+                    <tr>
+                        <th>S.N.</th>
+                        <th>Name</th>
+                        <th>description</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="category,Index:${categoryResponse}">
+                        <td th:text="${Index.count}"></td>
+                        <td th:text="${category.name}"></td>
+                        <td th:text="${category.description}"></td>
+                        <td>
+                            <a class="btn btn-warning text-light" th:href="@{/category/update/}+${category.id}">
+                                Edit
+                            </a>
+                            <a class="btn btn-danger" th:href="@{/category/delete/}+${category.id}">
+                                Delete
+                            </a>
+                            <button class="btn btn-info">
+                                view
+                            </button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <div>
+                    <a class="btn btn-info" id="creatBtn" th:href="@{/category/form}">Create</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="~{fragments/Footer :: footer}"></div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.controller;
+package com.bookrentalsystem.bks.restApiController;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
@@ -25,7 +25,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-public class MyController {
+public class MyControllerRestApi {
     private final BookServiceImpl bookService;
     private final AuthorServiceImpl autherService;
     private final CategoryServiceImpl categoryService;
@@ -47,12 +47,12 @@ public class MyController {
         return categoryService.addCategory(categoryRequest);
     }
     @PostMapping("/add/member")
-    public MemberResponse addMember(@RequestBody MemberRequest memberRequest){
+    public MemberResponse addMember(@RequestBody @Valid MemberRequest memberRequest){
         return memberService.addMember(memberRequest);
     }
 
     @PostMapping("/add/transaction")
-    public RentBookResponse addTransaction(@RequestBody RentBookRequest rentBookRequest){
+    public RentBookResponse addTransaction(@RequestBody @Valid RentBookRequest rentBookRequest){
         return transactionService.rentABook(rentBookRequest);
     }
 }
