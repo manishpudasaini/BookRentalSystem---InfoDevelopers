@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 
@@ -47,11 +45,11 @@ public class Book {
     @Column(name = "image_path", nullable = false, length = 150)
     private String image_path;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_book_categoryId"))
     private Category category;
 
-    @ManyToMany(targetEntity = Author.class)
+    @ManyToMany(targetEntity = Author.class,fetch = FetchType.EAGER)
     @JoinTable(name = "book_author_table",
             foreignKey = @ForeignKey(name = "fk_book_authorId"),
             inverseForeignKey = @ForeignKey(name = "fk_author_bookId")

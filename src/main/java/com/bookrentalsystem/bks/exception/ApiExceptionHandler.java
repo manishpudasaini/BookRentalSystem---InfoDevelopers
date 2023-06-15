@@ -17,8 +17,23 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = {CategoryNotFoundException.class})
-    public ResponseEntity<Object> handelException(CategoryNotFoundException authorNotfoundException){
-        ApiException apiException = new ApiException(authorNotfoundException.getMessage(),
+    public ResponseEntity<Object> handelException(CategoryNotFoundException categoryNotFoundException){
+        ApiException apiException = new ApiException(categoryNotFoundException.getMessage(),
+                HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(apiException,HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {MemberNotFoundException.class})
+    public ResponseEntity<Object> handelException(MemberNotFoundException memberNotFoundException){
+        ApiException apiException = new ApiException(memberNotFoundException.getMessage(),
+                HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(apiException,HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(value = {BookNotFoundException.class})
+    public ResponseEntity<Object> handelException(BookNotFoundException bookNotFoundException){
+        ApiException apiException = new ApiException(bookNotFoundException.getMessage(),
                 HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(apiException,HttpStatus.NOT_FOUND);

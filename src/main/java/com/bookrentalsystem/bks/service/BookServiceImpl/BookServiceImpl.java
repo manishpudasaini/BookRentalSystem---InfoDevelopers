@@ -2,6 +2,7 @@ package com.bookrentalsystem.bks.service.BookServiceImpl;
 
 import com.bookrentalsystem.bks.dto.book.BookRequest;
 import com.bookrentalsystem.bks.dto.book.BookResponse;
+import com.bookrentalsystem.bks.exception.BookNotFoundException;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.repo.BookRepo;
 import com.bookrentalsystem.bks.service.AuthorService;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 @Service
@@ -51,7 +53,15 @@ public class BookServiceImpl implements BookService {
                 .build();
     }
 
-
+    @Override
+    public Book findBookByid(Short id) {
+        Optional<Book> singleBook = bookRepo.findById(id);
+        if(singleBook.isPresent()){
+            Book book = singleBook.get();
+            return book;
+        }
+        throw new BookNotFoundException("Book does not exist!!!");
+    }
 
 
 }

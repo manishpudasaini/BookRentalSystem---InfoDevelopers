@@ -24,7 +24,7 @@ public class Author {
     @Column(name = "author_name",nullable = false)
     private String name;
 
-    @Column(name = "email",length = 60)
+    @Column(name = "email",length = 100)
     private String email;
 
     @Column(name = "phone_number",length = 10)
