@@ -13,7 +13,7 @@ body {
     padding-left: 0;
     padding-right: 0;
     height: auto;
-    background-image: url(7084.jpg);
+    /*background-image: url(7084.jpg);*/
     background-position:center ;
     background-size: cover;
 }
@@ -27,8 +27,8 @@ body {
     background: none;
     border: none;
     margin-top: 50px;
-    font-size: 600;
-    margin-left:40px ;
+    font-size: 18px;
+    margin-left:30px ;
 }
 
 .service{

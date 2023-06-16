@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <th:block th:replace="~{fragments/HtmlHeader :: html_head('Category Table')}"></th:block>
+
 </head>
 <body>
 <div class="container-fluid">
@@ -11,6 +12,8 @@
         <div class="col-md-10 content border mx-auto">
             <div class="user_table_post  mt-5">
                 <div class="desc">Book list</div>
+
+
                 <table class="table table-bordered table-striped mt-3" >
                     <thead>
                     <tr>
@@ -43,6 +46,33 @@
 
                 <div>
                     <a class="btn btn-info" id="creatBtn" th:href="@{/category/form}">Create</a>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" id="liveToastBtn">
+                Show live toast
+            </button>
+
+            <div th:if="${not #strings.isEmpty(uk_error)}" class="toast-container position-fixed show bottom-0 end-0 p-3">
+                <div
+                        id="liveToast"
+                        class="toast"
+                        role="alert"
+                        aria-live="assertive"
+                        aria-atomic="true"
+                >
+                    <div class="toast-header">
+                        <img src="..." class="rounded me-2" alt="..." />
+                        <strong class="me-auto">Bootstrap</strong>
+                        <small>11 mins ago</small>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="toast"
+                                aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="toast-body" th:text="${uk_error}"></div>
                 </div>
             </div>
 

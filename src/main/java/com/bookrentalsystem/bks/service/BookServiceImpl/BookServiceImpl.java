@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
                 .published_date(dateUtil.convertToDate(bookRequest.getPublished_date()))
                 .category(categoryService.findCategoryById(bookRequest.getCategoryId()))
                 .authors(authorService.convertToAuthorList(bookRequest.getAuthorsId()))
-                .image_path(fileutils.saveMultipartFile(bookRequest.getImageFile()))
+                .image_path(bookRequest.getImageFile())
                 .build();
         bookRepo.save(book);
 

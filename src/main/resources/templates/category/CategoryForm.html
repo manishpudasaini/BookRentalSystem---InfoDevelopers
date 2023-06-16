@@ -10,6 +10,7 @@
         <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
 
         <div class="col-md-10 user_input_post mt-10" id="inputForm">
+
             <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/save}">
                 <div class="book">Category Setup</div>
                 <div class="mb-4 mt-4">
@@ -19,10 +20,34 @@
                     </div>
 
                     <div class="form-floating ">
-                        <input type="text" class="form-control" id="floatingInput" th:field="*{name}">
+                        <input type="text" class="form-control"
+                               id="floatingInput",
+                               th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
+                        >
+
                         <label for="floatingInput">Name</label>
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                           class="invalid-feedback">
+                        </p>
+<!--                        <div th:if="${#fields.hasAnyErrors()}">-->
+<!--                            <ul>-->
+<!--                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
+<!--                            </ul>-->
+<!--                        </div>-->
+
+<!--                        <p th:if="${#fields.hasErrors('name')}"-->
+<!--                           th:text="${#strings.listJoin(#fields.errors('name'), ', ')}">-->
+
+<!--                        </p>-->
+<!--                        <p th:each="e:${error}" th:text="${e}"></p>-->
+<!--                        <p th:text="${error}"></p>-->
+
 
                     </div>
+
+
+
 
                 </div>
 
