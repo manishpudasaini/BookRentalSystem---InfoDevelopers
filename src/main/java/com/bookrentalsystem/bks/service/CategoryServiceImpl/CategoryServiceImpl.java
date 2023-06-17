@@ -76,14 +76,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void deleteCategory(Short id) {
-        try {
-            categoryRepo.deleteById(id);
-        }catch (Exception sqlException){
-            System.out.println(sqlException.getLocalizedMessage());
-            if (sqlException.getMessage().contains("fk_book_categoryId")) {
-                sqlException.getMessage();
-            }
-        }
+        categoryRepo.deleteById(id);
 
     }
 

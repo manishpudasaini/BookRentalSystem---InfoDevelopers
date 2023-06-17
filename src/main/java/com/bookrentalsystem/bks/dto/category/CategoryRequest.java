@@ -19,6 +19,8 @@ public class CategoryRequest {
     @NotEmpty(message = "Please provide category name!!!")
     @Size(max = 100,min = 3,message = "Category name should be between 3 to 100 word")
     private String name;
+    @NotEmpty(message = "Please give some information about the category you have entered..")
+    @Size(min = 4,message = "Please enter something about the category ")
     private String description;
 
 }

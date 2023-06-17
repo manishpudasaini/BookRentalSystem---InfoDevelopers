@@ -5,15 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "category",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_category_name",columnNames = "category_name")
-})
+@Table(name = "category")
+@SQLDelete(sql = "UPDATE category SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
+@Where(clause = "deleted = false")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,7 @@ public class Category {
     private String name;
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
+    private Boolean deleted = Boolean.FALSE;
 
 
 }

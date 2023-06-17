@@ -6,41 +6,35 @@
 </head>
 <body>
   <div >
-      <div class="col-md-2 sidebar m-0" th:fragment="sidebar">
-        <div class="mx-auto mt-5 text-center">
-          <div class="service">Book Rental Service</div>
-        </div>
+          <nav  th:fragment="sidebar">
+              <ul>
+                  <li class="logo"><img alt="Book Logo"  th:src="@{/images/logo.jpg}"></li>
+                  <li>
+                      <div class="dropdown">
+                          <a href="#" class="dropbtn">Master Data</a>
+                          <div class="dropdown-content">
+                              <a href="#">Author Setup</a>
+                              <a th:href="@{/category/table}">Category Setup</a>
+                              <a href="#">Book Setup</a>
+                          </div>
+                      </div>
+                  </li>
+                  <li>
+                      <div class="dropdown">
+                          <a href="#" class="dropbtn">Transaction</a>
+                          <div class="dropdown-content">
+                              <a href="#">Rent A Book</a>
+                              <a href="#">Return A Book</a>
+                              <a href="#">Customer Setup</a>
+                          </div>
+                      </div>
+                  </li>
+                  <li>
+                      <a href="#"> Logout</a>
+                  </li>
 
-        <ul class="list-group mt-5">
-          <li class="list-group-item  ">
-                        <span class="dropdown" style="width: 100%;">
-                            <span class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Master Data Setup
-                            </span>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" >Author Setup</a></li>
-                                <li><a class="dropdown-item" href="#">Book Setup</a></li>
-                                <li><a class="dropdown-item" href="#">Category Setup</a></li>
-                            </ul>
-                        </span>
-
-          </li>
-
-          <li class="list-group-item ">
-                        <span class="dropdown" style="width: 100%;">
-                            <span class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Transaction
-                            </span>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item">Member Setup</a></li>
-                                <li><a class="dropdown-item" href="#">Rent A Book</a></li>
-                                <li><a class="dropdown-item" href="#">Return A Book</a></li>
-                            </ul>
-                        </span>
-          </li>
-        </ul>
-
-      </div>
+              </ul>
+          </nav>
 
   </div>
 </body>

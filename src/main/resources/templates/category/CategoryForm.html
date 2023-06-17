@@ -4,24 +4,23 @@
     <th:block th:replace="~{fragments/HtmlHeader :: html_head('Category Form')}"></th:block>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
+<div th:replace="~{fragments/Sidebar :: sidebar}"></div>
 
-        <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
+<!-- tables section -->
+<div class="wrapper">
+    <div class="section">
+        <div class="box-area">
+            <div class="category-form">
+                <div class="desc">Category Form</div>
 
-        <div class="col-md-10 user_input_post mt-10" id="inputForm">
-
-            <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/save}">
-                <div class="book">Category Setup</div>
-                <div class="mb-4 mt-4">
-
+                <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/save}">
                     <div class="form-floating ">
                         <input type="text" th:field="*{id}" hidden>
                     </div>
 
                     <div class="form-floating ">
                         <input type="text" class="form-control"
-                               id="floatingInput",
+                               id="floatingInput" ,
                                th:field="*{name}"
                                th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
                         >
@@ -30,41 +29,46 @@
                         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
                            class="invalid-feedback">
                         </p>
-<!--                        <div th:if="${#fields.hasAnyErrors()}">-->
-<!--                            <ul>-->
-<!--                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
-<!--                            </ul>-->
-<!--                        </div>-->
 
-<!--                        <p th:if="${#fields.hasErrors('name')}"-->
-<!--                           th:text="${#strings.listJoin(#fields.errors('name'), ', ')}">-->
+                        <!--                        <div th:if="${#fields.hasAnyErrors()}">-->
+                        <!--                            <ul>-->
+                        <!--                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
+                        <!--                            </ul>-->
+                        <!--                        </div>-->
 
-<!--                        </p>-->
-<!--                        <p th:each="e:${error}" th:text="${e}"></p>-->
-<!--                        <p th:text="${error}"></p>-->
+                        <!--                        <p th:if="${#fields.hasErrors('name')}"-->
+                        <!--                           th:text="${#strings.listJoin(#fields.errors('name'), ', ')}">-->
+
+                        <!--                        </p>-->
+                        <!--                        <p th:each="e:${error}" th:text="${e}"></p>-->
+                        <!--                        <p th:text="${error}"></p>-->
 
 
                     </div>
 
-
-
-
-                </div>
-
-                <div class="mb-4">
                     <div class="form-floating">
-                        <textarea class="form-control" id="floatingTextarea2" style="height: 180px"
-                                  th:field="*{description}"></textarea>
+                            <textarea class="form-control"
+                                      id="floatingTextarea2"
+                                      style="height: 180px"
+                                      th:field="*{description}"
+                                      th:classappend="${#fields.hasErrors('description')?'is-invalid':''}"
+                            ></textarea>
                         <label for="floatingTextarea2">Description</label>
+                        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
+                           class="invalid-feedback">
+                        </p>
                     </div>
-                </div>
-                <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
-                <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
-            </form>
+
+                    <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
+                    <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
+
+                </form>
+            </div>
 
         </div>
     </div>
 </div>
+
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
 </body>

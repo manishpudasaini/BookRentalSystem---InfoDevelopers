@@ -5,82 +5,53 @@
 
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
         <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
 
-        <div class="col-md-10 content border mx-auto">
-            <div class="user_table_post  mt-5">
-                <div class="desc">Book list</div>
+        <!-- tables section -->
+        <div class="wrapper">
+            <div class="section">
+                <div class="box-area">
+                    <div class="user_table_post  mt-5">
+                        <div class="desc">Category list</div>
 
 
-                <table class="table table-bordered table-striped mt-3" >
-                    <thead>
-                    <tr>
-                        <th>S.N.</th>
-                        <th>Name</th>
-                        <th>description</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="category,Index:${categoryResponse}">
-                        <td th:text="${Index.count}"></td>
-                        <td th:text="${category.name}"></td>
-                        <td th:text="${category.description}"></td>
-                        <td>
-                            <a class="btn btn-warning text-light" th:href="@{/category/update/}+${category.id}">
-                                Edit
-                            </a>
-                            <a class="btn btn-danger" th:href="@{/category/delete/}+${category.id}">
-                                Delete
-                            </a>
-                            <button class="btn btn-info">
-                                view
-                            </button>
-                        </td>
-                    </tr>
+                        <table class="table table-bordered table-striped mt-3" >
+                            <thead>
+                            <tr>
+                                <th>S.N.</th>
+                                <th>Name</th>
+                                <th>description</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="category,Index:${categoryResponse}">
+                                <td th:text="${Index.count}"></td>
+                                <td th:text="${category.name}"></td>
+                                <td th:text="${category.description}"></td>
+                                <td>
+                                    <a class="btn btn-warning text-light" th:href="@{/category/update/}+${category.id}">
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger" th:href="@{/category/delete/}+${category.id}">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
 
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
 
-                <div>
-                    <a class="btn btn-info" id="creatBtn" th:href="@{/category/form}">Create</a>
-                </div>
-            </div>
-
-            <button type="button" class="btn btn-primary" id="liveToastBtn">
-                Show live toast
-            </button>
-
-            <div th:if="${not #strings.isEmpty(uk_error)}" class="toast-container position-fixed show bottom-0 end-0 p-3">
-                <div
-                        id="liveToast"
-                        class="toast"
-                        role="alert"
-                        aria-live="assertive"
-                        aria-atomic="true"
-                >
-                    <div class="toast-header">
-                        <img src="..." class="rounded me-2" alt="..." />
-                        <strong class="me-auto">Bootstrap</strong>
-                        <small>11 mins ago</small>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="toast"
-                                aria-label="Close"
-                        ></button>
+                        <div>
+                            <a class="btn btn-info" id="creatBtn" th:href="@{/category/form}">Create</a>
+                        </div>
                     </div>
-                    <div class="toast-body" th:text="${uk_error}"></div>
+
                 </div>
             </div>
-
         </div>
 
-    </div>
-</div>
 
-<div th:replace="~{fragments/Footer :: footer}"></div>
+        <div th:replace="~{fragments/Footer :: footer}"></div>
 </body>
 </html>
