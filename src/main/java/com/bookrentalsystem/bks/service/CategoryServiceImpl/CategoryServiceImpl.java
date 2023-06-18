@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService{
     private final CategoryRepo categoryRepo;
 
+    //this is the business logic to create category
     public CategoryResponse addCategory(CategoryRequest categoryRequest){
         Category category = categoryRequestToEntity(categoryRequest);
         categoryRepo.save(category);
         return entityToCategory(category);
     }
 
+    //function used to find category & return category id
     public Category findCategoryById(short id) {
        Optional<Category> singleCategory =  categoryRepo.findById(id);
        if(singleCategory.isPresent()){
@@ -58,12 +60,14 @@ public class CategoryServiceImpl implements CategoryService{
         return category;
     }
 
+    //method used to find all the category present in database & return Categoryresponse dto
     @Override
     public List<CategoryResponse> allCategory() {
         List<Category> categories = categoryRepo.findAll();
         return changeToCategory(categories);
     }
 
+    //this method is used to findCategory by Id & return CategoryResponse
     @Override
     public CategoryResponse findCategoryResponseById(short id) {
         Optional<Category> singleCategory =  categoryRepo.findById(id);
@@ -74,13 +78,14 @@ public class CategoryServiceImpl implements CategoryService{
         throw new CategoryNotFoundException("Category having this id "+ id +" does not exist..");
     }
 
+    //this method is used to delete the category in database using the category ID
     @Override
     public void deleteCategory(Short id) {
         categoryRepo.deleteById(id);
 
     }
 
-
+    //this method take parameter as Category entity list & return List of CategoryResponse dto
     public List<CategoryResponse> changeToCategory(List<Category> categoryList){
        return categoryList.stream().map(a->entityToCategory(a)).collect(Collectors.toList());
     }

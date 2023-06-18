@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Author Table')}"></th:block>
+
 </head>
 <body>
+<div th:replace="~{fragments/Sidebar :: sidebar}"></div>
 
+<!-- tables section -->
+<div class="wrapper">
+    <div class="section">
+        <div class="box-area">
+            <div class="user_table_post  mt-5">
+                <div class="d-flex justify-content-between w-1024 desc" >
+                    <h3>Author list</h3>
+                    <a class="btn btn-info" id="creatBtn" th:href="@{/author/form}">Create</a>
+                </div>
+
+
+                <table class="table table-bordered table-striped mt-3">
+                    <thead>
+                    <tr>
+                        <th>S.N.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="author,Index:${author} ">
+                        <td th:text="${Index.count}"></td>
+                        <td th:text="${author.name}"></td>
+                        <td th:text="${author.email}"></td>
+                        <td th:text="${author.number}"></td>
+                        <td>
+                            <a class="btn btn-warning text-light" th:href="@{/author/update/}+${author.id}" >
+                                Edit
+                            </a>
+                            <a class="btn btn-danger"  th:href="@{/author/delete/}+${author.id}">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="~{fragments/Footer :: footer}"></div>
 </body>
 </html>

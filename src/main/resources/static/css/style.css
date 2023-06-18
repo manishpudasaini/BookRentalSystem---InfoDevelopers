@@ -127,3 +127,12 @@ nav ul li a:hover:before {
     margin-left: 90px;
 }
 
+
+table.table.table-bordered.table-striped.mt-3 {
+    width: 1024px;
+}
+
+.d-flex.justify-content-between.w-1024.desc {
+    width: 1024px;
+}
+

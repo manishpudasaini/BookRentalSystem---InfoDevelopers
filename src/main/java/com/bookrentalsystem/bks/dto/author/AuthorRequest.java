@@ -3,6 +3,7 @@ package com.bookrentalsystem.bks.dto.author;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class AuthorRequest {
     private Short id;
-    @NotBlank(message = "Name should not be blank")
+    @NotEmpty(message = "Name should not be blank")
     @Length(max = 100,min = 3,message = "Name should be between 3 to 100 word ")
     private String name;
 

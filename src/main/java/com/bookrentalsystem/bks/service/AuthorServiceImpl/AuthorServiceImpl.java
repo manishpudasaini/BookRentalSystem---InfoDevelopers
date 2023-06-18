@@ -15,10 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorServiceImpl implements AuthorService {
+public class AuthorServiceImpl implements AuthorService  {
 
     private final AuthorRepo authorRepo;
 
+    //this method is used to add the author in our database
     public AuthorResponse addAuthor(AuthorRequest authorRequest){
         Author author = authorRequestToEntity(authorRequest);
          authorRepo.save(author);
@@ -26,8 +27,10 @@ public class AuthorServiceImpl implements AuthorService {
         return entityToAuthorResponse(author);
     }
 
+    //this method take parameter as AuthorRequest & convert the request into Author entity
     public Author authorRequestToEntity(AuthorRequest authorRequest){
         Author author = new Author();
+        author.setId(authorRequest.getId());
         author.setName(authorRequest.getName());
         author.setEmail(authorRequest.getEmail());
         author.setNumber(authorRequest.getNumber());
@@ -65,6 +68,14 @@ public class AuthorServiceImpl implements AuthorService {
         return authorResponseList;
     }
 
+    //this method is used to find all the author list and return it in AuthorResponse form
+    @Override
+    public List<AuthorResponse> allAuthor() {
+        List<Author> allAuthors = authorRepo.findAll();
+        return convertToAuthorResponseList(allAuthors);
+    }
+
+    //take parameter as Id & return Author
     public Author findAuthorById(short id)  {
         Optional<Author> singleAuthor = authorRepo.findById(id);
         if(singleAuthor.isPresent()){
@@ -72,5 +83,21 @@ public class AuthorServiceImpl implements AuthorService {
             return author;
         }
         throw new AuthorNotfoundException("Author having this"+ id +" doesnot exist!!!");
+    }
+
+    //take parameter as Id  & return AuthorResponse
+    @Override
+    public AuthorResponse findAuthorResponseById(Short id) {
+       Optional<Author> singleAuthor =  authorRepo.findById(id);
+       if(singleAuthor.isPresent()){
+           Author author = singleAuthor.get();
+           return entityToAuthorResponse(author);
+       }
+        throw new AuthorNotfoundException("Author having this id : "+ id +" does not exist!!!");
+    }
+
+    @Override
+    public void deleteAuthor(Short id) {
+        authorRepo.deleteById(id);
     }
 }

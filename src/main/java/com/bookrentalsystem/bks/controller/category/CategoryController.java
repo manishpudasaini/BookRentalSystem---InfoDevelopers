@@ -56,25 +56,10 @@ public class CategoryController {
     }
 
     @RequestMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable Short id){
-
-//        categoryService.deleteCategory(id);
-//        try {
-//
-//        } catch (ConstraintViolationException e) {
-//            String msg = "";
-//            System.out.println(e.getMessage());
-//            if (e.getMessage().contains("fk_book_categoryId")) {
-//                msg += "Sorry Category cannot be deleted";
-//                redirectAttributes.addFlashAttribute("fk_error", msg);
-//
-//            } else {
-//                redirectAttributes.addFlashAttribute("fk_error", e.getMessage());
-//            }
-//            return "redirect:/category/table?fail";
-//        }
+    public String deleteCategory(@PathVariable Short id,RedirectAttributes redirectAttributes){
         categoryService.deleteCategory(id);
-
+        String message = "";
+        redirectAttributes.addFlashAttribute("message","Category Deleted Successfully!!");
         return "redirect:/category/table?success";
     }
 }

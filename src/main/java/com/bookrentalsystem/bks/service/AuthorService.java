@@ -12,5 +12,8 @@ public interface AuthorService {
      AuthorResponse entityToAuthorResponse(Author author);
      List<Author> convertToAuthorList(List<Short> ids);
      List<AuthorResponse> convertToAuthorResponseList(List<Author> authors);
+     List<AuthorResponse> allAuthor();
      Author findAuthorById(short id);
+     AuthorResponse findAuthorResponseById(Short id);
+     void deleteAuthor(Short id);
 }

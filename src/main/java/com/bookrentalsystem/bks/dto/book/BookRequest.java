@@ -1,6 +1,7 @@
 package com.bookrentalsystem.bks.dto.book;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,17 +30,17 @@ public class BookRequest {
 
     private Double rating;
 
-    @NotNull(message = "stock should not be null")
+    @NotEmpty(message = "stock should not be null")
     private Integer stock;
 
-    @NotNull(message = "Please provide book publish date")
+    @NotEmpty(message = "Please provide book publish date")
     private String published_date;
 
     private String imageFile;
 
-    @NotNull(message = "Please select category ")
+    @NotEmpty(message = "Please select category ")
     private short categoryId;
 
-    @NotNull(message = "Please select author")
+    @NotEmpty(message = "Please select author")
     private List<Short> authorsId;
 }

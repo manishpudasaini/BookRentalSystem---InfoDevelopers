@@ -1,5 +1,6 @@
 package com.bookrentalsystem.bks.model;
 
+import com.bookrentalsystem.bks.model.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ import java.util.List;
         @UniqueConstraint(name = "uk_book_name", columnNames = "book_name"),
         @UniqueConstraint(name = "uk_book_isbn", columnNames = "isbn_number")
 })
-public class Book {
+public class Book extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
