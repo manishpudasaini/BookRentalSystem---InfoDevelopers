@@ -12,7 +12,10 @@ public interface MemberService {
     Member memberRequestToEtity(MemberRequest memberRequest);
     MemberResponse entityToMemberResponse(Member member);
     Member findMemberById(Short id);
+    MemberResponse findMemberResponseFromId(Short id);
     List<Member > allMemberEntity();
+    List<MemberResponse> allMemberResponse();
     List<MemberResponse> allMemberResponseDTo(List<Member> members);
+    void deleteMemberById(short id);
 
 }

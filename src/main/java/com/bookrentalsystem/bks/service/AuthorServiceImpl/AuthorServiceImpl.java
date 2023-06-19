@@ -55,17 +55,15 @@ public class AuthorServiceImpl implements AuthorService  {
     * returning the author list
      */
     public List<Author> convertToAuthorList(List<Short> ids){
-        List<Author> authorList =  ids.stream().map(id -> findAuthorById(id)).collect(Collectors.toList());
-        return authorList;
+        return ids.stream().map(this::findAuthorById).collect(Collectors.toList());
     }
 
     /*
     *converting the author list to AuthorResponse list
      */
     public List<AuthorResponse> convertToAuthorResponseList(List<Author> authors){
-        List<AuthorResponse> authorResponseList =  authors.stream()
-                .map(auth -> entityToAuthorResponse(auth)).collect(Collectors.toList());
-        return authorResponseList;
+        return authors.stream()
+                .map(this::entityToAuthorResponse).collect(Collectors.toList());
     }
 
     //this method is used to find all the author list and return it in AuthorResponse form
@@ -79,8 +77,7 @@ public class AuthorServiceImpl implements AuthorService  {
     public Author findAuthorById(short id)  {
         Optional<Author> singleAuthor = authorRepo.findById(id);
         if(singleAuthor.isPresent()){
-            Author author = singleAuthor.get();
-            return author;
+            return singleAuthor.get();
         }
         throw new AuthorNotfoundException("Author having this"+ id +" doesnot exist!!!");
     }

@@ -12,7 +12,7 @@
         <div class="box-area">
             <div class="category-form">
                 <div class="titleDesc">
-                    <span>Category form</span>
+                    <span>Member form</span>
 
                     <a th:href="@{/member/table}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -30,54 +30,43 @@
                         <input type="text" class="form-control"
                                id="floatingInput"
                                th:field="*{name}"
-                        >
+                               th:classappend="${#fields.hasErrors('name')?'is-invalid':''}">
                         <label for="floatingInput">Name</label>
-                        <p
-                            class="invalid-feedback">
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                           class="invalid-feedback">
                         </p>
-
-                        <!--                        <div th:if="${#fields.hasAnyErrors()}">-->
-                        <!--                            <ul>-->
-                        <!--                                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />-->
-                        <!--                            </ul>-->
-                        <!--                        </div>-->
-
-                        <!--                        <p th:if="${#fields.hasErrors('name')}"-->
-                        <!--                           th:text="${#strings.listJoin(#fields.errors('name'), ', ')}">-->
-
-                        <!--                        </p>-->
-                        <!--                        <p th:each="e:${error}" th:text="${e}"></p>-->
-                        <!--                        <p th:text="${error}"></p>-->
-
 
                     </div>
 
                     <div class="form-floating ">
                         <input type="text" class="form-control"
                                th:field="*{email}"
-                        >
-
+                               th:classappend="${#fields.hasErrors('email')?'is-invalid':''}">
                         <label for="floatingInput">Email</label>
-                        <p
-                                class="invalid-feedback">
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                           class="invalid-feedback">
                         </p>
 
                     </div>
 
                     <div class="form-floating ">
-                        <input type="text" class="form-control" th:field="*{address}">
+                        <input type="text" class="form-control"
+                               th:field="*{address}"
+                               th:classappend="${#fields.hasErrors('address')?'is-invalid':''}">
                         <label for="floatingInput">Address</label>
-                        <p
-                                class="invalid-feedback">
+                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
+                           class="invalid-feedback">
                         </p>
 
                     </div>
 
                     <div class="form-floating ">
-                        <input type="text" class="form-control" th:field="*{phone}">
+                        <input type="text" class="form-control"
+                               th:field="*{phone}"
+                               th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}">
                         <label for="floatingInput">Phone</label>
-                        <p
-                                class="invalid-feedback">
+                        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
+                           class="invalid-feedback">
                         </p>
                     </div>
 

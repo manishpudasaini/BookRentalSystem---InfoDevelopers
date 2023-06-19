@@ -27,10 +27,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member memberRequestToEtity(MemberRequest memberRequest) {
         return Member.builder()
+                .id(memberRequest.getId())
                 .name(memberRequest.getName())
                 .email(memberRequest.getEmail())
                 .address(memberRequest.getAddress())
                 .phone(memberRequest.getPhone())
+                .deleted(false)
                 .build();
     }
 
@@ -49,10 +51,19 @@ public class MemberServiceImpl implements MemberService {
     public Member findMemberById(Short id) {
        Optional<Member> singleMember =  memberRepo.findById(id);
        if(singleMember.isPresent()){
-           Member member = singleMember.get();
-           return member;
+           return singleMember.get();
        }
         throw new MemberNotFoundException("Member does not exist!!!");
+    }
+
+    @Override
+    public MemberResponse findMemberResponseFromId(Short id) {
+        Optional<Member> singleMember = memberRepo.findById(id);
+        if(singleMember.isPresent()){
+            Member member = singleMember.get();
+            return entityToMemberResponse(member);
+        }
+        throw new MemberNotFoundException("Member does not exist !!!");
     }
 
     @Override
@@ -61,9 +72,19 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public List<MemberResponse> allMemberResponse() {
+       List<Member> members = memberRepo.findAll();
+        return members.stream().map(this::entityToMemberResponse).collect(Collectors.toList());
+    }
+
+    @Override
     public List<MemberResponse> allMemberResponseDTo(List<Member> members) {
-       List<MemberResponse> memberResponses =  members.stream()
-                .map(m -> entityToMemberResponse(m)).collect(Collectors.toList());
-        return memberResponses;
+        return members.stream()
+                 .map(this::entityToMemberResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteMemberById(short id) {
+        memberRepo.deleteById(id);
     }
 }

@@ -12,5 +12,6 @@ public interface BookService {
     Book findBookByid(Short id);
     List<BookResponse> allBooks();
     void deleteBook(Short id);
+    BookResponse entityTBookResponse(Book book);
     BookResponse viewBookId(Short id) throws IOException;
 }

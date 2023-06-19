@@ -17,7 +17,8 @@ import org.hibernate.annotations.Where;
 @Builder
 @NoArgsConstructor
 @Table(name = "author",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_author_phone",columnNames = "phone_number")
+        @UniqueConstraint(name = "uk_author_phone",columnNames = "phone_number"),
+        @UniqueConstraint(name = "uk_author_email",columnNames = "email")
 })
 @SQLDelete(sql = "UPDATE author SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
 @Where(clause = "deleted = false")

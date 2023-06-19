@@ -93,11 +93,18 @@
 
                     </div>
 
-                    <div class="form-floating">
+                    <div class="form-floating" >
                         <input type="file" min="10" class="form-control"
                                th:field="*{imageFile}"
                         >
                     </div>
+
+                    <div class="form-floating" th:if="${book.id}">
+                        <input type="text" min="10" class="form-control"
+                               th:field="*{image_path}"
+                        >
+                    </div>
+
 
                     <div class="form-floating d-flex flex-fill gap-5">
                         <div class="categoryId">

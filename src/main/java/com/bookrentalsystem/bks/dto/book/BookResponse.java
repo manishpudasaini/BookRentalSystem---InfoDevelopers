@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +26,10 @@ public class BookResponse {
     private Integer stock;
     private LocalDate published_date;
     private String image_path;
+    private MultipartFile imageFile;
     private Short category;
-    private List<Short> authors;
+    private List<Short> authorsId;
+    private Short categoryId;
+
+
 }

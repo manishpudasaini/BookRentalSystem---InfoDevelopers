@@ -30,7 +30,18 @@ public class BookServiceImpl implements BookService {
     private final Fileutils fileutils;
 
     public BookResponse addBook(BookRequest bookRequest) throws IOException {
+        String imagePath = null;
+        if (bookRequest.getId() != null && bookRequest.getImageFile() == null) {
+            Book book = bookRepo.findById(bookRequest.getId()).orElseThrow();
+            imagePath = book.getImage_path();
+        } else {
+            imagePath = fileutils.saveMultipartFile(bookRequest.getImageFile());
+
+        }
+//        else if (bookRequest.getId() != null && bookRequest.getImageFile() != null) {
+
         Book book = Book.builder()
+                .id(bookRequest.getId())
                 .name(bookRequest.getName())
                 .page(bookRequest.getPage())
                 .isbn(bookRequest.getIsbn())
@@ -39,14 +50,15 @@ public class BookServiceImpl implements BookService {
                 .published_date(dateUtil.convertToDate(bookRequest.getPublished_date()))
                 .category(categoryService.findCategoryById(bookRequest.getCategoryId()))
                 .authors(authorService.convertToAuthorList(bookRequest.getAuthorsId()))
-                .image_path(fileutils.saveMultipartFile(bookRequest.getImageFile()))
+                .image_path(imagePath)
                 .deleted(false)
                 .build();
         bookRepo.save(book);
 
-        List<Short> authorIds =  book.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
+        List<Short> authorIds = book.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
 
         return BookResponse.builder()
+                .id(book.getId())
                 .name(book.getName())
                 .page(book.getPage())
                 .isbn(book.getIsbn())
@@ -55,16 +67,15 @@ public class BookServiceImpl implements BookService {
                 .published_date(book.getPublished_date())
                 .image_path(book.getImage_path())
                 .category(book.getCategory().getId())
-                .authors(authorIds)
+                .authorsId(authorIds)
                 .build();
     }
 
     @Override
     public Book findBookByid(Short id) {
         Optional<Book> singleBook = bookRepo.findById(id);
-        if(singleBook.isPresent()){
-            Book book = singleBook.get();
-            return book;
+        if (singleBook.isPresent()) {
+            return singleBook.get();
         }
         throw new BookNotFoundException("Book does not exist!!!");
     }
@@ -83,10 +94,9 @@ public class BookServiceImpl implements BookService {
     }
 
 
-
     //method used to convert entity Book to BookResponse dto
-    public BookResponse entityTBookResponse(Book book){
-       List<Short> authorIds =  book.getAuthors().stream().map(b -> b.getId()).collect(Collectors.toList());
+    public BookResponse entityTBookResponse(Book book) {
+        List<Short> authorIds = book.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
         return BookResponse.builder()
                 .id(book.getId())
                 .name(book.getName())
@@ -97,15 +107,15 @@ public class BookServiceImpl implements BookService {
                 .published_date(book.getPublished_date())
                 .image_path(book.getImage_path())
                 .category(book.getCategory().getId())
-                .authors(authorIds)
+                .categoryId(book.getCategory().getId())
+                .authorsId(authorIds)
                 .build();
     }
 
-    public List<BookResponse> entityListToBookResponse(List<Book> books){
+    public List<BookResponse> entityListToBookResponse(List<Book> books) {
 
-      List<BookResponse> bookResponses =   books
-              .stream().map(b->entityTBookResponse(b)).collect(Collectors.toList());
-      return bookResponses;
+        return books
+                .stream().map(this::entityTBookResponse).collect(Collectors.toList());
     }
 
     // this function is used to find book by its id & return Bookreponse
@@ -113,9 +123,9 @@ public class BookServiceImpl implements BookService {
     public BookResponse viewBookId(Short id) throws IOException {
         Optional<Book> singleBook = bookRepo.findById(id);
 
-        if(singleBook.isPresent()){
+        if (singleBook.isPresent()) {
             Book book = singleBook.get();
-            List<Short> authorIds =  book.getAuthors().stream().map(b -> b.getId()).collect(Collectors.toList());
+            List<Short> authorIds = book.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
 
 
             return BookResponse.builder()
@@ -128,7 +138,7 @@ public class BookServiceImpl implements BookService {
                     .published_date(book.getPublished_date())
                     .image_path(fileutils.getBase64FormFilePath(book.getImage_path()))
                     .category(book.getCategory().getId())
-                    .authors(authorIds)
+                    .authorsId(authorIds)
                     .build();
         }
         throw new BookNotFoundException("Book does not exist!!!");

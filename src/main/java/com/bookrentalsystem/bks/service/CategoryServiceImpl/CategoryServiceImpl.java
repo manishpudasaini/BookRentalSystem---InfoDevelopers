@@ -31,8 +31,7 @@ public class CategoryServiceImpl implements CategoryService{
     public Category findCategoryById(short id) {
        Optional<Category> singleCategory =  categoryRepo.findById(id);
        if(singleCategory.isPresent()){
-           Category category = singleCategory.get();
-           return category;
+           return singleCategory.get();
        }
        throw new CategoryNotFoundException("Category having this id "+ id +" does not exist..");
     }
@@ -44,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryResponse entityToCategory(Category category){
         return CategoryResponse.builder()
                 .id(category.getId())
+                .categoryId(category.getId())       // remove
                 .name(category.getName())
                 .description(category.getDescription())
                 .build();
@@ -87,6 +87,6 @@ public class CategoryServiceImpl implements CategoryService{
 
     //this method take parameter as Category entity list & return List of CategoryResponse dto
     public List<CategoryResponse> changeToCategory(List<Category> categoryList){
-       return categoryList.stream().map(a->entityToCategory(a)).collect(Collectors.toList());
+       return categoryList.stream().map(this::entityToCategory).collect(Collectors.toList());
     }
 }

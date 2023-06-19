@@ -13,6 +13,9 @@ import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
@@ -23,15 +26,17 @@ public class TransactionServiceImpl implements TransactionService {
     private final MemberService memberService;
 
 
+    //method to save or rent the book
     public RentBookResponse rentABook(RentBookRequest rentBookRequest){
         Transaction transaction = rentBookRequestToTransacrion(rentBookRequest);
         transactionRepo.save(transaction);
         return transactionToRentBookResponse(transaction);
     }
 
+    //method to convert the rentBookRequest to transaction
     public Transaction rentBookRequestToTransacrion(RentBookRequest rentBookRequest){
         return Transaction.builder()
-                .code(generateRandomNumber.generateRandomNumber())
+                .code(GenerateRandomNumber.generateRandomNumber())
                 .from(localDateTime.convertToDate())
                 .to(localDateTime.convertToDate().plusDays(rentBookRequest.getDays()))
                 .status(BookRentStatus.RENT)
@@ -40,6 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .build();
     }
 
+    //method to convert transaction to RentBookResponse
     public RentBookResponse transactionToRentBookResponse(Transaction transaction){
         return RentBookResponse.builder()
                 .id(transaction.getId())
@@ -50,6 +56,14 @@ public class TransactionServiceImpl implements TransactionService {
                 .book(transaction.getBook())
                 .member(transaction.getMember())
                 .build();
+    }
+
+    //method to find all the rent Book list
+    @Override
+    public List<RentBookResponse> allRentBooks() {
+       List<Transaction> transactions = transactionRepo.findAll();
+        return transactions.stream()
+                .map(this::transactionToRentBookResponse).collect(Collectors.toList());
     }
 
 }

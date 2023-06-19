@@ -5,6 +5,7 @@ import com.bookrentalsystem.bks.dto.author.AuthorResponse;
 import com.bookrentalsystem.bks.dto.book.BookRequest;
 import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
+import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +39,9 @@ public class BookController {
         List<CategoryResponse> categories = categoryService.allCategory();
         model.addAttribute("author",authors);
         model.addAttribute("category",categories);
-         model.addAttribute("book", new BookRequest());
+        if(model.getAttribute("book") ==null){
+            model.addAttribute("book", new BookRequest());
+        }
         return "book/BookForm";
     }
 
@@ -51,6 +55,13 @@ public class BookController {
     public String deleteBook(@PathVariable Short id){
         bookService.deleteBook(id);
         return "redirect:/book/table";
+    }
+    @GetMapping("/update/{id}")
+    public String updateBook(@PathVariable short id, RedirectAttributes redirectAttributes){
+       Book book =  bookService.findBookByid(id);
+       BookResponse bookResponse =bookService.entityTBookResponse(book);
+        redirectAttributes.addFlashAttribute("book",bookResponse);
+        return "redirect:/book/form";
     }
 
     @GetMapping("view/{id}")

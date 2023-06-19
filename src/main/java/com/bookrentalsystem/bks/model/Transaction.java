@@ -1,6 +1,7 @@
 package com.bookrentalsystem.bks.model;
 
 import com.bookrentalsystem.bks.enums.BookRentStatus;
+import com.bookrentalsystem.bks.model.auditing.Auditable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @Table(name = "transaction",uniqueConstraints = {
         @UniqueConstraint(name = "uk_transaction_code",columnNames = "transaction_code")
 })
-public class Transaction {
+public class Transaction extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
@@ -30,7 +31,6 @@ public class Transaction {
     @Column(name = "book_status",nullable = false)
     @Enumerated(EnumType.STRING)
     private BookRentStatus status;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id",foreignKey = @ForeignKey(name = "fk_transaction_bookId"))
     private Book book;

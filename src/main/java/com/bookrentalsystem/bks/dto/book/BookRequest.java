@@ -43,4 +43,6 @@ public class BookRequest {
 
     @NotEmpty(message = "Please select author")
     private List<Short> authorsId;
+
+    private String image_path;
 }
