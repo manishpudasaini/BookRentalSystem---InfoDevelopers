@@ -29,13 +29,14 @@ public class Author extends Auditable<String> {
     @Column(name = "author_name",nullable = false)
     private String name;
 
-    @Column(name = "email",length = 100)
+    @Column(name = "email",length = 100,nullable = false)
     private String email;
 
     @Column(name = "phone_number",length = 10)
     private String number;
 
-    private Boolean deleted = Boolean.FALSE;
+    private Boolean deleted=Boolean.FALSE;
+
 
 
 }

@@ -9,7 +9,9 @@ import com.bookrentalsystem.bks.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +53,17 @@ public class MemberServiceImpl implements MemberService {
            return member;
        }
         throw new MemberNotFoundException("Member does not exist!!!");
+    }
+
+    @Override
+    public List<Member> allMemberEntity() {
+        return memberRepo.findAll();
+    }
+
+    @Override
+    public List<MemberResponse> allMemberResponseDTo(List<Member> members) {
+       List<MemberResponse> memberResponses =  members.stream()
+                .map(m -> entityToMemberResponse(m)).collect(Collectors.toList());
+        return memberResponses;
     }
 }

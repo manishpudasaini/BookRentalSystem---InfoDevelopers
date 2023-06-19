@@ -36,7 +36,7 @@ public class BookRequest {
     @NotEmpty(message = "Please provide book publish date")
     private String published_date;
 
-    private String imageFile;
+    private MultipartFile imageFile;
 
     @NotEmpty(message = "Please select category ")
     private short categoryId;

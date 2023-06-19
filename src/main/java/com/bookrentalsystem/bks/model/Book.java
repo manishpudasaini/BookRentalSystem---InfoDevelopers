@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import java.util.List;
         @UniqueConstraint(name = "uk_book_name", columnNames = "book_name"),
         @UniqueConstraint(name = "uk_book_isbn", columnNames = "isbn_number")
 })
+@SQLDelete(sql = "UPDATE book SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
+@Where(clause = "deleted = false")
 public class Book extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,12 +46,13 @@ public class Book extends Auditable<String> {
     private Integer stock;
 
     @Column(name = "published_date", nullable = false)
-    private LocalDateTime published_date;
+    private LocalDate published_date;
 
     @Column(name = "image_path", nullable = false, length = 150)
     private String image_path;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    private Boolean deleted ;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_book_categoryId"))
     private Category category;
 
@@ -58,6 +62,7 @@ public class Book extends Auditable<String> {
             inverseForeignKey = @ForeignKey(name = "fk_author_bookId")
     )
     private List<Author> authors;
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.bookrentalsystem.bks.dto.book;
 
+
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
 
@@ -8,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,15 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BookResponse {
-    private Short id;
+public class BookResponseRest {
     private String name;
     private Integer page;
     private String isbn;
     private Double rating;
     private Integer stock;
-    private LocalDate published_date;
+    private LocalDateTime published_date;
     private String image_path;
-    private Short category;
-    private List<Short> authors;
+    private CategoryResponse category;
+    private List<AuthorResponse> authors;
 }

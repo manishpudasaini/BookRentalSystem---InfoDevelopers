@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Category Form')}"></th:block>
+    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Category Table')}"></th:block>
 </head>
 <body>
 <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
@@ -14,28 +14,26 @@
                 <div class="titleDesc">
                     <span>Category form</span>
 
-                    <a th:href="@{/category/table}">
+                    <a th:href="@{/member/table}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
                             <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                         </svg>
                     </a>
                 </div>
 
-                <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/save}">
+                <form th:object="${member}" th:action="@{/member/save}" th:method="POST">
                     <div class="form-floating ">
                         <input type="text" th:field="*{id}" hidden>
                     </div>
 
                     <div class="form-floating ">
                         <input type="text" class="form-control"
-                               id="floatingInput" ,
+                               id="floatingInput"
                                th:field="*{name}"
-                               th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
                         >
-
                         <label for="floatingInput">Name</label>
-                        <p  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                           class="invalid-feedback">
+                        <p
+                            class="invalid-feedback">
                         </p>
 
                         <!--                        <div th:if="${#fields.hasAnyErrors()}">-->
@@ -54,16 +52,32 @@
 
                     </div>
 
-                    <div class="form-floating">
-                            <textarea class="form-control"
-                                      id="floatingTextarea2"
-                                      style="height: 180px"
-                                      th:field="*{description}"
-                                      th:classappend="${#fields.hasErrors('description')?'is-invalid':''}"
-                            ></textarea>
-                        <label for="floatingTextarea2">Description</label>
-                        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}"
-                           class="invalid-feedback">
+                    <div class="form-floating ">
+                        <input type="text" class="form-control"
+                               th:field="*{email}"
+                        >
+
+                        <label for="floatingInput">Email</label>
+                        <p
+                                class="invalid-feedback">
+                        </p>
+
+                    </div>
+
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" th:field="*{address}">
+                        <label for="floatingInput">Address</label>
+                        <p
+                                class="invalid-feedback">
+                        </p>
+
+                    </div>
+
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" th:field="*{phone}">
+                        <label for="floatingInput">Phone</label>
+                        <p
+                                class="invalid-feedback">
                         </p>
                     </div>
 
@@ -79,5 +93,6 @@
 
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
+
 </body>
 </html>

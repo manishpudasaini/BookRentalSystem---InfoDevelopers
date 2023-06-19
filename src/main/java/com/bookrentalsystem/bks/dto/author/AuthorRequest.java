@@ -22,6 +22,7 @@ public class AuthorRequest {
     private String name;
 
     @Email(message = "email should be in format")
+    @NotEmpty(message = "Please enter author email address")
     private String email;
 
     @Length(max = 10,min = 10,message = "Phone number should be 10 digit")

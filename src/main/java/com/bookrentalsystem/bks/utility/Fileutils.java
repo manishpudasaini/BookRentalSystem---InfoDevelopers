@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 
 @Component
 public class Fileutils {
@@ -29,6 +31,21 @@ public class Fileutils {
             throw new RuntimeException(e);
         }
         return filePath;
+    }
+
+    //convert image  into base64
+    public String getBase64FormFilePath(String filePath) throws IOException {
+        File file = new File(filePath);
+        if(file.exists()){
+            byte[] bytes = Files.readAllBytes(file.toPath());
+
+            String base64Code = Base64.getEncoder().encodeToString(bytes);
+
+            return "data:image/jpeg;base64,"+ base64Code;
+
+        }else {
+            return  null;
+        }
     }
 
 
