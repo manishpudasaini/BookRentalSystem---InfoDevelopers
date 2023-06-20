@@ -1,10 +1,12 @@
 package com.bookrentalsystem.bks.service.TransactionServiceImpl;
 
+import com.bookrentalsystem.bks.dto.transaction.TransactionDto;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
 import com.bookrentalsystem.bks.exception.globalException.CodeNotFoundException;
+import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.repo.TransactionRepo;
@@ -39,6 +41,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     //method to convert the rentBookRequest to transaction
     public Transaction rentBookRequestToTransacrion(RentBookRequest rentBookRequest){
+       Book singleBook  = bookService.findBookByid(rentBookRequest.getBookId());
+       singleBook.setStock(singleBook.getStock() - 1);
+        bookService.saveBook(singleBook);
         return Transaction.builder()
                 .code(GenerateRandomNumber.generateRandomNumber())
                 .from(localDateTime.convertToDate())
@@ -97,6 +102,26 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction saveTransaction(Transaction transaction) {
 
         return transactionRepo.save(transaction);
+    }
+
+    //convert transaction to transactionDto
+    @Override
+    public TransactionDto transactionToTransactionDto(Transaction transaction) {
+        String  memberName = memberService.findMemberById(transaction.getMember().getId()).getName();
+        return TransactionDto.builder()
+                .id(transaction.getId())
+                .book_name(transaction.getBook().getName())
+                .code(transaction.getCode())
+                .status(transaction.getStatus())
+                .member_name(memberName)
+                .build();
+    }
+
+    @Override
+    public List<TransactionDto> allTransaction() {
+       List<Transaction> transactions= transactionRepo.findAll();
+        return transactions.stream()
+                .map(this::transactionToTransactionDto).collect(Collectors.toList());
     }
 
 

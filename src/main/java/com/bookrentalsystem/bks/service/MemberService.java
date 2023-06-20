@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MemberService {
 
-    MemberResponse addMember(MemberRequest memberRequest);
+    String addMember(MemberRequest memberRequest);
     Member memberRequestToEtity(MemberRequest memberRequest);
     MemberResponse entityToMemberResponse(Member member);
     Member findMemberById(Short id);

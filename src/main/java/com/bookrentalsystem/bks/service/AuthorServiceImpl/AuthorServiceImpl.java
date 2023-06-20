@@ -18,13 +18,28 @@ import java.util.stream.Collectors;
 public class AuthorServiceImpl implements AuthorService  {
 
     private final AuthorRepo authorRepo;
-
     //this method is used to add the author in our database
-    public AuthorResponse addAuthor(AuthorRequest authorRequest){
+    public String addAuthorDb(AuthorRequest authorRequest){
+        Optional<Author> dbAuthorFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
+        Optional<Author> dbAuthorTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
         Author author = authorRequestToEntity(authorRequest);
-         authorRepo.save(author);
 
-        return entityToAuthorResponse(author);
+        if(dbAuthorFalse.isPresent()  ){
+            Author activeAuthor = dbAuthorFalse.get();
+            if(author.getEmail().equals(activeAuthor.getEmail())
+                    || author.getNumber().equals(activeAuthor.getNumber())){
+                return "Author already exist!!";
+            }
+        }
+        if(dbAuthorTrue.isPresent()){
+            Author inActiveAuthor = dbAuthorTrue.get();
+            if(inActiveAuthor.getEmail().equals(authorRequest.getEmail()) ||
+                    inActiveAuthor.getNumber().equals(authorRequest.getNumber())){
+                return "Author already exist!!";
+            }
+        }
+         authorRepo.save(author);
+        return "added successfully";
     }
 
     //this method take parameter as AuthorRequest & convert the request into Author entity
@@ -97,4 +112,5 @@ public class AuthorServiceImpl implements AuthorService  {
     public void deleteAuthor(Short id) {
         authorRepo.deleteById(id);
     }
+
 }

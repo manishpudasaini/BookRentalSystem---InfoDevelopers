@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,8 +44,17 @@ public class MemberController {
             model.addAttribute("member",memberRequest);
             return "customer/CustomerForm";
         }
-        memberService.addMember(memberRequest);
-        return "redirect:/member/table";
+
+        String message= memberService.addMember(memberRequest);
+        if(!message.isEmpty() && !message.equals("added")){
+            ObjectError error = new ObjectError("globalError",message);
+            result.addError(error);
+            return "customer/CustomerForm";
+        }
+        if(message.equals("added")){
+           return  "redirect:/member/table";
+        }
+        return "message";
     }
 
     @RequestMapping("/update/{id}")

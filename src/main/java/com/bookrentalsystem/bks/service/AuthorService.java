@@ -7,7 +7,7 @@ import com.bookrentalsystem.bks.model.Author;
 import java.util.List;
 
 public interface AuthorService {
-     AuthorResponse addAuthor(AuthorRequest authorRequest);
+     String addAuthorDb(AuthorRequest authorRequest);
      Author authorRequestToEntity(AuthorRequest authorRequest);
      AuthorResponse entityToAuthorResponse(Author author);
      List<Author> convertToAuthorList(List<Short> ids);

@@ -48,12 +48,14 @@ public class BookController {
     }
 
     @PostMapping("/save")
-    public String saveBook(@ModelAttribute("book") BookRequest bookRequest, Model model) throws IOException {
+    public String saveBook(@Valid @ModelAttribute("book") BookRequest bookRequest,
+                           BindingResult result,
+                           Model model) throws IOException {
 
-//        if (result.hasErrors()) {
-//            model.addAttribute("book", bookRequest);
-//            return "book/BookForm";
-//        }
+        if (result.hasErrors()) {
+            model.addAttribute("book", bookRequest);
+            return "book/BookForm";
+        }
         bookService.addBook(bookRequest);
         return "redirect:/book/table";
     }

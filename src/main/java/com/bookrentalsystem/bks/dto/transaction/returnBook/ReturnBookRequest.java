@@ -12,10 +12,10 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @Builder
 public class ReturnBookRequest {
-    @NotEmpty(message = "Please enter  your code ")
-    @Length(min = 5,max = 5,message = "Code length must be 5 digit")
+
     private Integer code;
     private String from;
+    @NotEmpty(message = "Please enter the return date of Book")
     private String returnDate;
     private String member_name;
 }

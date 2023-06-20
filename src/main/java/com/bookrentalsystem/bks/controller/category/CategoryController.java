@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,7 +45,15 @@ public class CategoryController {
             model.addAttribute("category",categoryRequest);
             return "category/CategoryForm";
         }
-       categoryService.addCategory(categoryRequest);
+        String message = categoryService.addCategory(categoryRequest);
+        if(!message.isEmpty() && !message.equals("added")){
+            ObjectError error = new ObjectError("globalError",message);
+            result.addError(error);
+            return "/category/CategoryForm";
+        }
+        if(message.equals("added")){
+            return "redirect:/category/table";
+        }
        return "redirect:/category/table";
     }
 

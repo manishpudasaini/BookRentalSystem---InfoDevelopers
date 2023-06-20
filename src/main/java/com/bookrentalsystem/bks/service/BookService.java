@@ -14,4 +14,7 @@ public interface BookService {
     void deleteBook(Short id);
     BookResponse entityTBookResponse(Book book);
     BookResponse viewBookId(Short id) throws IOException;
+    Book saveBook(Book book);
+
+
 }

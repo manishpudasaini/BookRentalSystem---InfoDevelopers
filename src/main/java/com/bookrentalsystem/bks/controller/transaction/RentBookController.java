@@ -29,12 +29,6 @@ public class RentBookController {
     private final MemberService memberService;
     private final BookService bookService;
     private final TransactionService transactionService;
-    @GetMapping("/table")
-    public String rentBookTable(Model model){
-       List<RentBookResponse> allRentBooks =  transactionService.allRentBooks();
-       model.addAttribute("rentInfo",allRentBooks);
-        return "transaction/rentBook/RentBookTable";
-    }
 
     @GetMapping("/form")
     public String rentBookForm(Model model){
@@ -63,6 +57,6 @@ public class RentBookController {
             return "transaction/rentBook/RentBookForm";
         }
         transactionService.rentABook(rentBookRequest);
-        return "redirect:/rent/book/table";
+        return "redirect:/transaction/table";
     }
 }

@@ -19,9 +19,26 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepo memberRepo;
 
     @Override
-    public MemberResponse addMember(MemberRequest memberRequest) {
-        Member member = memberRepo.save(memberRequestToEtity(memberRequest));
-        return entityToMemberResponse(member);
+    public String addMember(MemberRequest memberRequest) {
+       Optional<Member> memberDeleteFalse =  memberRepo.findMemberByEmailAndDeletedIsFalse(memberRequest.getEmail());
+       Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
+       if(memberDeleteTrue.isPresent()){
+           Member deleteMember = memberDeleteTrue.get();
+           if(memberRequest.getEmail().equals(deleteMember.getEmail()) ||
+                   memberRequest.getPhone().equals(deleteMember.getPhone())){
+               return "Member having same information already exist!!";
+           }
+       }
+
+       if(memberDeleteFalse.isPresent()){
+           Member notDeleteMember =memberDeleteFalse.get();
+           if(memberRequest.getEmail().equals(notDeleteMember.getEmail()) ||
+                   memberRequest.getPhone().equals(notDeleteMember.getPhone())){
+               return "Member having same information already exist!!";
+           }
+       }
+        memberRepo.save(memberRequestToEtity(memberRequest));
+        return "added";
     }
 
     @Override

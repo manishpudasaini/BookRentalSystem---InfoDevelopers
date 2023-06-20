@@ -34,9 +34,9 @@
                         >
 
                         <label for="floatingInput">Name</label>
-                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                           class="invalid-feedback">
-                        </p>
+<!--                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"-->
+<!--                           class="invalid-feedback">-->
+<!--                        </p>-->
                     </div>
 
                     <div class="form-floating ">
@@ -46,9 +46,9 @@
                                th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
                         >
                         <label for="floatingInput">Email</label>
-                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                           class="invalid-feedback">
-                        </p>
+<!--                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"-->
+<!--                           class="invalid-feedback">-->
+<!--                        </p>-->
                     </div>
 
                     <div class="form-floating ">
@@ -58,25 +58,33 @@
                                th:classappend="${#fields.hasErrors('number')?'is-invalid':''}"
                         >
                         <label for="floatingInput">Phone</label>
-                        <p th:if="${#fields.hasErrors('number')}" th:errors="*{number}"
-                           class="invalid-feedback">
-                        </p>
+<!--                        <p th:if="${#fields.hasErrors('number')}" th:errors="*{number}"-->
+<!--                           class="invalid-feedback">-->
+<!--                        </p>-->
                     </div>
 
 
                     <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
                     <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
 
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">
+                        <strong>Error! </strong><hr>
+                        <ul>
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                        </ul>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
                 </form>
             </div>
 
         </div>
+
     </div>
 </div>
 
-<div>
-    <p th:if="${errorMsg}" th:text="${errorMsg.message}"></p>
-</div>
+
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
 </body>

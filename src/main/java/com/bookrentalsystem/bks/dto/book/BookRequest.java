@@ -1,8 +1,6 @@
 package com.bookrentalsystem.bks.dto.book;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +28,9 @@ public class BookRequest {
 
     private Double rating;
 
-    @NotEmpty(message = "stock should not be null")
+
+    @NotNull(message = "our book stock capacity is in between 1 to 500")
+    @Max(value = 500)
     private Integer stock;
 
     @NotEmpty(message = "Please provide book publish date")

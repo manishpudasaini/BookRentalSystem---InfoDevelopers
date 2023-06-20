@@ -14,9 +14,7 @@ import org.hibernate.annotations.Where;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "category",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_category_name",columnNames = "category_name")
-})
+@Table(name = "category")
 @SQLDelete(sql = "UPDATE category SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
 @Where(clause = "deleted = false")
 public class Category extends Auditable<String> {

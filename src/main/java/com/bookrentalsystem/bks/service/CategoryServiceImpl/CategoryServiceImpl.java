@@ -21,10 +21,25 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryRepo categoryRepo;
 
     //this is the business logic to create category
-    public CategoryResponse addCategory(CategoryRequest categoryRequest){
+    public String addCategory(CategoryRequest categoryRequest){
+        Optional<Category> dbCategoryDeletedFalse =  categoryRepo.findCategoryByNameAndDeletedIsFalse(categoryRequest.getName());
         Category category = categoryRequestToEntity(categoryRequest);
+        if(dbCategoryDeletedFalse.isPresent()){
+            Category dbCategoryCheck = dbCategoryDeletedFalse.get();
+            if(dbCategoryCheck.getName().equals(category.getName())){
+                return "Category Name already exist Please enter another number!!!";
+            }
+        }
+        Optional<Category> dbCategoryDeletedTrue =  categoryRepo.findCategoryByNameAndDeletedIsTrue(categoryRequest.getName());
+        if(dbCategoryDeletedTrue.isPresent()){
+            Category dbCategoryCheck = dbCategoryDeletedTrue.get();
+            if(dbCategoryCheck.getName().equals(category.getName())){
+                return "Category Name already exist Please enter another number!!!";
+            }
+        }
+
         categoryRepo.save(category);
-        return entityToCategory(category);
+        return "added";
     }
 
     //function used to find category & return category id

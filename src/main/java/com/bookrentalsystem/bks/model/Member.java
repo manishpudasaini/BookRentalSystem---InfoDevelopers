@@ -15,11 +15,8 @@ import org.hibernate.annotations.Where;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "members",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_members_email",columnNames = "email_address"),
-        @UniqueConstraint(name = "uk_members_phone",columnNames = "phone_number")
-})
-@SQLDelete(sql = "UPDATE member SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
+@Table(name = "members")
+@SQLDelete(sql = "UPDATE members SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
 @Where(clause = "deleted = false")
 public class Member extends Auditable<String> {
     @Id

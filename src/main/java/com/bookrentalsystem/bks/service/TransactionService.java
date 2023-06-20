@@ -1,5 +1,6 @@
 package com.bookrentalsystem.bks.service;
 
+import com.bookrentalsystem.bks.dto.transaction.TransactionDto;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
@@ -21,4 +22,6 @@ public interface TransactionService {
     ReturnBookRequest transactionToReturnBook(Transaction transaction);
 
     Transaction saveTransaction(Transaction transaction);
+    TransactionDto transactionToTransactionDto(Transaction transaction);
+    List<TransactionDto> allTransaction();
 }

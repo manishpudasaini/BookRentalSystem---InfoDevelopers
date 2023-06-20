@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <th:block th:replace="~{fragments/HtmlHeader :: html_head('Transaction History Table')}"></th:block>
+</head>
+<body>
+
+<div th:replace="~{fragments/Sidebar :: sidebar}"></div>
+
+<!-- tables section -->
+<div class="wrapper">
+  <div class="section">
+    <div class="box-area">
+      <div class="user_table_post  mt-5">
+        <div class="d-flex justify-content-between w-1024 desc" >
+          <h3>Transaction History</h3>
+
+        </div>
+
+
+        <table class="table table-bordered table-striped mt-3" >
+          <thead>
+          <tr>
+            <th>S.N.</th>
+            <th>Book Name</th>
+            <th>Customer Name</th>
+            <th>Status</th>
+            <th>Code</th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="t, Index : ${transaction} ">
+            <td th:text="${Index.count}">1</td>
+            <td th:text="${t.book_name}"></td>
+            <td th:text="${t.member_name}"></td>
+            <td th:text="${t.status}"></td>
+            <td th:text="${t.code}"></td>
+
+          </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+  <!--            <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>-->
+</div>
+
+
+<div th:replace="~{fragments/Footer :: footer}"></div>
+
+
+</body>
+</html>

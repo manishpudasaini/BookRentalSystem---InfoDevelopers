@@ -19,10 +19,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "book", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_book_name", columnNames = "book_name"),
-        @UniqueConstraint(name = "uk_book_isbn", columnNames = "isbn_number")
-})
+@Table(name = "book")
 @SQLDelete(sql = "UPDATE book SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
 @Where(clause = "deleted = false")
 public class Book extends Auditable<String> {

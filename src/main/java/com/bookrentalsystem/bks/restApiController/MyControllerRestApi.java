@@ -38,16 +38,16 @@ public class MyControllerRestApi {
     }
 
     @PostMapping("/add/author")
-    public AuthorResponse addAuthor(@RequestBody @Valid AuthorRequest authorRequest){
-        return autherService.addAuthor(authorRequest);
+    public String addAuthor(@RequestBody @Valid AuthorRequest authorRequest){
+        return autherService.addAuthorDb(authorRequest);
     }
 
     @PostMapping("/add/category")
-    public CategoryResponse addCategory(@RequestBody @Valid CategoryRequest categoryRequest){
+    public String addCategory(@RequestBody @Valid CategoryRequest categoryRequest){
         return categoryService.addCategory(categoryRequest);
     }
     @PostMapping("/add/member")
-    public MemberResponse addMember(@RequestBody @Valid MemberRequest memberRequest){
+    public String addMember(@RequestBody @Valid MemberRequest memberRequest){
         return memberService.addMember(memberRequest);
     }
 

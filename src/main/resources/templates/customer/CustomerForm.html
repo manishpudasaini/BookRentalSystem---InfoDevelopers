@@ -32,10 +32,6 @@
                                th:field="*{name}"
                                th:classappend="${#fields.hasErrors('name')?'is-invalid':''}">
                         <label for="floatingInput">Name</label>
-                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                           class="invalid-feedback">
-                        </p>
-
                     </div>
 
                     <div class="form-floating ">
@@ -43,10 +39,6 @@
                                th:field="*{email}"
                                th:classappend="${#fields.hasErrors('email')?'is-invalid':''}">
                         <label for="floatingInput">Email</label>
-                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-                           class="invalid-feedback">
-                        </p>
-
                     </div>
 
                     <div class="form-floating ">
@@ -54,10 +46,6 @@
                                th:field="*{address}"
                                th:classappend="${#fields.hasErrors('address')?'is-invalid':''}">
                         <label for="floatingInput">Address</label>
-                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
-                           class="invalid-feedback">
-                        </p>
-
                     </div>
 
                     <div class="form-floating ">
@@ -65,13 +53,19 @@
                                th:field="*{phone}"
                                th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}">
                         <label for="floatingInput">Phone</label>
-                        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"
-                           class="invalid-feedback">
-                        </p>
                     </div>
 
                     <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
                     <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
+
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">
+                        <strong>Error! </strong><hr>
+                        <ul>
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                        </ul>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
 
                 </form>
             </div>

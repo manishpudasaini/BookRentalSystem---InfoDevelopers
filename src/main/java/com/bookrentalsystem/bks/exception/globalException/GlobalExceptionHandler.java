@@ -8,27 +8,27 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = {Exception.class})
-    public String handelException(Exception e, RedirectAttributes redirectAttributes) throws Exception {
-       GlobalExceptionMessage message = new GlobalExceptionMessage();
-
-       if(e instanceof DataIntegrityViolationException){
-           message.setMessage("Already exist !!");
-           redirectAttributes.addFlashAttribute("errorMsg",message);
-       } else {
-           throw e;
-       }
-
-       return "redirect:/category/form";
-    }
+//    @ExceptionHandler(value = {Exception.class})
+//    public String handelException(Exception e, RedirectAttributes redirectAttributes) throws Exception {
+//       GlobalExceptionMessage message = new GlobalExceptionMessage();
+//
+//       if(e instanceof DataIntegrityViolationException){
+//           message.setMessage("Already exist !!");
+//           redirectAttributes.addFlashAttribute("errorMsg",message);
+//       } else {
+//           throw e;
+//       }
+//
+//       return "redirect:/author/form";
+//    }
 
     //this is used to handel code not found exception which occur return book
     @ExceptionHandler(value = {CodeNotFoundException.class})
-    public String handelCodeexception(CodeNotFoundException e, RedirectAttributes redirectAttributes) throws Exception {
+    public String handelCodeException(CodeNotFoundException e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();
 
         if(e instanceof CodeNotFoundException){
-            message.setMessage("This code doesnot exist please enter right code!!");
+            message.setMessage("This code does not exist please enter right code!!");
             redirectAttributes.addFlashAttribute("errorMsg",message);
         } else {
             throw e;

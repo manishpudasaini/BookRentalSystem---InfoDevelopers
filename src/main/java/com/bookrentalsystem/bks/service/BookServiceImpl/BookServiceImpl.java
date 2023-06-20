@@ -143,4 +143,9 @@ public class BookServiceImpl implements BookService {
         }
         throw new BookNotFoundException("Book does not exist!!!");
     }
+
+    @Override
+    public Book saveBook(Book book) {
+        return bookRepo.save(book);
+    }
 }

@@ -2,12 +2,15 @@ package com.bookrentalsystem.bks.controller.author;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
+import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,13 +41,26 @@ public class AuthorController {
     public String saveAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
                              BindingResult result,
                              Model model){
+
         if(result.hasErrors()){
             model.addAttribute("author",authorRequest);
+            System.out.println(model.asMap());
             System.out.println(result);
             return "/author/AuthorForm";
         }
-        authorService.addAuthor(authorRequest);
-        return "redirect:/author/table";
+
+        String message = authorService.addAuthorDb(authorRequest);
+
+        if(!message.isEmpty() && !message.equals("added successfully")){
+            ObjectError error = new ObjectError("globalError",message);
+//            FieldError fieldError = new FieldError("author","jufield","error message");
+            result.addError(error);
+            return "/author/AuthorForm";
+        }
+        if(message.equals("added successfully")){
+            return "redirect:/author/table";
+        }
+        return "message";
     }
 
     @GetMapping("/update/{id}")
@@ -58,4 +74,7 @@ public class AuthorController {
         authorService.deleteAuthor(id);
         return "redirect:/author/table?success";
     }
+
+
+
 }

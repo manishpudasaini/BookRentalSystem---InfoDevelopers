@@ -36,9 +36,6 @@
                         >
                         <label for="floatingInput">Name</label>
                     </div>
-                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                       class="invalid-feedback">
-                    </p>
 
                     <div class="form-floating ">
                         <input type="number" min="10" class="form-control"
@@ -54,10 +51,6 @@
                                th:classappend="${#fields.hasErrors('isbn')?'is-invalid':''}"
                         >
                         <label for="floatingInput">isbn number</label>
-
-                        <p th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"
-                           class="invalid-feedback">
-                        </p>
 
                         <div class="ratingContainer">
                             <span>Rating</span>
@@ -90,6 +83,7 @@
                         <div class="form-floating">
                             <input type="number" class="form-control"
                                    th:field="*{stock}"
+                                   th:classappend="${#fields.hasErrors('stock')?'is-invalid':''}"
                             >
                             <label for="floatingInput">Stock</label>
                         </div>
@@ -101,9 +95,7 @@
                             >
                             <label for="floatingInput">Published Date</label>
                         </div>
-                        <p th:if="${#fields.hasErrors('published_date')}" th:errors="*{published_date}"
-                           class="invalid-feedback">
-                        </p>
+
 
                     </div>
 
@@ -132,9 +124,7 @@
 
                             </select>
                         </div>
-                        <p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"
-                           class="invalid-feedback">
-                        </p>
+
 
                         <div class="authorId">
                             <label for="Author" > Author</label>
@@ -151,6 +141,15 @@
                     </div>
                     <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
                     <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
+
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">
+                        <strong>Error! </strong><hr>
+                        <ul>
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                        </ul>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
 
                 </form>
             </div>
