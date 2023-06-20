@@ -75,7 +75,7 @@
 </div>
 
 <div>
-    <p th:text="${errorMsg}"></p>
+    <p th:if="${errorMsg}" th:text="${errorMsg.message}"></p>
 </div>
 
 <div th:replace="~{fragments/Footer :: footer}"></div>

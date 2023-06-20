@@ -9,9 +9,11 @@ import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,7 +48,12 @@ public class BookController {
     }
 
     @PostMapping("/save")
-    public String saveBook(@ModelAttribute("book") BookRequest bookRequest) throws IOException {
+    public String saveBook(@ModelAttribute("book") BookRequest bookRequest, Model model) throws IOException {
+
+//        if (result.hasErrors()) {
+//            model.addAttribute("book", bookRequest);
+//            return "book/BookForm";
+//        }
         bookService.addBook(bookRequest);
         return "redirect:/book/table";
     }

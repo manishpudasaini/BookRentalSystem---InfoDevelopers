@@ -21,6 +21,11 @@
                     </a>
                 </div>
 
+                <div class="alert alert-danger alert-dismissible fade show"  th:if="${errorMsg}">
+                    <strong>Duplicate Entity ERROR!</strong> <span th:text="${errorMsg.message}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
                 <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/save}">
                     <div class="form-floating ">
                         <input type="text" th:field="*{id}" hidden>

@@ -32,13 +32,18 @@
                         <input type="text" class="form-control"
                                id="floatingInput"
                                th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
                         >
                         <label for="floatingInput">Name</label>
                     </div>
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                       class="invalid-feedback">
+                    </p>
 
                     <div class="form-floating ">
                         <input type="number" min="10" class="form-control"
                                th:field="*{page}"
+
                         >
                         <label for="floatingInput">Page Number</label>
                     </div>
@@ -46,8 +51,13 @@
                     <div class="form-floating d-flex flex-fill justify-content-between gap-5 ">
                         <input type="text" class="form-control"
                                th:field="*{isbn}"
+                               th:classappend="${#fields.hasErrors('isbn')?'is-invalid':''}"
                         >
                         <label for="floatingInput">isbn number</label>
+
+                        <p th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"
+                           class="invalid-feedback">
+                        </p>
 
                         <div class="ratingContainer">
                             <span>Rating</span>
@@ -87,9 +97,13 @@
                         <div class="form-floating">
                             <input type="date" min="10" class="form-control"
                                    th:field="*{published_date}"
+                                   th:classappend="${#fields.hasErrors('published_date')?'is-invalid':''}"
                             >
                             <label for="floatingInput">Published Date</label>
                         </div>
+                        <p th:if="${#fields.hasErrors('published_date')}" th:errors="*{published_date}"
+                           class="invalid-feedback">
+                        </p>
 
                     </div>
 
@@ -107,7 +121,7 @@
 
 
                     <div class="form-floating d-flex flex-fill gap-5">
-                        <div class="categoryId">
+                        <div class="categoryId" th:classappend="${#fields.hasErrors('published_date')?'is-invalid':''}">
                             <label for="Category" class=""> Category</label>
                             <select th:field="*{categoryId}" class="form-select mt-2"
                                     id="Category">
@@ -118,6 +132,9 @@
 
                             </select>
                         </div>
+                        <p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"
+                           class="invalid-feedback">
+                        </p>
 
                         <div class="authorId">
                             <label for="Author" > Author</label>

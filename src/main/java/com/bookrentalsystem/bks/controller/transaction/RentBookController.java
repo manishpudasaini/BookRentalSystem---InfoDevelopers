@@ -9,13 +9,16 @@ import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -37,14 +40,28 @@ public class RentBookController {
     public String rentBookForm(Model model){
         List<MemberResponse> memberResponses = memberService.allMemberResponse();
         List<BookResponse> bookResponses = bookService.allBooks();
-        model.addAttribute("rent",new RentBookRequest());
+        if(model.getAttribute("rent") == null){
+            model.addAttribute("rent",new RentBookRequest());
+        }
         model.addAttribute("member",memberResponses);
         model.addAttribute("book",bookResponses);
         return "transaction/rentBook/RentBookForm";
     }
 
     @PostMapping("/save")
-    public String saveRentBook(@ModelAttribute("rent") RentBookRequest rentBookRequest){
+    public String saveRentBook(@Valid @ModelAttribute("rent") RentBookRequest rentBookRequest,
+                               BindingResult bindingResult,
+                               Model model){
+
+        if(bindingResult.hasErrors()){
+            System.out.println(bindingResult);
+            List<MemberResponse> memberResponses = memberService.allMemberResponse();
+            List<BookResponse> bookResponses = bookService.allBooks();
+            model.addAttribute("member",memberResponses);
+            model.addAttribute("book",bookResponses);
+            model.addAttribute("rent",rentBookRequest);
+            return "transaction/rentBook/RentBookForm";
+        }
         transactionService.rentABook(rentBookRequest);
         return "redirect:/rent/book/table";
     }

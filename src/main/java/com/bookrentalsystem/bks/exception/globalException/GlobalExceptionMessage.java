@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.exception;
+package com.bookrentalsystem.bks.exception.globalException;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

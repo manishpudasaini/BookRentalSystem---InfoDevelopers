@@ -2,7 +2,10 @@ package com.bookrentalsystem.bks.service.TransactionServiceImpl;
 
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
+import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
+import com.bookrentalsystem.bks.exception.globalException.CodeNotFoundException;
+import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.repo.TransactionRepo;
 import com.bookrentalsystem.bks.service.BookService;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,5 +69,35 @@ public class TransactionServiceImpl implements TransactionService {
         return transactions.stream()
                 .map(this::transactionToRentBookResponse).collect(Collectors.toList());
     }
+
+
+    //this function is used to find the transaction from code
+    @Override
+    public Transaction findTransactionByCode(Integer code) {
+        Optional<Transaction> singleTransaction= transactionRepo.findByCode(code);
+        if(singleTransaction.isPresent()){
+            return singleTransaction.get();
+        }
+        throw new CodeNotFoundException("Transaction code does not exist");
+    }
+
+    //method to convert transactionToReturnresponse
+    @Override
+    public ReturnBookRequest transactionToReturnBook(Transaction transaction) {
+        Member member =  transaction.getMember();
+
+        return ReturnBookRequest.builder()
+                .code(transaction.getCode())
+                .from(transaction.getFrom().toString())
+                .member_name(member.getName())
+                .build();
+    }
+
+    @Override
+    public Transaction saveTransaction(Transaction transaction) {
+
+        return transactionRepo.save(transaction);
+    }
+
 
 }

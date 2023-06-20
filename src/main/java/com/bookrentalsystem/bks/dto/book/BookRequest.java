@@ -18,13 +18,13 @@ import java.util.List;
 @Builder
 public class BookRequest {
     private Short id;
-    @NotBlank(message = "please provide book name!!")
+    @NotEmpty(message = "please provide book name!!")
     @Length(max = 100,min = 3,message = "Book name should be between 3 to 100")
     private String name;
 
     private Integer page;
 
-    @NotBlank(message = "please provide book isbn name!!")
+    @NotEmpty(message = "please provide book isbn name!!")
     @Length(max = 30,min = 5,message = "isbn number should be between 5 to 30 digit")
     private String isbn;
 
@@ -38,10 +38,8 @@ public class BookRequest {
 
     private MultipartFile imageFile;
 
-    @NotEmpty(message = "Please select category ")
     private short categoryId;
 
-    @NotEmpty(message = "Please select author")
     private List<Short> authorsId;
 
     private String image_path;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <th:block th:replace="~{fragments/HtmlHeader :: html_head('Return Book Form')}"></th:block>
 </head>
@@ -14,17 +14,25 @@
         <div class="box-area">
             <div class="category-form">
                 <div class="titleDesc">
-                    <span>Rent Book form</span>
+                    <span>Return Book form</span>
 
-                    <a>
+                    <a th:href="@{/return/book/table}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
                             <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                         </svg>
                     </a>
                 </div>
-                <form>
-                    <div class="form-floating ">
-                        <input type="number" class="form-control" >
+
+                <div class="alert alert-danger alert-dismissible fade show"  th:if="${errorMsg}">
+                    <strong>Error!</strong> <span th:text="${errorMsg.message}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <div th:object="${transaction}">
+
+                <form th:action="@{/return/book/code}" th:method="GET" th:object="${transaction}">
+                    <div class="form-floating" >
+                        <input type="number" class="form-control" th:field="*{code}" >
                         <label for="floatingInput">Code</label>
                     </div>
 
@@ -32,9 +40,36 @@
 
                 </form>
 
+                <form th:action="@{/return/book/save}" th:if="${transaction.code}" th:method="POST">
+                    <div class="form-floating " >
+                        <input type="text" class="form-control" th:field="*{code}" hidden>
+                        <label for="floatingInput">code</label>
+                    </div>
+                    <div class="form-floating " >
+                        <input type="text" class="form-control" th:field="*{from}" disabled>
+                        <label for="floatingInput">Date of Rent</label>
+                    </div>
+
+                    <div class="form-floating ">
+                        <input type="date" class="form-control" th:field="*{returnDate}" >
+                        <label for="floatingInput">Return Date</label>
+                    </div>
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" th:field="*{member_name}" disabled>
+                        <label for="floatingInput">Member Name</label>
+                    </div>
+
+                    <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
+                    <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
+
+                </form>
+                </div>
+
             </div>
 
         </div>
+
+
     </div>
 </div>
 

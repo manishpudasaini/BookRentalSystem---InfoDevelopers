@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryResponse entityToCategory(Category category){
         return CategoryResponse.builder()
                 .id(category.getId())
-                .categoryId(category.getId())       // remove
+                .categoryId(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
                 .build();

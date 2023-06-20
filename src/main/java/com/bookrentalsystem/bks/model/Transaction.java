@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -31,10 +32,10 @@ public class Transaction extends Auditable<String> {
     @Column(name = "book_status",nullable = false)
     @Enumerated(EnumType.STRING)
     private BookRentStatus status;
+    private LocalDate returnDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id",foreignKey = @ForeignKey(name = "fk_transaction_bookId"))
     private Book book;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id",foreignKey = @ForeignKey(name = "fk_transaction_memberId"))
     private Member member;
