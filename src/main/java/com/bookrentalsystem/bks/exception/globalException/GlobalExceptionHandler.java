@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -35,5 +37,15 @@ public class GlobalExceptionHandler {
         }
 
         return "redirect:/return/book/form";
+    }
+
+    //this is used to handel IO exception - if multipart file not selected
+    @ExceptionHandler(value = {RuntimeException.class})
+    public String handelCodeException(RuntimeException e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+            message.setMessage("Please fill all the fields!!");
+            redirectAttributes.addFlashAttribute("errorMsg",message);
+            return "redirect:/book/form";
     }
 }

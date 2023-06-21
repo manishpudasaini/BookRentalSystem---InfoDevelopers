@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Registration Page</title>
+    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Registration Page')}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/loginpage.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
 </head>
 <body>
+<body>
+<div class="container">
+    <div class="wrappers">
 
+<!--        <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">-->
+<!--            <strong>Error! </strong><hr>-->
+<!--                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
+<!--        </div>-->
+
+        <div class="title"><span>Registration Form</span></div>
+        <form th:object="${user}" th:action="@{/api/user/save}" th:method="POST" >
+            <div class="row">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Name" th:field="*{name}" required>
+            </div>
+            <div class="row">
+                <i class="fas fa-envelope"></i>
+                <input type="text" placeholder="Email or Phone"
+                       th:field="*{email}"
+                       th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
+                       required>
+                <p th:each="err : ${#fields.errors('email')}" th:errors="${err}"></p>
+            </div>
+
+            <div class="row">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password"  th:field="*{password}" required>
+            </div>
+
+            <div class="row button">
+                <input type="submit" value="Register">
+            </div>
+            <div class="signup-link">Already have an account? <a th:href="@{/api/signIn}">Login</a></div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/Footer :: footer}"></div>
+</body>
 </body>
 </html>

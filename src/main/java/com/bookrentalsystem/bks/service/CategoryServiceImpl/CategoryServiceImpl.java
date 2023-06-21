@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService{
         }
 
         categoryRepo.save(category);
-        return "added";
+        return null;
     }
 
     //function used to find category & return category id

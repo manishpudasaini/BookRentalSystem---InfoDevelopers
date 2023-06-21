@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
 
     public BookResponse addBook(BookRequest bookRequest) throws IOException {
         String imagePath = null;
-        if (bookRequest.getId() != null && bookRequest.getImageFile() == null) {
+        if (bookRequest.getId() != null && bookRequest.getImageFile().isEmpty()) {
             Book book = bookRepo.findById(bookRequest.getId()).orElseThrow();
             imagePath = book.getImage_path();
         } else {
@@ -64,7 +64,7 @@ public class BookServiceImpl implements BookService {
                 .isbn(book.getIsbn())
                 .rating(book.getRating())
                 .stock(book.getStock())
-                .published_date(book.getPublished_date())
+                .published_date(book.getPublished_date().toString())
                 .image_path(book.getImage_path())
                 .category(book.getCategory().getId())
                 .authorsId(authorIds)
@@ -104,7 +104,7 @@ public class BookServiceImpl implements BookService {
                 .isbn(book.getIsbn())
                 .rating(book.getRating())
                 .stock(book.getStock())
-                .published_date(book.getPublished_date())
+                .published_date(book.getPublished_date().toString())
                 .image_path(book.getImage_path())
                 .category(book.getCategory().getId())
                 .categoryId(book.getCategory().getId())
@@ -135,7 +135,7 @@ public class BookServiceImpl implements BookService {
                     .isbn(book.getIsbn())
                     .rating(book.getRating())
                     .stock(book.getStock())
-                    .published_date(book.getPublished_date())
+                    .published_date(book.getPublished_date().toString())
                     .image_path(fileutils.getBase64FormFilePath(book.getImage_path()))
                     .category(book.getCategory().getId())
                     .authorsId(authorIds)

@@ -22,6 +22,11 @@
                     </a>
                 </div>
 
+                <div class="alert alert-danger alert-dismissible fade show mt-2"  th:if="${errorMsg}">
+                    <strong>Error!</strong> <span th:text="${errorMsg.message}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
                 <form class="login" th:object="${book}" enctype="multipart/form-data"
                       th:action="@{/book/save}" th:method="POST">
                     <div class="form-floating ">

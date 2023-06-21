@@ -24,7 +24,7 @@ public class BookResponse {
     private String isbn;
     private Double rating;
     private Integer stock;
-    private LocalDate published_date;
+    private String published_date;
     private String image_path;
     private MultipartFile imageFile;
     private Short category;

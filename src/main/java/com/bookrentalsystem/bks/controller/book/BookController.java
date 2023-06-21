@@ -53,6 +53,10 @@ public class BookController {
                            Model model) throws IOException {
 
         if (result.hasErrors()) {
+            List<AuthorResponse> authors = authorService.allAuthor();
+            List<CategoryResponse> categories = categoryService.allCategory();
+            model.addAttribute("author",authors);
+            model.addAttribute("category",categories);
             model.addAttribute("book", bookRequest);
             return "book/BookForm";
         }

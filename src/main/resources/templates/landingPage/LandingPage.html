@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <th:block th:replace="~{fragments/HtmlHeader :: html_head('Home Page')}"></th:block>
+</head>
+<body>
+<div th:replace="~{fragments/Sidebar :: sidebar}"></div>
+
+<!-- tables section -->
+<div class="wrapper">
+  <div class="section">
+    <div class="box-area">
+        <h1 style="{color: blue}">welcome to Book Rental System</h1>
+    </div>
+  </div>
+</div>
+
+
+<div th:replace="~{fragments/Footer :: footer}"></div>
+</body>
+</html>

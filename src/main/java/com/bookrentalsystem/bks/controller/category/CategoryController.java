@@ -45,13 +45,15 @@ public class CategoryController {
             model.addAttribute("category",categoryRequest);
             return "category/CategoryForm";
         }
+        //save category which return message
         String message = categoryService.addCategory(categoryRequest);
-        if(!message.isEmpty() && !message.equals("added")){
+
+        if(message != null){
             ObjectError error = new ObjectError("globalError",message);
             result.addError(error);
             return "/category/CategoryForm";
         }
-        if(message.equals("added")){
+        if(message == null){
             return "redirect:/category/table";
         }
        return "redirect:/category/table";
