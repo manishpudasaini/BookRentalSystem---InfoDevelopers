@@ -148,4 +148,10 @@ public class BookServiceImpl implements BookService {
     public Book saveBook(Book book) {
         return bookRepo.save(book);
     }
+
+    //list of Book entity
+    @Override
+    public List<Book> allBookEntity() {
+        return bookRepo.findAll();
+    }
 }

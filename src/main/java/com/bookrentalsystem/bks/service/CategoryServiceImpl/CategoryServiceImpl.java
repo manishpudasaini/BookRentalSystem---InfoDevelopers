@@ -2,15 +2,13 @@ package com.bookrentalsystem.bks.service.CategoryServiceImpl;
 
 import com.bookrentalsystem.bks.dto.category.CategoryRequest;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
-import com.bookrentalsystem.bks.exception.CategoryNotFoundException;
+import com.bookrentalsystem.bks.exception.globalException.CategoryCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Category;
 import com.bookrentalsystem.bks.repo.CategoryRepo;
 import com.bookrentalsystem.bks.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService{
        if(singleCategory.isPresent()){
            return singleCategory.get();
        }
-       throw new CategoryNotFoundException("Category having this id "+ id +" does not exist..");
+       throw new CategoryCanNotBeDeletedException("Category having this id "+ id +" does not exist..");
     }
 
 
@@ -97,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService{
             Category category = singleCategory.get();
             return entityToCategory(category);
         }
-        throw new CategoryNotFoundException("Category having this id "+ id +" does not exist..");
+        throw new CategoryCanNotBeDeletedException("Category having this id "+ id +" does not exist..");
     }
 
     //this method is used to delete the category in database using the category ID

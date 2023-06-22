@@ -15,6 +15,7 @@ public interface BookService {
     BookResponse entityTBookResponse(Book book);
     BookResponse viewBookId(Short id) throws IOException;
     Book saveBook(Book book);
+    List<Book> allBookEntity();
 
 
 }

@@ -44,6 +44,23 @@ public class GlobalExceptionHandler {
         return "redirect:/member/table";
     }
 
+    @ExceptionHandler(value = {CategoryCanNotBeDeletedException.class})
+    public String handelCategoryException(CategoryCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+        message.setMessage("This category can not be deleted as Book having this category already exist!!!");
+        redirectAttributes.addFlashAttribute("errorMsg",message);
+        return "redirect:/category/table";
+    }
+
+    @ExceptionHandler(value = {AuthorCanNotBeDeletedException.class})
+    public String handelAuthorException(AuthorCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+        message.setMessage("This author can not be deleted as Book having this author already exist!!!");
+        redirectAttributes.addFlashAttribute("errorMsg",message);
+        return "redirect:/author/table";
+    }
 
     //this is used to handel IO exception - if multipart file not selected
 //    @ExceptionHandler(value = {RuntimeException.class})

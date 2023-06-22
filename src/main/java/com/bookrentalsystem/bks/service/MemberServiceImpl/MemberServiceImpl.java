@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepo memberRepo;
 
+    //method to save members
     @Override
     public String addMember(MemberRequest memberRequest) {
        Optional<Member> memberDeleteFalse =  memberRepo.findMemberByEmailAndDeletedIsFalse(memberRequest.getEmail());
@@ -41,6 +42,7 @@ public class MemberServiceImpl implements MemberService {
         return "added";
     }
 
+    //this method is used to update the member
     @Override
     public String addUpdateMember(MemberRequest memberRequest) {
        Member member = memberRequestToEtity(memberRequest);
@@ -48,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
         return "updated";
     }
 
+    //convert memberRequest to Entity
     @Override
     public Member memberRequestToEtity(MemberRequest memberRequest) {
         return Member.builder()
@@ -60,6 +63,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    //convert entity to memberResponse
     @Override
     public MemberResponse entityToMemberResponse(Member member) {
         return MemberResponse.builder()
@@ -71,6 +75,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    //find member by its id
     @Override
     public Member findMemberById(Short id) {
        Optional<Member> singleMember =  memberRepo.findById(id);
@@ -80,6 +85,7 @@ public class MemberServiceImpl implements MemberService {
         throw new MemberCanNotBeDeletedException("Member does not exist!!!");
     }
 
+    //find memberResponse Dto from ID
     @Override
     public MemberResponse findMemberResponseFromId(Short id) {
         Optional<Member> singleMember = memberRepo.findById(id);
@@ -90,11 +96,14 @@ public class MemberServiceImpl implements MemberService {
         throw new MemberCanNotBeDeletedException("Member does not exist !!!");
     }
 
+    //List of  = Members
     @Override
     public List<Member> allMemberEntity() {
         return memberRepo.findAll();
     }
 
+
+    //List of = MemberResponse
     @Override
     public List<MemberResponse> allMemberResponse() {
        List<Member> members = memberRepo.findAll();
@@ -107,6 +116,7 @@ public class MemberServiceImpl implements MemberService {
                  .map(this::entityToMemberResponse).collect(Collectors.toList());
     }
 
+    //delete member from its ID
     @Override
     public void deleteMemberById(short id) {
         memberRepo.deleteById(id);

@@ -2,8 +2,10 @@ package com.bookrentalsystem.bks.controller.category;
 
 import com.bookrentalsystem.bks.dto.category.CategoryRequest;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
+import com.bookrentalsystem.bks.exception.globalException.CategoryCanNotBeDeletedException;
+import com.bookrentalsystem.bks.model.Book;
+import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,12 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/category")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    private final BookService bookService;
 
     @GetMapping("/table")
     public String categoryTable(Model model){
@@ -70,6 +74,7 @@ public class CategoryController {
     public String saveUpdateCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
                                BindingResult result,
                                Model model){
+
         if(result.hasErrors()){
             System.out.println(result);
             model.addAttribute("category",categoryRequest);
@@ -82,7 +87,17 @@ public class CategoryController {
 
     @RequestMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Short id,RedirectAttributes redirectAttributes){
-        categoryService.deleteCategory(id);
+
+        List<Book> allBooks = bookService.allBookEntity();
+        List<Book> booksHavingCategory =allBooks.stream()
+                .filter(b -> b.getCategory().getId()==id).collect(Collectors.toList());
+
+        if(booksHavingCategory.size()==0){
+            categoryService.deleteCategory(id);
+        }else {
+            throw new CategoryCanNotBeDeletedException("Cannot delete this category!!");
+        }
+
         String message = "";
         redirectAttributes.addFlashAttribute("message","Category Deleted Successfully!!");
         return "redirect:/category/table?success";

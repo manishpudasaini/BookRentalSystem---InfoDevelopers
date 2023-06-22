@@ -2,7 +2,7 @@ package com.bookrentalsystem.bks.service.AuthorServiceImpl;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
-import com.bookrentalsystem.bks.exception.AuthorNotfoundException;
+import com.bookrentalsystem.bks.exception.globalException.AuthorCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.repo.AuthorRepo;
 import com.bookrentalsystem.bks.service.AuthorService;
@@ -95,13 +95,18 @@ public class AuthorServiceImpl implements AuthorService  {
         return convertToAuthorResponseList(allAuthors);
     }
 
+    @Override
+    public List<Author> allAuthors() {
+        return authorRepo.findAll();
+    }
+
     //take parameter as Id & return Author
     public Author findAuthorById(short id)  {
         Optional<Author> singleAuthor = authorRepo.findById(id);
         if(singleAuthor.isPresent()){
             return singleAuthor.get();
         }
-        throw new AuthorNotfoundException("Author having this"+ id +" doesnot exist!!!");
+        throw new AuthorCanNotBeDeletedException("Author having this"+ id +" doesnot exist!!!");
     }
 
     //take parameter as Id  & return AuthorResponse
@@ -112,9 +117,10 @@ public class AuthorServiceImpl implements AuthorService  {
            Author author = singleAuthor.get();
            return entityToAuthorResponse(author);
        }
-        throw new AuthorNotfoundException("Author having this id : "+ id +" does not exist!!!");
+        throw new AuthorCanNotBeDeletedException("Author having this id : "+ id +" does not exist!!!");
     }
 
+    //this method is used to delete author by its id
     @Override
     public void deleteAuthor(Short id) {
         authorRepo.deleteById(id);

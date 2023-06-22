@@ -79,7 +79,7 @@ public class BookController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteBook(@PathVariable Short id){
+    public String deleteBook(@PathVariable Short id,RedirectAttributes redirectAttributes){
         List<Transaction> transactions =transactionService.allTransactionEntity();
 
        List<Transaction> notDeleteTransaction = transactions.stream().filter(t ->t.getBook().getId() == id)
@@ -87,8 +87,12 @@ public class BookController {
 
        if(notDeleteTransaction.size() == 0){
            bookService.deleteBook(id);
+       }else {
+           throw new BookCanNotBeDeletedException("Book cannot be deleted");
        }
-       throw new BookCanNotBeDeletedException("Book cannot be deleted");
+        String message = "";
+        redirectAttributes.addFlashAttribute("message","Book Deleted Successfully!!");
+        return "redirect:/book/table";
     }
     @GetMapping("/update/{id}")
     public String updateBook(@PathVariable short id, RedirectAttributes redirectAttributes){
