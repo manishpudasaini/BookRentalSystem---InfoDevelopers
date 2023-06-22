@@ -64,10 +64,26 @@ public class AuthorController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateAuthor(@PathVariable Short id, RedirectAttributes redirectAttributes){
+    public String updateAuthor(@PathVariable Short id, Model model){
       AuthorResponse authorResponse = authorService.findAuthorResponseById(id);
-      redirectAttributes.addFlashAttribute("author",authorResponse);
-      return "redirect:/author/form";
+      model.addAttribute("author",authorResponse);
+      return "/author/UpdateForm";
+    }
+
+    @PostMapping("/update/save")
+    public String saveUpdateAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
+                             BindingResult result,
+                                   Model model){
+
+        if(result.hasErrors()){
+            model.addAttribute("author",authorRequest);
+            System.out.println(result);
+            return "/author/UpdateForm";
+        }
+
+        authorService.updateAuthorAdd(authorRequest);
+
+        return "redirect:/author/table";
     }
     @RequestMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Short id){

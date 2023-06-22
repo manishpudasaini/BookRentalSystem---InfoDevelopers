@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
      String addCategory(CategoryRequest categoryRequest);
+     String saveUpdateCategory(CategoryRequest categoryRequest);
      Category findCategoryById(short id);
      CategoryResponse entityToCategory(Category category);
      Category categoryRequestToEntity(CategoryRequest categoryRequest);

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface AuthorService {
      String addAuthorDb(AuthorRequest authorRequest);
+     String updateAuthorAdd(AuthorRequest authorRequest);
      Author authorRequestToEntity(AuthorRequest authorRequest);
      AuthorResponse entityToAuthorResponse(Author author);
      List<Author> convertToAuthorList(List<Short> ids);

@@ -1,5 +1,6 @@
 package com.bookrentalsystem.bks.controller.transaction;
 
+import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
 import com.bookrentalsystem.bks.model.Book;
@@ -17,7 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/return/book")
@@ -30,29 +33,55 @@ public class ReturnBookController {
     @GetMapping("/form")
     public String returnBookForm(Model model){
         if(model.getAttribute("transaction") == null){
-            model.addAttribute("transaction",new ReturnBookRequest());
+           List<Transaction> allTransaction = transactionService.allTransactionEntity();
+           List<String> allCodes = allTransaction.stream().map(Transaction::getCode).collect(Collectors.toList());
+
+           model.addAttribute("transaction",new ReturnBookRequest());
+           model.addAttribute("codes",allCodes);
         }
         return "transaction/returnBook/ReturnBookForm";
     }
 
     @GetMapping("/code")
     public String getCodeTransaction(@ModelAttribute ReturnBookRequest returnBookRequest,
-                                     RedirectAttributes redirectAttributes){
+                                     RedirectAttributes redirectAttributes) throws IOException {
        Transaction transaction = transactionService.findTransactionByCode(returnBookRequest.getCode());
         ReturnBookRequest returnBook  = transactionService.transactionToReturnBook(transaction);
+
+        //extract book from its id to show its image
+        BookResponse singleBook =bookService.viewBookId(transaction.getBook().getId());
+        redirectAttributes.addFlashAttribute("book",singleBook);
+
+        redirectAttributes.addFlashAttribute("transaction",returnBook);
+        return "redirect:/return/book/form";
+    }
+
+    @GetMapping("/{code}/api")
+    public String getCodeTransactionCheck(@PathVariable("code") String code,
+                                     RedirectAttributes redirectAttributes) throws IOException {
+        Transaction transaction = transactionService.findTransactionByCode(code);
+        ReturnBookRequest returnBook  = transactionService.transactionToReturnBook(transaction);
+
+        //extract book from its id to show its image
+        BookResponse singleBook =bookService.viewBookId(transaction.getBook().getId());
+        redirectAttributes.addFlashAttribute("book",singleBook);
+
         redirectAttributes.addFlashAttribute("transaction",returnBook);
         return "redirect:/return/book/form";
     }
 
     @PostMapping("/save")
     public String saveReturnTransaction(@Valid @ModelAttribute("transaction") ReturnBookRequest returnBookRequest,
-                                        BindingResult bindingResult,Model model){
+                                        BindingResult bindingResult,Model model) throws IOException {
         if(bindingResult.hasErrors()){
-           model.addAttribute("transaction",returnBookRequest);
+            Transaction transaction = transactionService.findTransactionByCode(returnBookRequest.getCode());
+            BookResponse singleBook =bookService.viewBookId(transaction.getBook().getId());
+            model.addAttribute("book",singleBook);
+            model.addAttribute("transaction",returnBookRequest);
            return "transaction/returnBook/ReturnBookForm";
         }
 
-        Integer code = returnBookRequest.getCode();
+        String code = returnBookRequest.getCode();
         Transaction transaction = transactionService.findTransactionByCode(code);
         transaction.setStatus(BookRentStatus.RETURN);
         transaction.setReturnDate(convertToLocalDateTime.convertToDate(returnBookRequest.getReturnDate()));

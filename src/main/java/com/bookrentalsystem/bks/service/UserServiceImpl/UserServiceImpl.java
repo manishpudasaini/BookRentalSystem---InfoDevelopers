@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
                 .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
-                .roles(RoleName.ADMIN).build();
+                .roles(RoleName.LIBRARIAN).build();
 
         userRepo.save(user);
         return user;

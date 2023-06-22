@@ -45,11 +45,11 @@ public class TransactionServiceImpl implements TransactionService {
        singleBook.setStock(singleBook.getStock() - 1);
         bookService.saveBook(singleBook);
         return Transaction.builder()
-                .code(GenerateRandomNumber.generateRandomNumber())
+                .code(GenerateRandomNumber.generateRandomNumber().toString())
                 .from(localDateTime.convertToDate())
                 .to(localDateTime.convertToDate().plusDays(rentBookRequest.getDays()))
                 .status(BookRentStatus.RENT)
-                .book(bookService.findBookByid(rentBookRequest.getBookId()))
+                .book(singleBook)
                 .member(memberService.findMemberById(rentBookRequest.getMemberId()))
                 .build();
     }
@@ -78,7 +78,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     //this function is used to find the transaction from code
     @Override
-    public Transaction findTransactionByCode(Integer code) {
+    public Transaction findTransactionByCode(String code) {
         Optional<Transaction> singleTransaction= transactionRepo.findByCode(code);
         if(singleTransaction.isPresent()){
             return singleTransaction.get();
@@ -108,9 +108,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionDto transactionToTransactionDto(Transaction transaction) {
         String  memberName = memberService.findMemberById(transaction.getMember().getId()).getName();
+        String book_name = bookService.findBookByid(transaction.getBook().getId()).getName();
         return TransactionDto.builder()
                 .id(transaction.getId())
-                .book_name(transaction.getBook().getName())
+                .book_name(book_name)
                 .code(transaction.getCode())
                 .status(transaction.getStatus())
                 .member_name(memberName)
@@ -122,6 +123,14 @@ public class TransactionServiceImpl implements TransactionService {
        List<Transaction> transactions= transactionRepo.findAll();
         return transactions.stream()
                 .map(this::transactionToTransactionDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Transaction> allTransactionEntity() {
+        List<Transaction> transactions = transactionRepo.findAll();
+        List<Transaction> filterTransaction = transactions
+               .stream().filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
+        return filterTransaction;
     }
 
 

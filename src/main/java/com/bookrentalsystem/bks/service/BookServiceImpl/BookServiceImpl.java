@@ -2,7 +2,7 @@ package com.bookrentalsystem.bks.service.BookServiceImpl;
 
 import com.bookrentalsystem.bks.dto.book.BookRequest;
 import com.bookrentalsystem.bks.dto.book.BookResponse;
-import com.bookrentalsystem.bks.exception.BookNotFoundException;
+import com.bookrentalsystem.bks.exception.globalException.BookCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.repo.BookRepo;
@@ -77,7 +77,7 @@ public class BookServiceImpl implements BookService {
         if (singleBook.isPresent()) {
             return singleBook.get();
         }
-        throw new BookNotFoundException("Book does not exist!!!");
+        throw new BookCanNotBeDeletedException("Book does not exist!!!");
     }
 
     //method which return List of bookResponse dto
@@ -141,7 +141,7 @@ public class BookServiceImpl implements BookService {
                     .authorsId(authorIds)
                     .build();
         }
-        throw new BookNotFoundException("Book does not exist!!!");
+        throw new BookCanNotBeDeletedException("Book does not exist!!!");
     }
 
     @Override

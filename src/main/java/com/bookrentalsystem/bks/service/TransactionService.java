@@ -17,11 +17,13 @@ public interface TransactionService {
 
     List<RentBookResponse> allRentBooks();
 
-    Transaction findTransactionByCode(Integer code);
+    Transaction findTransactionByCode(String code);
 
     ReturnBookRequest transactionToReturnBook(Transaction transaction);
 
     Transaction saveTransaction(Transaction transaction);
     TransactionDto transactionToTransactionDto(Transaction transaction);
     List<TransactionDto> allTransaction();
+    List<Transaction> allTransactionEntity();
+
 }

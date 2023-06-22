@@ -5,8 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.util.Optional;
-
 @Configuration
 //spring jpa audit annotation
 //this annotation enables the auditing in jpa -  annotation configuration
@@ -17,6 +15,14 @@ public class JpaAuditingConfiguration {
     //this is some kind of user mostly.
     @Bean
     public AuditorAware<String> auditorProvider(){
-        return () -> Optional.of("developer");
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+//        Set<String> roles = authentication.getAuthorities().stream()
+//                .map(r -> r.getAuthority()).collect(Collectors.toSet());
+//        Optional<String> roles = authentication.getAuthorities().stream()
+//                .map(r -> r.getAuthority()).findFirst();
+
+        return new AuditingConfigUserDetail();
     }
 }

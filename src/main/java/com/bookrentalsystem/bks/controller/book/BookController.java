@@ -1,24 +1,29 @@
 package com.bookrentalsystem.bks.controller.book;
 
-import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
 import com.bookrentalsystem.bks.dto.book.BookRequest;
 import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
+import com.bookrentalsystem.bks.enums.BookRentStatus;
+import com.bookrentalsystem.bks.exception.globalException.BookCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Book;
+import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
+import com.bookrentalsystem.bks.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/book")
@@ -27,6 +32,7 @@ public class BookController {
     private final CategoryService categoryService;
     private final AuthorService authorService;
     private final BookService bookService;
+    private final TransactionService transactionService;
 
     @GetMapping("/table")
     public String bookTable(Model model){
@@ -52,6 +58,14 @@ public class BookController {
                            BindingResult result,
                            Model model) throws IOException {
 
+
+        //multipart file validation
+        if(bookRequest.getImageFile().getSize()== 0 && bookRequest.getId() == null){
+            String message = "Please select photo of your book";
+            FieldError fieldError =
+                    new FieldError("bookRequest","imageFile",message);
+            result.addError(fieldError);
+        }
         if (result.hasErrors()) {
             List<AuthorResponse> authors = authorService.allAuthor();
             List<CategoryResponse> categories = categoryService.allCategory();
@@ -66,8 +80,15 @@ public class BookController {
 
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable Short id){
-        bookService.deleteBook(id);
-        return "redirect:/book/table";
+        List<Transaction> transactions =transactionService.allTransactionEntity();
+
+       List<Transaction> notDeleteTransaction = transactions.stream().filter(t ->t.getBook().getId() == id)
+                        .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
+
+       if(notDeleteTransaction.size() == 0){
+           bookService.deleteBook(id);
+       }
+       throw new BookCanNotBeDeletedException("Book cannot be deleted");
     }
     @GetMapping("/update/{id}")
     public String updateBook(@PathVariable short id, RedirectAttributes redirectAttributes){

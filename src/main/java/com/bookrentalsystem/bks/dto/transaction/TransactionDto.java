@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TransactionDto {
     private Short id;
-    private Integer code;
+    private String code;
     private BookRentStatus status;
     private String book_name;
     private String member_name;

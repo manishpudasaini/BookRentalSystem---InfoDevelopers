@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 public class RentBookResponse {
     private Short id;
-    private Integer code;
+    private String code;
     private LocalDateTime from;
     private LocalDateTime to;
     private BookRentStatus status;

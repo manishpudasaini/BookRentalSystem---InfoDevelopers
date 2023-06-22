@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class ReturnBookRequest {
 
-    private Integer code;
+    private String code;
     private String from;
     @NotEmpty(message = "Please enter the return date of Book")
     private String returnDate;

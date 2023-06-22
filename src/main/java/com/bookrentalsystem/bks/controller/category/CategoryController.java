@@ -60,10 +60,24 @@ public class CategoryController {
     }
 
     @RequestMapping("/update/{id}")
-    public String categoryUpdate(@PathVariable Short id, RedirectAttributes redirectAttributes){
+    public String categoryUpdate(@PathVariable Short id, Model model){
        CategoryResponse categoryResponse = categoryService.findCategoryResponseById(id);
-       redirectAttributes.addFlashAttribute("category",categoryResponse);
-        return "redirect:/category/form";
+       model.addAttribute("category",categoryResponse);
+        return "/category/UpdateForm";
+    }
+
+    @PostMapping("/update/save")
+    public String saveUpdateCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
+                               BindingResult result,
+                               Model model){
+        if(result.hasErrors()){
+            System.out.println(result);
+            model.addAttribute("category",categoryRequest);
+            return "category/UpdateForm";
+        }
+
+        categoryService.saveUpdateCategory(categoryRequest);
+        return "redirect:/category/table";
     }
 
     @RequestMapping("/delete/{id}")

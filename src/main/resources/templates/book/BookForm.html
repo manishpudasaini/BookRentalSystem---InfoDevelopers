@@ -107,6 +107,7 @@
                     <div class="form-floating" >
                         <input type="file" min="10" class="form-control"
                                th:field="*{imageFile}"
+                               th:classappend="${#fields.hasErrors('imageFile')?'is-invalid':''}"
                         >
                     </div>
 

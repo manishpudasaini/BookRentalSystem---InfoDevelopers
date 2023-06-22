@@ -10,14 +10,17 @@
 <div class="container">
     <div class="wrappers">
 
-<!--        <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">-->
-<!--            <strong>Error! </strong><hr>-->
-<!--                <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>-->
-<!--            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
-<!--        </div>-->
+
 
         <div class="title"><span>Registration Form</span></div>
         <form th:object="${user}" th:action="@{/api/user/save}" th:method="POST" >
+
+            <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">
+                <strong>Error! </strong><hr>
+                <p th:if="${#fields.errors('email')}" th:errors="*{email}"></p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
             <div class="row">
                 <i class="fas fa-user"></i>
                 <input type="text" placeholder="Name" th:field="*{name}" required>
@@ -28,7 +31,7 @@
                        th:field="*{email}"
                        th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
                        required>
-                <p th:each="err : ${#fields.errors('email')}" th:errors="${err}"></p>
+
             </div>
 
             <div class="row">

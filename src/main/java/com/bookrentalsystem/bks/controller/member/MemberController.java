@@ -1,10 +1,13 @@
 package com.bookrentalsystem.bks.controller.member;
 
-import com.bookrentalsystem.bks.dto.category.CategoryResponse;
 import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
+import com.bookrentalsystem.bks.enums.BookRentStatus;
+import com.bookrentalsystem.bks.exception.globalException.MemberCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Member;
+import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.MemberService;
+import com.bookrentalsystem.bks.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,12 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final TransactionService transactionService;
 
     @GetMapping("/table")
     public String memberTable(Model model){
@@ -58,15 +63,36 @@ public class MemberController {
     }
 
     @RequestMapping("/update/{id}")
-    public String memberUpdate(@PathVariable Short id, RedirectAttributes redirectAttributes){
+    public String memberUpdate(@PathVariable Short id, Model model){
         MemberResponse memberResponse = memberService.findMemberResponseFromId(id);
-        redirectAttributes.addFlashAttribute("member",memberResponse);
-        return "redirect:/member/form";
+        model.addAttribute("member",memberResponse);
+        return "/customer/CustomerUpdate";
+    }
+
+    @PostMapping("/update/save")
+    public String saveUpdateMember(@Valid @ModelAttribute("member") MemberRequest memberRequest,
+                             BindingResult result,Model model){
+        if(result.hasErrors()){
+            model.addAttribute("member",memberRequest);
+            return "/customer/CustomerUpdate";
+        }
+
+        memberService.addUpdateMember(memberRequest);
+        return "redirect:/member/table";
     }
 
     @RequestMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Short id,RedirectAttributes redirectAttributes){
-        memberService.deleteMemberById(id);
+       List<Transaction> transaction =  transactionService.allTransactionEntity();
+       List<Transaction> filterTransaction =transaction.stream().filter(t -> t.getMember().getId() == id)
+                       .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
+
+       if(filterTransaction.size() == 0){
+           memberService.deleteMemberById(id);
+       }else {
+           throw new MemberCanNotBeDeletedException("Cannot delete this member");
+       }
+
         String message = "";
         redirectAttributes.addFlashAttribute("message","Category Deleted Successfully!!");
         return "redirect:/member/table?success";

@@ -1,42 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Sidebar fragment</title>
 </head>
 <body>
-  <div >
-          <nav  th:fragment="sidebar">
-              <ul>
-                  <li class="logo"><img alt="Book Logo"  th:src="@{/images/logo.jpg}"></li>
-                  <li>
-                      <div class="dropdown">
-                          <a href="#" class="dropbtn">Master Data</a>
-                          <div class="dropdown-content">
-                              <a th:href="@{/author/table}">Author Setup</a>
-                              <a th:href="@{/category/table}">Category Setup</a>
-                              <a th:href="@{/book/table}">Book Setup</a>
-                          </div>
-                      </div>
-                  </li>
-                  <li>
-                      <div class="dropdown">
-                          <a href="#" class="dropbtn">Transaction</a>
-                          <div class="dropdown-content">
-                              <a th:href="@{/rent/book/form}">Rent A Book</a>
-                              <a th:href="@{/return/book/form}">Return A Book</a>
-                              <a th:href="@{/member/table}">Customer Setup</a>
-                              <a th:href="@{/transaction/table}">Transaction History</a>
-                          </div>
-                      </div>
-                  </li>
-                  <li>
-                      <a href="#"> Logout</a>
-                  </li>
+<div>
+    <nav th:fragment="sidebar">
+        <ul>
+           <a th:href="@{/home}"> <li class="logo"><img alt="Book Logo" th:src="@{/images/logo.jpg}"></li></a>
 
-              </ul>
-          </nav>
+            <div sec:authorize="hasAuthority('ADMIN')">
+                <li>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Master Data</a>
+                        <div class="dropdown-content">
+                            <a th:href="@{/author/table}">Author Setup</a>
+                            <a th:href="@{/category/table}">Category Setup</a>
+                            <a th:href="@{/book/table}">Book Setup</a>
+                        </div>
+                    </div>
+                </li>
+            </div>
 
-  </div>
+            <div sec:authorize="hasAuthority('LIBRARIAN')">
+                <li>
+                    <div class="dropdown">
+                        <a href="#" class="dropbtn">Transaction</a>
+                        <div class="dropdown-content">
+                            <a th:href="@{/rent/book/form}">Rent A Book</a>
+                            <a th:href="@{/return/book/form}">Return A Book</a>
+                            <a th:href="@{/member/table}">Customer Setup</a>
+                            <a th:href="@{/transaction/table}">Transaction History</a>
+                        </div>
+                    </div>
+                </li>
+            </div>
+
+            <li>
+                <a onclick="showPopup()" href="#"> Logout</a>
+            </li>
+
+        </ul>
+    </nav>
+
+</div>
 </body>
 </html>

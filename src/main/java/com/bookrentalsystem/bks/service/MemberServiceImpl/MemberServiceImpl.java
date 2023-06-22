@@ -2,7 +2,7 @@ package com.bookrentalsystem.bks.service.MemberServiceImpl;
 
 import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
-import com.bookrentalsystem.bks.exception.MemberNotFoundException;
+import com.bookrentalsystem.bks.exception.globalException.MemberCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.repo.MemberRepo;
 import com.bookrentalsystem.bks.service.MemberService;
@@ -42,6 +42,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public String addUpdateMember(MemberRequest memberRequest) {
+       Member member = memberRequestToEtity(memberRequest);
+        memberRepo.save(member);
+        return "updated";
+    }
+
+    @Override
     public Member memberRequestToEtity(MemberRequest memberRequest) {
         return Member.builder()
                 .id(memberRequest.getId())
@@ -70,7 +77,7 @@ public class MemberServiceImpl implements MemberService {
        if(singleMember.isPresent()){
            return singleMember.get();
        }
-        throw new MemberNotFoundException("Member does not exist!!!");
+        throw new MemberCanNotBeDeletedException("Member does not exist!!!");
     }
 
     @Override
@@ -80,7 +87,7 @@ public class MemberServiceImpl implements MemberService {
             Member member = singleMember.get();
             return entityToMemberResponse(member);
         }
-        throw new MemberNotFoundException("Member does not exist !!!");
+        throw new MemberCanNotBeDeletedException("Member does not exist !!!");
     }
 
     @Override

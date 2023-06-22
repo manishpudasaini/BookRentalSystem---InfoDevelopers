@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <th:block th:replace="~{fragments/HtmlHeader :: html_head('Home Page')}"></th:block>
 </head>
@@ -11,11 +11,15 @@
   <div class="section">
     <div class="box-area">
         <h1 style="{color: blue}">welcome to Book Rental System</h1>
-    </div>
+<!--      <div th:text="${#authentication.principal.username}"></div>-->
+        <ul th:each="r:${role}">
+            <li th:text="${r}"></li>
+        </ul>
   </div>
 </div>
 
-
+<div th:replace="~{/fragments/LogoutPopup :: popup}"></div>
 <div th:replace="~{fragments/Footer :: footer}"></div>
+
 </body>
 </html>

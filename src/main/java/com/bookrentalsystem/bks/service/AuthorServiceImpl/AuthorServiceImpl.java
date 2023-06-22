@@ -42,6 +42,13 @@ public class AuthorServiceImpl implements AuthorService  {
         return "added successfully";
     }
 
+    @Override
+    public String updateAuthorAdd(AuthorRequest authorRequest) {
+        Author author = authorRequestToEntity(authorRequest);
+        authorRepo.save(author);
+        return "updated";
+    }
+
     //this method take parameter as AuthorRequest & convert the request into Author entity
     public Author authorRequestToEntity(AuthorRequest authorRequest){
         Author author = new Author();

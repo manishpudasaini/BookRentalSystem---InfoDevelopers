@@ -1,28 +1,11 @@
 package com.bookrentalsystem.bks.exception.globalException;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-//    @ExceptionHandler(value = {Exception.class})
-//    public String handelException(Exception e, RedirectAttributes redirectAttributes) throws Exception {
-//       GlobalExceptionMessage message = new GlobalExceptionMessage();
-//
-//       if(e instanceof DataIntegrityViolationException){
-//           message.setMessage("Already exist !!");
-//           redirectAttributes.addFlashAttribute("errorMsg",message);
-//       } else {
-//           throw e;
-//       }
-//
-//       return "redirect:/author/form";
-//    }
 
     //this is used to handel code not found exception which occur return book
     @ExceptionHandler(value = {CodeNotFoundException.class})
@@ -39,13 +22,36 @@ public class GlobalExceptionHandler {
         return "redirect:/return/book/form";
     }
 
-    //this is used to handel IO exception - if multipart file not selected
-    @ExceptionHandler(value = {RuntimeException.class})
-    public String handelCodeException(RuntimeException e, RedirectAttributes redirectAttributes) throws Exception {
+    @ExceptionHandler(value = {BookCanNotBeDeletedException.class})
+    public String handelBookException(BookCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();
 
-            message.setMessage("Please fill all the fields!!");
+
+            message.setMessage("This book can not be deleted as someone have rent this book!!");
             redirectAttributes.addFlashAttribute("errorMsg",message);
-            return "redirect:/book/form";
+
+        return "redirect:/book/table";
     }
+
+    @ExceptionHandler(value = {MemberCanNotBeDeletedException.class})
+    public String handelMemberException(MemberCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+
+        message.setMessage("This member can not be deleted as he have rented this book!!");
+        redirectAttributes.addFlashAttribute("errorMsg",message);
+
+        return "redirect:/member/table";
+    }
+
+
+    //this is used to handel IO exception - if multipart file not selected
+//    @ExceptionHandler(value = {RuntimeException.class})
+//    public String handelCodeException(RuntimeException e, RedirectAttributes redirectAttributes) throws Exception {
+//        GlobalExceptionMessage message = new GlobalExceptionMessage();
+//
+//            message.setMessage("Please fill all the fields!!");
+//            redirectAttributes.addFlashAttribute("errorMsg",message);
+//            return "redirect:/book/form";
+//    }
 }

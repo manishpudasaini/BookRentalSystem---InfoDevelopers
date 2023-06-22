@@ -42,6 +42,13 @@ public class CategoryServiceImpl implements CategoryService{
         return null;
     }
 
+    @Override
+    public String saveUpdateCategory(CategoryRequest categoryRequest) {
+        Category category = categoryRequestToEntity(categoryRequest);
+        categoryRepo.save(category);
+        return "updated";
+    }
+
     //function used to find category & return category id
     public Category findCategoryById(short id) {
        Optional<Category> singleCategory =  categoryRepo.findById(id);

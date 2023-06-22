@@ -11,45 +11,46 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
-       return new MyUserDetailService();
+    public UserDetailsService userDetailsService() {
+        return new MyUserDetailService();
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) ->
-                auth.requestMatchers("/api/**","/resources/**","/static/**","/css/**")
+                auth.requestMatchers("/api/**", "/resources/**", "/static/**", "/css/**")
                         .permitAll()
-                        .requestMatchers("/admin/home").hasAnyRole("ADMIN")
                         .anyRequest()
                         .authenticated());
 
         http.formLogin(form -> form
-                        .loginPage("/api/signIn")
-                        .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home")
-                        .permitAll()
+                .loginPage("/api/signIn")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/home")
+                .permitAll()
         );
-//                .logout(
-//                logout -> logout
-//                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                        .permitAll()
-//        );
+        http.logout(logout -> logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/api/signIn")
+                .permitAll()
+        );
         return http.build();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService());
