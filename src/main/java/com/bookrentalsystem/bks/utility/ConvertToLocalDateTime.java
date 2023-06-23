@@ -10,15 +10,13 @@ import java.time.format.DateTimeFormatter;
 public class ConvertToLocalDateTime {
     public LocalDate convertToDate(String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateTime = LocalDate.parse(date, formatter);
-        return dateTime;
+        return LocalDate.parse(date, formatter);
     }
     public LocalDateTime convertToDate(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime currentTime = LocalDateTime.now();
         String date = currentTime.format(formatter);
-        LocalDateTime dateTime = LocalDateTime.parse(date,formatter);
-        return dateTime;
+        return LocalDateTime.parse(date,formatter);
 
     }
 }

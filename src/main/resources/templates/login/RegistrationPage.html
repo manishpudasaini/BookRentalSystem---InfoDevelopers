@@ -10,8 +10,6 @@
 <div class="container">
     <div class="wrappers">
 
-
-
         <div class="title"><span>Registration Form</span></div>
         <form th:object="${user}" th:action="@{/api/user/save}" th:method="POST" >
 
@@ -30,7 +28,7 @@
                 <input type="text" placeholder="Email or Phone"
                        th:field="*{email}"
                        th:classappend="${#fields.hasErrors('email')?'is-invalid':''}"
-                       required>
+                       >
 
             </div>
 

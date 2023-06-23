@@ -128,9 +128,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> allTransactionEntity() {
         List<Transaction> transactions = transactionRepo.findAll();
-        List<Transaction> filterTransaction = transactions
+        return transactions
                .stream().filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
-        return filterTransaction;
     }
 
 

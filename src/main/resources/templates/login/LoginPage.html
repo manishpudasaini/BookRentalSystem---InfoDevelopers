@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <th:block th:replace="~{fragments/HtmlHeader :: html_head('Login Page')}"></th:block>
-    <link th:href="@{/css/loginpage.css}" rel="stylesheet" >
+    <link th:href="@{/css/loginpage.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>-->
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+    <script src="https://kit.fontawesome.com/a7c7ec04b9.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
+<div class="fullPage">
+
 <div class="container">
     <div class="wrappers">
-        <div class="alert alert-danger alert-dismissible fade show mt-2"  th:if="${param.error}">
-            <strong>Error!</strong> Invalid username & password
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-
         <div class="title"><span>Login Form</span></div>
         <form th:action="@{/login}"  th:method="POST" >
 
@@ -29,11 +32,61 @@
                 <input type="submit" value="Login">
             </div>
             <div class="signup-link">Not a member? <a th:href="@{/api/register}" >Signup now</a></div>
+            <a  id="forgetBtn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Forget password ?
+            </a>
+
+            <div class="alert alert-danger alert-dismissible fade show mt-2"  th:if="${param.error}">
+                <strong>Error!</strong> Invalid username & password
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         </form>
     </div>
 </div>
 
-<div th:replace="~{fragments/Footer :: footer}"></div>
 
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <div class="modal-header headBtn">
+                        <div>
+                            <h4 class="modal-title">Change your password</h4>
+                        </div>
+
+                        <div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                    </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="popupEmail">
+                            <label>Email address</label>
+                            <input type="text" class="form-control" placeholder="Enter your email address">
+                            <button type="button" class="btn btn-info" id="nextBtn">Next</button>
+
+                        </div>
+                    </form>
+                </div>
+                <hr>
+
+                <div class="model-body pass">
+                    <form>
+                        <div class="popupEmail">
+                            <label>New Password</label>
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Enter your new password">
+                            <button type="button" class="btn btn-info" id="changeBtn">Change</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div th:replace="~{fragments/Footer :: footer}"></div>
 </body>
 </html>

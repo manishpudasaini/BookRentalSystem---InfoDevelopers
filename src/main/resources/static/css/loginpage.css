@@ -7,7 +7,7 @@
 }
 body{
     background: #1abc9c;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 ::selection{
     background: rgba(26,188,156,0.3);
@@ -106,4 +106,46 @@ form .button input:hover{
 }
 form .signup-link a:hover{
     text-decoration: underline;
+}
+
+/* popup box css */
+
+.popupEmail{
+    margin-left: 50px;
+    width: 60%;
+}
+
+.new_password{
+    margin-right: 415px;
+}
+
+#forgetBtn{
+    margin-left: 110px;
+    margin-top: 40px;
+    color: blue;
+    text-decoration: underline;
+}
+#forgetBtn:hover{
+    cursor: pointer;
+}
+#nextBtn{
+    margin-top: 15px;
+    border: none;
+}
+#changeBtn{
+    margin-top: 15px;
+    margin-bottom: 50px;
+    border: none;
+}
+.pass{
+    margin-left: 10px;
+}
+.headBtn{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.fullPage{
+    background-color: #1abc9c;
+    overflow: hidden;
 }

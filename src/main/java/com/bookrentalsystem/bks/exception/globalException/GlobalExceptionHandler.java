@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     public String handelCodeException(CodeNotFoundException e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();
 
-        if(e instanceof CodeNotFoundException){
+        if(e != null){
             message.setMessage("This code does not exist please enter right code!!");
             redirectAttributes.addFlashAttribute("errorMsg",message);
         } else {

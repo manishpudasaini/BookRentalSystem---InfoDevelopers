@@ -90,7 +90,7 @@ public class CategoryController {
 
         List<Book> allBooks = bookService.allBookEntity();
         List<Book> booksHavingCategory =allBooks.stream()
-                .filter(b -> b.getCategory().getId()==id).collect(Collectors.toList());
+                .filter(b -> b.getCategory().getId()==id).toList();
 
         if(booksHavingCategory.size()==0){
             categoryService.deleteCategory(id);

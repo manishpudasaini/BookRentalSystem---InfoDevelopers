@@ -83,7 +83,7 @@ public class BookController {
         List<Transaction> transactions =transactionService.allTransactionEntity();
 
        List<Transaction> notDeleteTransaction = transactions.stream().filter(t ->t.getBook().getId() == id)
-                        .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
+                        .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
 
        if(notDeleteTransaction.size() == 0){
            bookService.deleteBook(id);
