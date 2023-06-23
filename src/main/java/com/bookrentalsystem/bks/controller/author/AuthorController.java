@@ -48,7 +48,7 @@ public class AuthorController {
     @PostMapping("/save")
     public String saveAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
                              BindingResult result,
-                             Model model){
+                             Model model,RedirectAttributes redirectAttributes){
 
         if(result.hasErrors()){
             model.addAttribute("author",authorRequest);
@@ -66,6 +66,7 @@ public class AuthorController {
             return "/author/AuthorForm";
         }
         if(message.equals("added successfully")){
+            redirectAttributes.addFlashAttribute("message","Author added!");
             return "redirect:/author/table";
         }
         return "message";
@@ -82,7 +83,7 @@ public class AuthorController {
     @PostMapping("/update/save")
     public String saveUpdateAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
                              BindingResult result,
-                                   Model model){
+                                   Model model,RedirectAttributes redirectAttributes){
 
         if(result.hasErrors()){
             model.addAttribute("author",authorRequest);
@@ -91,7 +92,7 @@ public class AuthorController {
         }
 
         authorService.updateAuthorAdd(authorRequest);
-
+        redirectAttributes.addFlashAttribute("message","Author updated successfully!");
         return "redirect:/author/table";
     }
 

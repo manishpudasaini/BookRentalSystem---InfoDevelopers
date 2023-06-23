@@ -56,7 +56,7 @@ public class BookController {
     @PostMapping("/save")
     public String saveBook(@Valid @ModelAttribute("book") BookRequest bookRequest,
                            BindingResult result,
-                           Model model) throws IOException {
+                           Model model,RedirectAttributes redirectAttributes) throws IOException {
 
 
         //multipart file validation
@@ -75,6 +75,7 @@ public class BookController {
             return "book/BookForm";
         }
         bookService.addBook(bookRequest);
+        redirectAttributes.addFlashAttribute("message","Book table updated");
         return "redirect:/book/table";
     }
 

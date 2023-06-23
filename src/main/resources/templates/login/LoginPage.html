@@ -36,11 +36,24 @@
                 Forget password ?
             </a>
 
+<!--            this will be shown if the email & password to login is invalid-->
             <div class="alert alert-danger alert-dismissible fade show mt-2"  th:if="${param.error}">
                 <strong>Error!</strong> Invalid username & password
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+
+            <!--                        error message-->
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
+                <strong>Error!</strong> <span th:text="${errorMsg.message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
         </form>
+<!--        &lt;!&ndash; success message &ndash;&gt;-->
+<!--        <div class="alert alert-success alert-dismissible fade show" th:if="${#fields.hasErrors('global')}">-->
+<!--            <strong>Error!</strong> <span th:each="err : ${#fields.errors('global')}" th:text="${err}"></span>-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
+<!--        </div>-->
     </div>
 </div>
 
@@ -50,7 +63,7 @@
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" >
                     <div class="modal-header headBtn">
                         <div>
                             <h4 class="modal-title">Change your password</h4>
@@ -63,12 +76,19 @@
                     </div>
 
                 <div class="modal-body">
-                    <form>
+                    <form th:action="@{/api/change}" th:object="${changePassword}" th:method="POST">
                         <div class="popupEmail">
-                            <label>Email address</label>
-                            <input type="text" class="form-control" placeholder="Enter your email address">
-                            <button type="button" class="btn btn-info" id="nextBtn">Next</button>
+                            <label class="newPass">Email address</label>
+                            <input type="text" class="form-control"
+                                   th:field="*{email}"
+                                   placeholder="Enter your email address">
 
+                            <label class="newPass">New Password</label>
+                            <input type="text" class="form-control"
+                                   th:field="*{password}"
+                                   id="floatingInput" placeholder="Enter your new password">
+
+                            <input type="submit" value="change" class="btn btn-info" id="changeBtn">
                         </div>
                     </form>
                 </div>
@@ -77,9 +97,6 @@
                 <div class="model-body pass">
                     <form>
                         <div class="popupEmail">
-                            <label>New Password</label>
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Enter your new password">
-                            <button type="button" class="btn btn-info" id="changeBtn">Change</button>
                         </div>
                     </form>
                 </div>

@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface UserRepo extends JpaRepository<User,Short> {
     Optional<User> findUserByEmail(String email);
 
+
 }

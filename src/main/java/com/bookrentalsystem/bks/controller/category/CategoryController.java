@@ -43,7 +43,7 @@ public class CategoryController {
     @PostMapping("/save")
     public String saveCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
                                BindingResult result,
-                               Model model){
+                               Model model,RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             System.out.println(result);
             model.addAttribute("category",categoryRequest);
@@ -58,6 +58,7 @@ public class CategoryController {
             return "/category/CategoryForm";
         }
         if(message == null){
+            redirectAttributes.addFlashAttribute("message","Category added");
             return "redirect:/category/table";
         }
        return "redirect:/category/table";
@@ -73,7 +74,7 @@ public class CategoryController {
     @PostMapping("/update/save")
     public String saveUpdateCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
                                BindingResult result,
-                               Model model){
+                               Model model,RedirectAttributes redirectAttributes){
 
         if(result.hasErrors()){
             System.out.println(result);
@@ -82,6 +83,8 @@ public class CategoryController {
         }
 
         categoryService.saveUpdateCategory(categoryRequest);
+
+        redirectAttributes.addFlashAttribute("message","Category updated successfully!!");
         return "redirect:/category/table";
     }
 

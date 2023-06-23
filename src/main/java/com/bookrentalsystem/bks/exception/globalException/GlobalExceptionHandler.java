@@ -62,6 +62,15 @@ public class GlobalExceptionHandler {
         return "redirect:/author/table";
     }
 
+    @ExceptionHandler(value = {UserHavingThisEmailNotExist.class})
+    public String handelUserException(UserHavingThisEmailNotExist e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+        message.setMessage("Cannot change the password because the email you enter doest exist!!!");
+        redirectAttributes.addFlashAttribute("errorMsg",message);
+        return "redirect:/api/signIn";
+    }
+
     //this is used to handel IO exception - if multipart file not selected
 //    @ExceptionHandler(value = {RuntimeException.class})
 //    public String handelCodeException(RuntimeException e, RedirectAttributes redirectAttributes) throws Exception {

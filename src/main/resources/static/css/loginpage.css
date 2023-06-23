@@ -149,3 +149,7 @@ form .signup-link a:hover{
     background-color: #1abc9c;
     overflow: hidden;
 }
+
+.newPass{
+    margin-top: 30px;
+}

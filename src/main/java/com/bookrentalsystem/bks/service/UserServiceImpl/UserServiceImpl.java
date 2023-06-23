@@ -2,6 +2,7 @@ package com.bookrentalsystem.bks.service.UserServiceImpl;
 
 import com.bookrentalsystem.bks.dto.login.LoginUserDto;
 import com.bookrentalsystem.bks.enums.RoleName;
+import com.bookrentalsystem.bks.exception.globalException.UserHavingThisEmailNotExist;
 import com.bookrentalsystem.bks.model.login.User;
 import com.bookrentalsystem.bks.repo.UserRepo;
 import com.bookrentalsystem.bks.service.UserService;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    //this method is used to find the user using email and return string
     @Override
     public String findByEmail(String email) {
        Optional<User> user = userRepo.findUserByEmail(email);
@@ -37,6 +39,21 @@ public class UserServiceImpl implements UserService {
            return "User already exist!!";
        }
        return null;
+    }
+
+    //this method is used to handel the exception if occur
+    @Override
+    public User findUsingEmail(String email) {
+        Optional<User> singleUser = userRepo.findUserByEmail(email);
+        if(singleUser.isPresent()){
+            return singleUser.get();
+        }
+        throw new UserHavingThisEmailNotExist("User does not exist");
+    }
+
+    @Override
+    public User saveChangeUser(User user) {
+        return userRepo.save(user);
     }
 
 }
