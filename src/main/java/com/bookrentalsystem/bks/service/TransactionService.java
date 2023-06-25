@@ -26,4 +26,5 @@ public interface TransactionService {
     List<TransactionDto> allTransaction();
     List<Transaction> allTransactionEntity();
 
+
 }

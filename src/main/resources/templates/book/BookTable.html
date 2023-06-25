@@ -7,8 +7,11 @@
         <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
         <!-- tables section -->
         <div class="wrapper">
+            <div th:replace="~{fragments/NavBar :: navbar}"></div>
             <div class="section">
                 <div class="box-area">
+
+
                     <div class="user_table_post  mt-5">
 
                         <!--                        error message-->
@@ -48,11 +51,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="b,Index:${book}">
-                                <td th:text="${Index.count}"></td>
-                                <td th:text="${b.name}"></td>
-                                <td th:text="${b.isbn}"></td>
-                                <td th:text="${b.stock}"></td>
+                            <tr th:each="b,Index:${book}" class="tableData">
+                                <td><div th:text="${Index.count}"></div></td>
+                                <td><div th:text="${b.name}"></div></td>
+                                <td><div th:text="${b.isbn}"></div></td>
+                                <td><div th:text="${b.stock}"></div></td>
                                 <td class="bookAction">
                                     <a th:href="@{/book/update/}+${b.id}">
                                         <i class="fa-sharp fa-solid fa-pen-to-square" style="color: #0e5fec;"></i>

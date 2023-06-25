@@ -22,16 +22,16 @@ public class GlobalExceptionHandler {
         return "redirect:/return/book/form";
     }
 
-    @ExceptionHandler(value = {BookCanNotBeDeletedException.class})
-    public String handelBookException(BookCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
-        GlobalExceptionMessage message = new GlobalExceptionMessage();
-
-
-            message.setMessage("This book can not be deleted as someone have rent this book!!");
-            redirectAttributes.addFlashAttribute("errorMsg",message);
-
-        return "redirect:/book/table";
-    }
+//    @ExceptionHandler(value = {BookCanNotBeDeletedException.class})
+//    public String handelBookException(BookCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
+//        GlobalExceptionMessage message = new GlobalExceptionMessage();
+//
+//
+//            message.setMessage("This book can not be deleted as someone have rent this book!!");
+//            redirectAttributes.addFlashAttribute("errorMsg",message);
+//
+//        return "redirect:/book/table";
+//    }
 
     @ExceptionHandler(value = {MemberCanNotBeDeletedException.class})
     public String handelMemberException(MemberCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {

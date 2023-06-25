@@ -59,17 +59,17 @@ public class AuthorController {
 
         String message = authorService.addAuthorDb(authorRequest);
 
-        if(!message.isEmpty() && !message.equals("added successfully")){
+        if(message!= null){
             ObjectError error = new ObjectError("globalError",message);
 //            FieldError fieldError = new FieldError("author","jufield","error message");
             result.addError(error);
             return "/author/AuthorForm";
         }
-        if(message.equals("added successfully")){
-            redirectAttributes.addFlashAttribute("message","Author added!");
+        if(message == null){
+            redirectAttributes.addFlashAttribute("message","Author added!!");
             return "redirect:/author/table";
         }
-        return "message";
+        return "added";
     }
 
     @GetMapping("/update/{id}")

@@ -44,19 +44,20 @@ public class MemberController {
 
     @PostMapping("/save")
     public String saveMember(@Valid @ModelAttribute("member") MemberRequest memberRequest,
-                             BindingResult result,Model model){
+                             BindingResult result,Model model,RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
             model.addAttribute("member",memberRequest);
             return "customer/CustomerForm";
         }
 
         String message= memberService.addMember(memberRequest);
-        if(!message.isEmpty() && !message.equals("added")){
+        if(message!=null){
             ObjectError error = new ObjectError("globalError",message);
             result.addError(error);
             return "customer/CustomerForm";
         }
-        if(message.equals("added")){
+        if(message==null){
+            redirectAttributes.addFlashAttribute("message","Member added");
            return  "redirect:/member/table";
         }
         return "message";
@@ -66,6 +67,7 @@ public class MemberController {
     public String memberUpdate(@PathVariable Short id, Model model){
         MemberResponse memberResponse = memberService.findMemberResponseFromId(id);
         model.addAttribute("member",memberResponse);
+
         return "/customer/CustomerUpdate";
     }
 
@@ -94,7 +96,7 @@ public class MemberController {
        }
 
         String message = "";
-        redirectAttributes.addFlashAttribute("message","Category Deleted Successfully!!");
+        redirectAttributes.addFlashAttribute("message","Member Deleted Successfully!!");
         return "redirect:/member/table?success";
     }
 }

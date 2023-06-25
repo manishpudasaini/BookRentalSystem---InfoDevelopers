@@ -21,25 +21,33 @@ public class AuthorServiceImpl implements AuthorService  {
     //this method is used to add the author in our database
     public String addAuthorDb(AuthorRequest authorRequest){
         Optional<Author> dbAuthorFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
-        Optional<Author> dbAuthorTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
+
         Author author = authorRequestToEntity(authorRequest);
 
         if(dbAuthorFalse.isPresent()  ){
             Author activeAuthor = dbAuthorFalse.get();
-            if(author.getEmail().equals(activeAuthor.getEmail())
-                    || author.getNumber().equals(activeAuthor.getNumber())){
+            if(author.getEmail().equalsIgnoreCase(activeAuthor.getEmail())
+                    || author.getNumber().equalsIgnoreCase(activeAuthor.getNumber())){
                 return "Author already exist!!";
             }
         }
+
+        Optional<Author> dbAuthorTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
         if(dbAuthorTrue.isPresent()){
             Author inActiveAuthor = dbAuthorTrue.get();
-            if(inActiveAuthor.getEmail().equals(authorRequest.getEmail()) ||
-                    inActiveAuthor.getNumber().equals(authorRequest.getNumber())){
-                return "Author already exist!!";
+            if(inActiveAuthor.getEmail().equalsIgnoreCase(author.getEmail()) ||
+                    inActiveAuthor.getNumber().equalsIgnoreCase(author.getNumber()) ||
+                    inActiveAuthor.getName().equalsIgnoreCase(author.getName()) ){
+                inActiveAuthor.setName(author.getName());
+                inActiveAuthor.setNumber(author.getNumber());
+                inActiveAuthor.setEmail(author.getEmail());
+                inActiveAuthor.setDeleted(Boolean.FALSE);
+                authorRepo.save(inActiveAuthor);
+                return null;
             }
         }
          authorRepo.save(author);
-        return "added successfully";
+        return null;
     }
 
     @Override

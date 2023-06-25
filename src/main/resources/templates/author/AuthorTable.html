@@ -9,8 +9,10 @@
 
 <!-- tables section -->
 <div class="wrapper">
+    <div th:replace="~{fragments/NavBar :: navbar}"></div>
     <div class="section">
         <div class="box-area">
+
             <div class="user_table_post  mt-5">
 
                 <!--                        error message-->
@@ -43,10 +45,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="author,Index:${author} ">
-                        <td th:text="${Index.count}"></td>
-                        <td th:text="${author.name}"></td>
-                        <td th:text="${author.email}"></td>
-                        <td th:text="${author.number}"></td>
+                        <td><div th:text="${Index.count}"></div></td>
+                        <td><div th:text="${author.name}"></div></td>
+                        <td><div th:text="${author.email}"></div></td>
+                        <td><div th:text="${author.number}"></div></td>
                         <td class="actionField">
                             <a th:href="@{/author/update/}+${author.id}">
                                 <i class="fa-sharp fa-solid fa-pen-to-square" style="color: #0e5fec;"></i>

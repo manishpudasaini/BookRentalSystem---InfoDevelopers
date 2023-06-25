@@ -9,8 +9,10 @@
 
 <!-- tables section -->
 <div class="wrapper">
+  <div th:replace="~{fragments/NavBar :: navbar}"></div>
   <div class="section">
     <div class="box-area">
+
       <div class="user_table_post  mt-5">
 
         <!--                        error message-->
@@ -20,9 +22,9 @@
         </div>
 
         <!-- success message -->
-          <div class="alert alert-success alert-dismissible fade show" th:if="${message}">
-            <strong>Error!</strong> <span th:text="${message}"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="alert alert-success alert-dismissible fade show" th:if="${message}">
+          <strong>Success!</strong> <span th:text="${message}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
 
         <div class="d-flex justify-content-between w-1024 desc" >

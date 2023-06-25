@@ -25,14 +25,17 @@ public class CategoryServiceImpl implements CategoryService{
         if(dbCategoryDeletedFalse.isPresent()){
             Category dbCategoryCheck = dbCategoryDeletedFalse.get();
             if(dbCategoryCheck.getName().equals(category.getName())){
-                return "Category Name already exist Please enter another number!!!";
+                return "Category already exist!!";
             }
         }
         Optional<Category> dbCategoryDeletedTrue =  categoryRepo.findCategoryByNameAndDeletedIsTrue(categoryRequest.getName());
         if(dbCategoryDeletedTrue.isPresent()){
-            Category dbCategoryCheck = dbCategoryDeletedTrue.get();
-            if(dbCategoryCheck.getName().equals(category.getName())){
-                return "Category Name already exist Please enter another number!!!";
+            Category dbCategoryCheckTrue = dbCategoryDeletedTrue.get();
+            if(dbCategoryCheckTrue.getName().equalsIgnoreCase(category.getName())){
+                dbCategoryCheckTrue.setDescription(category.getDescription());
+                dbCategoryCheckTrue.setDeleted(Boolean.FALSE);
+                categoryRepo.save(dbCategoryCheckTrue);
+                return null;
             }
         }
 

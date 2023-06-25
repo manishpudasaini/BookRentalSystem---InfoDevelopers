@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar</title>
+</head>
+<body>
+<!-- Image and text -->
+<nav class="navbar navbar-light " style="background-color: #999999;" th:fragment="navbar">
+  <a class="navbar-brand" th:href="@{/home}">
+    <img th:src="@{/images/logo.jpg}"
+         width="30" height="30" class="d-inline-block align-top" alt="">
+    <span style="color: white;" >Book Rental System </span>
+  </a>
+</nav>
+
+</body>
+</html>

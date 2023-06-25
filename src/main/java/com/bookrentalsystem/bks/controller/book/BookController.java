@@ -87,6 +87,8 @@ public class BookController {
                         .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
 
        if(notDeleteTransaction.size() == 0){
+//         List<Transaction> deleteTransaction =  transactions.stream().filter(t -> t.getBook().getId() == id)
+//                   .filter(t -> t.getStatus().equals(BookRentStatus.RETURN)).toList();
            bookService.deleteBook(id);
        }else {
            throw new BookCanNotBeDeletedException("Book cannot be deleted");
@@ -106,6 +108,7 @@ public class BookController {
     @GetMapping("view/{id}")
     public String viewBook(@PathVariable Short id,Model model) throws IOException {
       BookResponse singleBook =   bookService.viewBookId(id);
+        List<BookResponse> books = bookService.allBookView();
         model.addAttribute("book",singleBook);
         return "book/BookDetail";
     }

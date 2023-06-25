@@ -29,6 +29,7 @@ public class BookServiceImpl implements BookService {
     private final AuthorService authorService;
     private final Fileutils fileutils;
 
+    //this method is used to add book
     public BookResponse addBook(BookRequest bookRequest) throws IOException {
         String imagePath = null;
         if (bookRequest.getId() != null && bookRequest.getImageFile().isEmpty()) {
@@ -71,6 +72,7 @@ public class BookServiceImpl implements BookService {
                 .build();
     }
 
+    //this is used to find book by id
     @Override
     public Book findBookByid(Short id) {
         Optional<Book> singleBook = bookRepo.findById(id);
@@ -153,5 +155,37 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> allBookEntity() {
         return bookRepo.findAll();
+    }
+
+    //this method is used to convert list of book to list of book response
+    @Override
+    public List<BookResponse> allBookView() {
+       List<Book> allBooks = bookRepo.findAll();
+        return allBooks.stream().map(book -> {
+            try {
+                return forViewBook(book);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList());
+    }
+
+    //THIS METHOD IS USED TO SHOW ALL THE BOOKs FOR LANDING PAGE
+    @Override
+    public BookResponse forViewBook(Book book) throws IOException {
+        List<Short> authorIds = book.getAuthors()
+                .stream().map(Author::getId).collect(Collectors.toList());
+        return BookResponse.builder()
+                .id(book.getId())
+                .name(book.getName())
+                .page(book.getPage())
+                .isbn(book.getIsbn())
+                .rating(book.getRating())
+                .stock(book.getStock())
+                .published_date(book.getPublished_date().toString())
+                .image_path(fileutils.getBase64FormFilePath(book.getImage_path()))
+                .category(book.getCategory().getId())
+                .authorsId(authorIds)
+                .build();
     }
 }

@@ -8,31 +8,30 @@
 <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
 
 <div class="wrapper">
+    <div th:replace="~{fragments/NavBar :: navbar}"></div>
     <div class="section">
         <div class="box-area">
 
-            <div class="main_post mt-5" th:each="book:${book}">
-                <div class="titleDesc">
-                    <span th:text="${book.name}"></span>
 
-                    <a th:href="@{/book/table}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                        </svg>
-                    </a>
+            <div class="main_post mt-5" th:each="b:${book}">
+                <div class="titleDescBookView" >
+<!--                    <a th:href="@{/book/table}" >-->
+<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">-->
+<!--                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>-->
+<!--                        </svg>-->
+<!--                    </a>-->
                 </div>
-                <img  alt="book image"  th:src="${book.image_path}" class="img-fluid">
+
+                <img  alt="book image"  th:src="${b.image_path}" class="img-fluid">
                 <div class="row post_details ms-0 me-0 align-items-center">
 
                     <div class="col-6  my-2 lh-1" >
-                        <ol>
-
-
-                            <span>Book published date</span>
-                            <li th:text="${book.published_date}"></li>
-                        </ol>
+                        <ul class="list-group">
+                            <li class="list-group-item active"><span th:text="${b.name}"></span></li>
+                            <li class="list-group-item"><strong>Book Published Date:  </strong><span th:text="${b.published_date}"></span></li>
+                            <li class="list-group-item"> <strong>Book Isbn number:   </strong><span th:text="${b.isbn}"></span></li>
+                        </ul>
                         <br>
-
                     </div>
 
                 </div>

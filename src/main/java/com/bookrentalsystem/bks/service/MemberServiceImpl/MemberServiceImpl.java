@@ -22,24 +22,33 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String addMember(MemberRequest memberRequest) {
        Optional<Member> memberDeleteFalse =  memberRepo.findMemberByEmailAndDeletedIsFalse(memberRequest.getEmail());
-       Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
-       if(memberDeleteTrue.isPresent()){
-           Member deleteMember = memberDeleteTrue.get();
-           if(memberRequest.getEmail().equals(deleteMember.getEmail()) ||
-                   memberRequest.getPhone().equals(deleteMember.getPhone())){
-               return "Member having same information already exist!!";
-           }
-       }
-
        if(memberDeleteFalse.isPresent()){
-           Member notDeleteMember =memberDeleteFalse.get();
-           if(memberRequest.getEmail().equals(notDeleteMember.getEmail()) ||
-                   memberRequest.getPhone().equals(notDeleteMember.getPhone())){
-               return "Member having same information already exist!!";
-           }
-       }
+            Member notDeleteMember =memberDeleteFalse.get();
+            if(memberRequest.getEmail().equals(notDeleteMember.getEmail()) ||
+                    memberRequest.getPhone().equals(notDeleteMember.getPhone())){
+                return null;
+            }
+        }
+
+
+       Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
+        if(memberDeleteTrue.isPresent()){
+            Member deleteMember = memberDeleteTrue.get();
+            if(memberRequest.getEmail().equals(deleteMember.getEmail()) ||
+                    memberRequest.getPhone().equals(deleteMember.getPhone())){
+                deleteMember.setName(memberRequest.getName());
+                deleteMember.setEmail(memberRequest.getEmail());
+                deleteMember.setPhone(memberRequest.getPhone());
+                deleteMember.setAddress(memberRequest.getAddress());
+                deleteMember.setDeleted(Boolean.FALSE);
+
+                memberRepo.save(deleteMember);
+                return null;
+            }
+        }
+
         memberRepo.save(memberRequestToEtity(memberRequest));
-        return "added";
+        return null;
     }
 
     //this method is used to update the member

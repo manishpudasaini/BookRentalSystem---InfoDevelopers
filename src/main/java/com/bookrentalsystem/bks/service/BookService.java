@@ -17,5 +17,8 @@ public interface BookService {
     Book saveBook(Book book);
     List<Book> allBookEntity();
 
+    List<BookResponse> allBookView();
+    BookResponse forViewBook(Book book) throws IOException;
+
 
 }

@@ -57,6 +57,7 @@ public class CategoryController {
             result.addError(error);
             return "/category/CategoryForm";
         }
+
         if(message == null){
             redirectAttributes.addFlashAttribute("message","Category added");
             return "redirect:/category/table";

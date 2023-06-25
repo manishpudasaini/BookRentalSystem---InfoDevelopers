@@ -9,10 +9,11 @@
 
         <!-- tables section -->
         <div class="wrapper">
+            <div th:replace="~{fragments/NavBar :: navbar}"></div>
             <div class="section">
                 <div class="box-area">
-                    <div class="user_table_post  mt-5">
 
+                    <div class="user_table_post  mt-5">
                         <!--                        error message-->
                         <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
                             <strong>Error!</strong> <span th:text="${errorMsg.message}"></span>
@@ -42,9 +43,9 @@
                             </thead>
                             <tbody>
                             <tr th:each="category,Index:${categoryResponse}">
-                                <td th:text="${Index.count}"></td>
-                                <td th:text="${category.name}"></td>
-                                <td th:text="${category.description}"></td>
+                                <td><div  th:text="${Index.count}"></div></td>
+                                <td ><div th:text="${category.name}"></div></td>
+                                <td ><div th:text="${category.description}"></div></td>
                                 <td class="actionField">
                                     <a th:href="@{/category/update/}+${category.id}">
                                         <i class="fa-sharp fa-solid fa-pen-to-square" style="color: #0e5fec;"></i>

@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <th:block th:replace="~{fragments/HtmlHeader :: html_head('Home Page')}"></th:block>
+    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Home Page')}"></th:block>
 </head>
 <body>
 <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
 
 <!-- tables section -->
 <div class="wrapper">
-  <div class="section">
-    <div class="box-area">
-        <h1 style="{color: blue}">welcome to Book Rental System</h1>
-<!--      <div th:text="${#authentication.principal.username}"></div>-->
-        <ul th:each="r:${role}">
-            <li th:text="${r}"></li>
-        </ul>
-  </div>
+    <div th:replace="~{fragments/NavBar :: navbar}"></div>
+
+            <div class="cards">
+
+                <div class="card" style="width: 20rem;" th:each="b:${books}">
+                    <img th:src="${b.image_path}" class="videocard__img" alt="Book image">
+                    <div class="card-body">
+                        <h5 class="video__text" th:text="${b.name}">Card title</h5>
+                        <p class="videoCard__info"><strong>Published Date:  </strong>
+                            <span th:text="${b.published_date}"></span></p>
+                        <a th:href="@{/book/view/}+${b.id}" class="btn btn-primary btn">More</a>
+                    </div>
+                </div>
+
+            </div>
+
 </div>
 
-<div th:replace="~{/fragments/LogoutPopup :: popup}"></div>
-<div th:replace="~{fragments/Footer :: footer}"></div>
+    <div th:replace="~{/fragments/LogoutPopup :: popup}"></div>
+    <div th:replace="~{fragments/Footer :: footer}"></div>
 
 </body>
 </html>

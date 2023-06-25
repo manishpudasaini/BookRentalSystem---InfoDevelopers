@@ -14,14 +14,14 @@ public class AuditingConfigUserDetail implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
          final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String auditor = "System";
+            String auditor = "System";
 
         if (Objects.nonNull(authentication)) {
             auditor = authentication.getName();
 
-            if (auditor.equals("anonymousUser")) {
-                return Optional.of("System");
-            }
+//            if (auditor.equals("anonymousUser")) {
+//                return Optional.of("System");
+//            }
         }
 
         return Optional.of(auditor);

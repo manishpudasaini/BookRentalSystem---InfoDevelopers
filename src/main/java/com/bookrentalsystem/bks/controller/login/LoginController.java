@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,10 +71,9 @@ public class LoginController {
         System.out.println(user.getPassword());
 
         String message = "Password changed successfully!!";
-        if(message!=null){
-            ObjectError msg = new ObjectError("globalError",message);
-            result.addError(msg);
-        }
+        ObjectError msg = new ObjectError("globalError",message);
+        result.addError(msg);
+
         if(result.hasErrors()){
             return "/login/LoginPage";
         }
