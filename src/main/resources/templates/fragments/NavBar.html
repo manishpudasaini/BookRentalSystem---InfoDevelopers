@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
@@ -7,11 +8,20 @@
 <body>
 <!-- Image and text -->
 <nav class="navbar navbar-light " style="background-color: #999999;" th:fragment="navbar">
-  <a class="navbar-brand" th:href="@{/home}">
-    <img th:src="@{/images/logo.jpg}"
-         width="30" height="30" class="d-inline-block align-top" alt="">
-    <span style="color: white;" >Book Rental System </span>
-  </a>
+  <div >
+      <a class="navbar-brand" th:href="@{/home}">
+          <img th:src="@{/images/logo.jpg}"
+               width="30" height="30" class="d-inline-block align-top" alt="">
+          <span style="color: white;" >Book Rental System </span>
+      </a>
+  </div>
+
+    <div class="userLogin">
+        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" style="width: 40px;"
+             alt="Avatar" />
+        <p sec:authentication="principal.username"></p>
+    </div>
+
 </nav>
 
 </body>

@@ -70,7 +70,7 @@
           <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
 
           <div class="alert alert-danger alert-dismissible fade show mt-3" th:if="${#fields.hasErrors('*')}">
-            <strong>Error! </strong><hr>
+            <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i><hr>
             <ul>
               <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
             </ul>

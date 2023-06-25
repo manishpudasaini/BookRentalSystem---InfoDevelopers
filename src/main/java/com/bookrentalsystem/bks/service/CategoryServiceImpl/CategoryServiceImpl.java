@@ -24,10 +24,11 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRequestToEntity(categoryRequest);
         if(dbCategoryDeletedFalse.isPresent()){
             Category dbCategoryCheck = dbCategoryDeletedFalse.get();
-            if(dbCategoryCheck.getName().equals(category.getName())){
+            if(dbCategoryCheck.getName().equalsIgnoreCase(category.getName())){
                 return "Category already exist!!";
             }
         }
+
         Optional<Category> dbCategoryDeletedTrue =  categoryRepo.findCategoryByNameAndDeletedIsTrue(categoryRequest.getName());
         if(dbCategoryDeletedTrue.isPresent()){
             Category dbCategoryCheckTrue = dbCategoryDeletedTrue.get();

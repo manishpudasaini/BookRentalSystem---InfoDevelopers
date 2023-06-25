@@ -38,13 +38,19 @@
 
 <!--            this will be shown if the email & password to login is invalid-->
             <div class="alert alert-danger alert-dismissible fade show mt-2"  th:if="${param.error}">
-                <strong>Error!</strong> Invalid username & password
+                <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> Invalid username & password
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
             <!--                        error message-->
             <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
-                <strong>Error!</strong> <span th:text="${errorMsg.message}"></span>
+                <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMsg.message}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- success message -->
+            <div class="alert alert-success alert-dismissible fade show" th:if="${message}">
+                <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i><span th:text="${message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 

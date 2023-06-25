@@ -60,8 +60,7 @@ public class LoginController {
     }
 
     @PostMapping("/change")
-    public String changePassword(@ModelAttribute ChangePasswordDto changePasswordDto,
-                                 BindingResult result){
+    public String changePassword(@ModelAttribute ChangePasswordDto changePasswordDto,Model model){
         User user = userService.findUsingEmail(changePasswordDto.getEmail());
 
         System.out.println(user.getPassword());
@@ -71,14 +70,8 @@ public class LoginController {
         System.out.println(user.getPassword());
 
         String message = "Password changed successfully!!";
-        ObjectError msg = new ObjectError("globalError",message);
-        result.addError(msg);
-
-        if(result.hasErrors()){
-            return "/login/LoginPage";
-        }
-
-
+        model.addAttribute("message",message);
+        model.addAttribute("changePassword",new ChangePasswordDto());
         return "/login/LoginPage";
     }
 

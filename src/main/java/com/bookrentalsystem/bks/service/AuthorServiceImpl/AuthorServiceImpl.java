@@ -30,14 +30,14 @@ public class AuthorServiceImpl implements AuthorService  {
                     || author.getNumber().equalsIgnoreCase(activeAuthor.getNumber())){
                 return "Author already exist!!";
             }
+
         }
 
         Optional<Author> dbAuthorTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
         if(dbAuthorTrue.isPresent()){
             Author inActiveAuthor = dbAuthorTrue.get();
             if(inActiveAuthor.getEmail().equalsIgnoreCase(author.getEmail()) ||
-                    inActiveAuthor.getNumber().equalsIgnoreCase(author.getNumber()) ||
-                    inActiveAuthor.getName().equalsIgnoreCase(author.getName()) ){
+                    inActiveAuthor.getNumber().equalsIgnoreCase(author.getNumber())){
                 inActiveAuthor.setName(author.getName());
                 inActiveAuthor.setNumber(author.getNumber());
                 inActiveAuthor.setEmail(author.getEmail());

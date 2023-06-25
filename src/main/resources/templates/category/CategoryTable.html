@@ -16,13 +16,13 @@
                     <div class="user_table_post  mt-5">
                         <!--                        error message-->
                         <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
-                            <strong>Error!</strong> <span th:text="${errorMsg.message}"></span>
+                            <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMsg.message}"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
 
                         <!-- success message -->
                         <div class="alert alert-success alert-dismissible fade show" th:if="${message}">
-                            <strong>Success!</strong> <span th:text="${message}"></span>
+                            <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i><span th:text="${message}"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
 

@@ -52,7 +52,7 @@ public class AuthorController {
 
         if(result.hasErrors()){
             model.addAttribute("author",authorRequest);
-            System.out.println(model.asMap());
+//            System.out.println(model.asMap());
             System.out.println(result);
             return "/author/AuthorForm";
         }
@@ -61,7 +61,7 @@ public class AuthorController {
 
         if(message!= null){
             ObjectError error = new ObjectError("globalError",message);
-//            FieldError fieldError = new FieldError("author","jufield","error message");
+//            FieldError fieldError = new FieldError("object_name","field_name","error message");
             result.addError(error);
             return "/author/AuthorForm";
         }
