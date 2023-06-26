@@ -72,7 +72,7 @@
                                 </div>
 
                                 <div class="form-floating ">
-                                    <input type="date" class="form-control" th:field="*{returnDate}" required>
+                                    <input type="date" id="inputDate" class="form-control" th:field="*{returnDate}" required>
                                     <label for="floatingInput">Return Date</label>
                                 </div>
                                 <div class="form-floating ">
@@ -118,6 +118,7 @@
 <script th:src="@{/js/searchCode.js}"></script>
 <div th:replace="~{fragments/Footer :: footer}"></div>
 
+
 <!--    code input filter js-->
 <script>
     function myFunction() {
@@ -143,6 +144,28 @@
         }
     }
 </script>
+
+
+
+<!--this is used to disable the previous date-->
+<script>
+    $(function(){
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+        // alert(maxDate);
+        $('#inputDate').attr('min', maxDate);
+    });
+</script>
+
 
 </body>
 </html>

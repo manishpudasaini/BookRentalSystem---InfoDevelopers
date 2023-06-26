@@ -30,6 +30,7 @@ public class ReturnBookController {
     private final ConvertToLocalDateTime convertToLocalDateTime;
     private final BookService bookService;
 
+    //display return book form
     @GetMapping("/form")
     public String returnBookForm(Model model){
         if(model.getAttribute("transaction") == null){
@@ -42,6 +43,7 @@ public class ReturnBookController {
         return "transaction/returnBook/ReturnBookForm";
     }
 
+    //check if the transaction code is valid or not
     @GetMapping("/code")
     public String getCodeTransaction(@ModelAttribute ReturnBookRequest returnBookRequest,
                                      RedirectAttributes redirectAttributes) throws IOException {
@@ -70,6 +72,7 @@ public class ReturnBookController {
         return "redirect:/return/book/form";
     }
 
+    //save the record of return book
     @PostMapping("/save")
     public String saveReturnTransaction(@Valid @ModelAttribute("transaction") ReturnBookRequest returnBookRequest,
                                         BindingResult bindingResult,Model model) throws IOException {

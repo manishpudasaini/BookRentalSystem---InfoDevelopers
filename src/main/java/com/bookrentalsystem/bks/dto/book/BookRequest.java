@@ -16,10 +16,13 @@ import java.util.List;
 @Builder
 public class BookRequest {
     private Short id;
-    @NotEmpty(message = "please provide book name!!")
+    @NotBlank(message = "please provide book name!!")
     @Length(max = 100,min = 3,message = "Book name should be between 3 to 100")
+    @Pattern(regexp="^[A-Za-z]*$",message = "name should be string")
     private String name;
 
+    @NotNull(message = "please provide page number")
+    @Min(value = 10,message = "Page number of book should be greater than 10 ")
     private Integer page;
 
     @NotEmpty(message = "please provide book isbn name!!")
@@ -29,8 +32,9 @@ public class BookRequest {
     private Double rating;
 
 
-    @NotNull(message = "our book stock capacity is in between 1 to 500")
-    @Max(value = 500)
+    @NotNull(message = "our book stock capacity is in between 0 to 500")
+    @Max(value = 500, message = "should not be greater than 500")
+    @Min(value = 0,message = "should be positive number")
     private Integer stock;
 
     @NotEmpty(message = "Please provide book publish date")

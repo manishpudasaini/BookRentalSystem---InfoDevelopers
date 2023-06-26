@@ -17,8 +17,9 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class AuthorRequest {
     private Short id;
-    @NotEmpty(message = "Name should not be blank")
+    @NotBlank(message = "Name should not be blank")
     @Length(max = 100,min = 3,message = "Name should be between 3 to 100 word ")
+    @Pattern(regexp="^[A-Za-z]*$",message = "name should be string")
     private String name;
 
     @Email(message = "email should be in format")
@@ -26,5 +27,6 @@ public class AuthorRequest {
     private String email;
 
     @Length(max = 10,min = 10,message = "Phone number should be 10 digit")
+    @Pattern(regexp="^[0-9]*$",message = "phone number should be numeric")
     private String number;
 }

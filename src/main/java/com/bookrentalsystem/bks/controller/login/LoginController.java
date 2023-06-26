@@ -23,12 +23,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+
+    //login page view
     @GetMapping("/signIn")
     public String loginPage(Model model){
         model.addAttribute("changePassword",new ChangePasswordDto());
         return "/login/LoginPage";
     }
 
+    //register new user
     @GetMapping("/register")
     public String registerUser(Model model){
         model.addAttribute("user",new LoginUserDto());
@@ -59,6 +62,7 @@ public class LoginController {
         return "redirect:/login/signup";
     }
 
+    //change password -forgot password
     @PostMapping("/change")
     public String changePassword(@ModelAttribute ChangePasswordDto changePasswordDto,Model model){
         User user = userService.findUsingEmail(changePasswordDto.getEmail());

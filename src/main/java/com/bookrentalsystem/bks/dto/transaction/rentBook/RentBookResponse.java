@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,8 +18,8 @@ import java.time.LocalDateTime;
 public class RentBookResponse {
     private Short id;
     private String code;
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private LocalDate from;
+    private LocalDate to;
     private BookRentStatus status;
     private Book book;
     private Member member;

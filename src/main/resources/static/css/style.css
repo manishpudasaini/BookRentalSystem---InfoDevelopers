@@ -405,6 +405,7 @@ th i{
     height: 140px;
     width: 250px;
     margin-left: 30px;
+    object-fit: cover;
 }
 
 .videocard__img:hover{

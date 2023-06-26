@@ -33,7 +33,7 @@
             </div>
             <div class="signup-link">Not a member? <a th:href="@{/api/register}" >Signup now</a></div>
             <a  id="forgetBtn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Forget password ?
+                Forgot password ?
             </a>
 
 <!--            this will be shown if the email & password to login is invalid-->
@@ -42,7 +42,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
-            <!--                        error message-->
+            <!--  error message-->
             <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
                 <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMsg.message}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>

@@ -20,6 +20,8 @@ public class RentBookRequest {
 //    @Min(1)
 //    @Max(value = 25,message ="You can borrow our book upto 1 to 25 days" )
     @NotNull(message = "please enter no of days")
+    @Max(value = 25, message = "cannot rent more than 25 days")
+    @Min(value = 1,message = "should rent book for at least 1 day")
     private Integer days;
     @NotNull(message = "Please select a book!!")
     private Short bookId;

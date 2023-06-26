@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Category Table')}"></th:block>
+    <th:block th:replace="~{fragments/HtmlHeader :: html_head('Customer Table')}"></th:block>
 </head>
 <body>
 <div th:replace="~{fragments/Sidebar :: sidebar}"></div>
@@ -14,7 +14,7 @@
 
             <div class="category-form">
                 <div class="titleDesc">
-                    <span>Member form</span>
+                    <strong>Member form</strong>
 
                     <a th:href="@{/member/table}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -54,6 +54,7 @@
                         <input type="text" class="form-control"
                                th:field="*{phone}"
                                th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}">
+                        <p>(should be 10 digit)</p>
                         <label for="floatingInput">Phone</label>
                     </div>
 

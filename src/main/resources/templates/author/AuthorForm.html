@@ -14,7 +14,7 @@
 
             <div class="category-form">
                 <div class="titleDesc">
-                    <span>Author form</span>
+                    <strong>Author form</strong>
 
                     <a th:href="@{/author/table}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -59,6 +59,7 @@
                                th:field="*{number}"
                                th:classappend="${#fields.hasErrors('number')?'is-invalid':''}"
                         >
+                        <p>(should be 10 digit)</p>
                         <label for="floatingInput">Phone</label>
 <!--                        <p th:if="${#fields.hasErrors('number')}" th:errors="*{number}"-->
 <!--                           class="invalid-feedback">-->

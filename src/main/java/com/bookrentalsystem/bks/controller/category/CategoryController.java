@@ -25,13 +25,14 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final BookService bookService;
 
+    //category table view
     @GetMapping("/table")
     public String categoryTable(Model model){
         List<CategoryResponse> categoryResponses = categoryService.allCategory();
         model.addAttribute("categoryResponse",categoryResponses);
         return "category/CategoryTable";
     }
-
+//category form -  add category
     @GetMapping("/form")
     public String categoryForm(Model model){
         if(model.getAttribute("category") == null){
@@ -65,6 +66,7 @@ public class CategoryController {
        return "redirect:/category/table";
     }
 
+    //update the change in category
     @RequestMapping("/update/{id}")
     public String categoryUpdate(@PathVariable Short id, Model model){
        CategoryResponse categoryResponse = categoryService.findCategoryResponseById(id);
@@ -89,6 +91,7 @@ public class CategoryController {
         return "redirect:/category/table";
     }
 
+    //delete a category
     @RequestMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Short id,RedirectAttributes redirectAttributes){
 

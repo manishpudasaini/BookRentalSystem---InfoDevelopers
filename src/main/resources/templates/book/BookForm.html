@@ -15,7 +15,7 @@
 
             <div class="category-form bookCategory">
                 <div class="titleDesc">
-                    <span>Book form</span>
+                    <strong>Book form</strong>
 
                     <a th:href="@{/book/table}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
@@ -111,6 +111,7 @@
                                th:field="*{imageFile}"
                                th:classappend="${#fields.hasErrors('imageFile')?'is-invalid':''}"
                         >
+                        <p>(only jpg & png file)</p>
                     </div>
 
                     <div class="form-floating" th:if="${book.id}">

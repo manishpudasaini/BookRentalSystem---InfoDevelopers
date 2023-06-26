@@ -27,6 +27,7 @@ public class MemberController {
     private final MemberService memberService;
     private final TransactionService transactionService;
 
+    //member list
     @GetMapping("/table")
     public String memberTable(Model model){
         List<Member> members =memberService.allMemberEntity();
@@ -35,6 +36,7 @@ public class MemberController {
         return "customer/CustomerTable";
     }
 
+    //add member form
     @GetMapping("/form")
     public String memberForm(Model model){
         if(model.getAttribute("member") == null)
@@ -42,6 +44,7 @@ public class MemberController {
         return "customer/CustomerForm";
     }
 
+    //save the member - validation
     @PostMapping("/save")
     public String saveMember(@Valid @ModelAttribute("member") MemberRequest memberRequest,
                              BindingResult result,Model model,RedirectAttributes redirectAttributes){
@@ -83,6 +86,7 @@ public class MemberController {
         return "redirect:/member/table";
     }
 
+    //delete the member - soft delete
     @RequestMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Short id,RedirectAttributes redirectAttributes){
        List<Transaction> transaction =  transactionService.allTransactionEntity();

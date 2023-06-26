@@ -28,10 +28,10 @@ public class Transaction extends Auditable<String> {
     private String code;
 
     @Column(name = "from_date",nullable = false)
-    private LocalDateTime from;
+    private LocalDate from;
 
     @Column(name = "to_date",nullable = false)
-    private LocalDateTime to;
+    private LocalDate to;
 
     @Column(name = "book_status",nullable = false)
     @Enumerated(EnumType.STRING)

@@ -22,17 +22,19 @@ public class GlobalExceptionHandler {
         return "redirect:/return/book/form";
     }
 
-//    @ExceptionHandler(value = {BookCanNotBeDeletedException.class})
-//    public String handelBookException(BookCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
-//        GlobalExceptionMessage message = new GlobalExceptionMessage();
-//
-//
-//            message.setMessage("This book can not be deleted as someone have rent this book!!");
-//            redirectAttributes.addFlashAttribute("errorMsg",message);
-//
-//        return "redirect:/book/table";
-//    }
+    //this is used to handel the Book cannot be deleted exception
+    @ExceptionHandler(value = {BookCanNotBeDeletedException.class})
+    public String handelBookException(BookCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
 
+
+            message.setMessage("This book can not be deleted as someone have rent this book!!");
+            redirectAttributes.addFlashAttribute("errorMsg",message);
+
+        return "redirect:/book/table";
+    }
+
+    //this is used to handel members cannot be deleted exception
     @ExceptionHandler(value = {MemberCanNotBeDeletedException.class})
     public String handelMemberException(MemberCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();
@@ -44,6 +46,7 @@ public class GlobalExceptionHandler {
         return "redirect:/member/table";
     }
 
+    //this handel the exception when category cannot be deleted
     @ExceptionHandler(value = {CategoryCanNotBeDeletedException.class})
     public String handelCategoryException(CategoryCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();
@@ -53,6 +56,7 @@ public class GlobalExceptionHandler {
         return "redirect:/category/table";
     }
 
+    //author cannot be deleted exception is handel here
     @ExceptionHandler(value = {AuthorCanNotBeDeletedException.class})
     public String handelAuthorException(AuthorCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();
@@ -62,6 +66,8 @@ public class GlobalExceptionHandler {
         return "redirect:/author/table";
     }
 
+
+    //this is used when forgot password email not found
     @ExceptionHandler(value = {UserHavingThisEmailNotExist.class})
     public String handelUserException(UserHavingThisEmailNotExist e, RedirectAttributes redirectAttributes) throws Exception {
         GlobalExceptionMessage message = new GlobalExceptionMessage();

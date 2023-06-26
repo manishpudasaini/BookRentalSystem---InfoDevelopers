@@ -12,6 +12,7 @@ import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
 import com.bookrentalsystem.bks.service.TransactionService;
+import com.bookrentalsystem.bks.utility.Fileutils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class BookController {
     private final AuthorService authorService;
     private final BookService bookService;
     private final TransactionService transactionService;
-
+    private final Fileutils fileutils;
     @GetMapping("/table")
     public String bookTable(Model model){
        List<BookResponse> books =  bookService.allBooks();
@@ -58,6 +59,8 @@ public class BookController {
                            BindingResult result,
                            Model model,RedirectAttributes redirectAttributes) throws IOException {
 
+        //extract the type of the multipart file
+        String type =fileutils.photoValidation(bookRequest.getImageFile());
 
         //multipart file validation
         if(bookRequest.getImageFile().getSize()== 0 && bookRequest.getId() == null){
@@ -66,6 +69,17 @@ public class BookController {
                     new FieldError("bookRequest","imageFile",message);
             result.addError(fieldError);
         }
+
+        Boolean validType = type.equals("image/jpeg") || type.equals("image/png");
+
+        //check if the multipart file is in Jpg, png format
+        if(!validType){
+            String message = "Image type should be jpg or png";
+            FieldError fieldError =
+                    new FieldError("bookRequest","imageFile",message);
+            result.addError(fieldError);
+        }
+
         if (result.hasErrors()) {
             List<AuthorResponse> authors = authorService.allAuthor();
             List<CategoryResponse> categories = categoryService.allCategory();
@@ -97,6 +111,8 @@ public class BookController {
         redirectAttributes.addFlashAttribute("message","Book Deleted Successfully!!");
         return "redirect:/book/table";
     }
+
+    //update book
     @GetMapping("/update/{id}")
     public String updateBook(@PathVariable short id, RedirectAttributes redirectAttributes){
        Book book =  bookService.findBookByid(id);
@@ -105,6 +121,7 @@ public class BookController {
         return "redirect:/book/form";
     }
 
+    //view the book details in separate page
     @GetMapping("view/{id}")
     public String viewBook(@PathVariable Short id,Model model) throws IOException {
       BookResponse singleBook =   bookService.viewBookId(id);

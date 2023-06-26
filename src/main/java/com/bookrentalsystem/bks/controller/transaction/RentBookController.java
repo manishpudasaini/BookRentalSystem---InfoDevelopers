@@ -42,6 +42,7 @@ public class RentBookController {
         return "transaction/rentBook/RentBookForm";
     }
 
+    //method used to save the record of rent book
     @PostMapping("/save")
     public String saveRentBook(@Valid @ModelAttribute("rent") RentBookRequest rentBookRequest,
                                BindingResult bindingResult,

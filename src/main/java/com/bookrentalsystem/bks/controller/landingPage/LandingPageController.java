@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class LandingPageController {
     private final BookService bookService;
 
+    //landing page view & list of all books
     @GetMapping("/home")
     public String homePage(Model model){
        List<BookResponse> books = bookService.allBookView();

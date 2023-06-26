@@ -104,7 +104,7 @@ public class AuthorController {
 
        List<Short> allIds = allBooks.stream()
                .flatMap(b -> b.getAuthors().stream())
-               .map(Author::getId).collect(Collectors.toList());
+               .map(Author::getId).toList();
 
        Optional<Short> singleId = allIds.stream().filter(i -> i == id).findFirst();
 
@@ -112,9 +112,7 @@ public class AuthorController {
        if(singleId.isPresent()){
            throw new AuthorCanNotBeDeletedException("Author cannot be deleted!!");
        }
-
        authorService.deleteAuthor(id);
-
         String message = "";
         redirectAttributes.addFlashAttribute("message","Author Deleted Successfully!!");
         return "redirect:/author/table?success";

@@ -15,6 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
+
+    //transaction table view
     @GetMapping("/table")
     public String transactionTable(Model model){
        List<TransactionDto> allTransactionsDto = transactionService.allTransaction();

@@ -1,6 +1,7 @@
 package com.bookrentalsystem.bks.dto.transaction.returnBook;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Past;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

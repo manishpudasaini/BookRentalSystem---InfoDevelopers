@@ -20,24 +20,40 @@ public class AuthorServiceImpl implements AuthorService  {
     private final AuthorRepo authorRepo;
     //this method is used to add the author in our database
     public String addAuthorDb(AuthorRequest authorRequest){
-        Optional<Author> dbAuthorFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
+        Optional<Author> dbAuthorEmailFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
+        Optional<Author> dbAuthorNumberFalse = authorRepo.findByNumberAndDeletedIsFalse(authorRequest.getNumber());
 
         Author author = authorRequestToEntity(authorRequest);
 
-        if(dbAuthorFalse.isPresent()  ){
-            Author activeAuthor = dbAuthorFalse.get();
-            if(author.getEmail().equalsIgnoreCase(activeAuthor.getEmail())
-                    || author.getNumber().equalsIgnoreCase(activeAuthor.getNumber())){
+        if(dbAuthorEmailFalse.isPresent()  ){
+            Author activeAuthor = dbAuthorEmailFalse.get();
+            //validate the author check if author already exist or not
+            Boolean validateAuthorActive = author.getEmail().equalsIgnoreCase(activeAuthor.getEmail())
+                    || author.getNumber().equals(activeAuthor.getNumber());
+
+            if(validateAuthorActive){
                 return "Author already exist!!";
             }
 
         }
 
-        Optional<Author> dbAuthorTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
-        if(dbAuthorTrue.isPresent()){
-            Author inActiveAuthor = dbAuthorTrue.get();
-            if(inActiveAuthor.getEmail().equalsIgnoreCase(author.getEmail()) ||
-                    inActiveAuthor.getNumber().equalsIgnoreCase(author.getNumber())){
+        if(dbAuthorNumberFalse.isPresent()  ){
+            Author activeAuthor = dbAuthorNumberFalse.get();
+            //validate the author check if author already exist or not
+            Boolean validateAuthorActive = author.getEmail().equalsIgnoreCase(activeAuthor.getEmail())
+                    || author.getNumber().equals(activeAuthor.getNumber());
+
+            if(validateAuthorActive){
+                return "Author already exist!!";
+            }
+
+        }
+
+        Optional<Author> dbAuthorEmailTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
+        Optional<Author> dbAuthorNumberTrue = authorRepo.findByNumberAndDeletedIsTrue(authorRequest.getNumber());
+
+        if(dbAuthorEmailTrue.isPresent()){
+            Author inActiveAuthor = dbAuthorEmailTrue.get();
                 inActiveAuthor.setName(author.getName());
                 inActiveAuthor.setNumber(author.getNumber());
                 inActiveAuthor.setEmail(author.getEmail());
@@ -45,7 +61,17 @@ public class AuthorServiceImpl implements AuthorService  {
                 authorRepo.save(inActiveAuthor);
                 return null;
             }
+
+        if(dbAuthorNumberTrue.isPresent()){
+            Author inActiveAuthor = dbAuthorNumberTrue.get();
+                inActiveAuthor.setName(author.getName());
+                inActiveAuthor.setNumber(author.getNumber());
+                inActiveAuthor.setEmail(author.getEmail());
+                inActiveAuthor.setDeleted(Boolean.FALSE);
+                authorRepo.save(inActiveAuthor);
+                return null;
         }
+
          authorRepo.save(author);
         return null;
     }

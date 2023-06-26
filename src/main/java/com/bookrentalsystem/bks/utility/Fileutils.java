@@ -1,5 +1,6 @@
 package com.bookrentalsystem.bks.utility;
 
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +33,14 @@ public class Fileutils {
         }
         return filePath;
     }
+
+    //this is used to extract the file type to check the file type
+    public String photoValidation(MultipartFile multipartFile) throws IOException {
+        Tika tika = new Tika();
+        String type = tika.detect(multipartFile.getOriginalFilename());
+        return type;
+    }
+
 
     //convert image  into base64
     public String getBase64FormFilePath(String filePath) throws IOException {
