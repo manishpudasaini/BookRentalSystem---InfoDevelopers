@@ -23,7 +23,7 @@
           </a>
         </div>
 
-        <form class="login" th:object="${author}" th:action="@{/author/update/save}" th:method="POST">
+        <form class="login" th:object="${author}" th:action="@{/author/save}" th:method="POST">
           <div class="form-floating ">
             <input type="text" th:field="*{id}" hidden>
           </div>

@@ -13,6 +13,7 @@ import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
 import com.bookrentalsystem.bks.utility.Fileutils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.FieldError;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +31,14 @@ public class BookServiceImpl implements BookService {
     private final Fileutils fileutils;
 
     //this method is used to add book
-    public BookResponse addBook(BookRequest bookRequest) throws IOException {
+    public String addBook(BookRequest bookRequest) throws IOException {
+        bookRequest.setName(bookRequest.getName().trim());
+
+        Optional<Book> singleBookNotDelete = bookRepo.findByNameAndDeletedIsFalse(bookRequest.getName());
+        if(singleBookNotDelete.isPresent()){
+            return "Book having same name already exist!!!";
+        }
+
         String imagePath = null;
         if (bookRequest.getId() != null && bookRequest.getImageFile().isEmpty()) {
             Book book = bookRepo.findById(bookRequest.getId()).orElseThrow();
@@ -58,7 +66,7 @@ public class BookServiceImpl implements BookService {
 
         List<Short> authorIds = book.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
 
-        return BookResponse.builder()
+        BookResponse.builder()
                 .id(book.getId())
                 .name(book.getName())
                 .page(book.getPage())
@@ -70,6 +78,8 @@ public class BookServiceImpl implements BookService {
                 .category(book.getCategory().getId())
                 .authorsId(authorIds)
                 .build();
+
+        return null;
     }
 
     //this is used to find book by id
@@ -120,7 +130,7 @@ public class BookServiceImpl implements BookService {
                 .stream().map(this::entityTBookResponse).collect(Collectors.toList());
     }
 
-    // this function is used to find book by its id & return Bookreponse
+    // this function is used to find book by its id & return BookReponse
     @Override
     public BookResponse viewBookId(Short id) throws IOException {
         Optional<Book> singleBook = bookRepo.findById(id);

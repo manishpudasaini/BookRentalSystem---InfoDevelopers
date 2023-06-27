@@ -34,6 +34,7 @@
                                th:field="*{name}"
                                th:classappend="${#fields.hasErrors('name')?'is-invalid':''}">
                         <label for="floatingInput">Name</label>
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red" ></p>
                     </div>
 
                     <div class="form-floating ">
@@ -41,6 +42,7 @@
                                th:field="*{email}"
                                th:classappend="${#fields.hasErrors('email')?'is-invalid':''}">
                         <label for="floatingInput">Email</label>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red" ></p>
                     </div>
 
                     <div class="form-floating ">
@@ -48,6 +50,7 @@
                                th:field="*{address}"
                                th:classappend="${#fields.hasErrors('address')?'is-invalid':''}">
                         <label for="floatingInput">Address</label>
+                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color: red" ></p>
                     </div>
 
                     <div class="form-floating ">
@@ -56,6 +59,7 @@
                                th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}">
                         <p>(should be 10 digit)</p>
                         <label for="floatingInput">Phone</label>
+                        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="color: red" ></p>
                     </div>
 
                     <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>

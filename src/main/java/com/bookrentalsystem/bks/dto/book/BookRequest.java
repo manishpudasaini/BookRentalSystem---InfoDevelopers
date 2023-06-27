@@ -18,14 +18,14 @@ public class BookRequest {
     private Short id;
     @NotBlank(message = "please provide book name!!")
     @Length(max = 100,min = 3,message = "Book name should be between 3 to 100")
-    @Pattern(regexp="^[A-Za-z]*$",message = "name should be string")
     private String name;
 
     @NotNull(message = "please provide page number")
     @Min(value = 10,message = "Page number of book should be greater than 10 ")
+    @Max(value = 21450, message = "Page number is too big!!")
     private Integer page;
 
-    @NotEmpty(message = "please provide book isbn name!!")
+    @NotBlank(message = "please provide book isbn name!!")
     @Length(max = 30,min = 5,message = "isbn number should be between 5 to 30 digit")
     private String isbn;
 

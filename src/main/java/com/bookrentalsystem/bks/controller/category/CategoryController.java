@@ -6,8 +6,10 @@ import com.bookrentalsystem.bks.exception.globalException.CategoryCanNotBeDelete
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,13 +29,15 @@ public class CategoryController {
 
     //category table view
     @GetMapping("/table")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String categoryTable(Model model){
         List<CategoryResponse> categoryResponses = categoryService.allCategory();
         model.addAttribute("categoryResponse",categoryResponses);
         return "category/CategoryTable";
     }
-//category form -  add category
+    //category form -  add category
     @GetMapping("/form")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String categoryForm(Model model){
         if(model.getAttribute("category") == null){
             model.addAttribute("category",new CategoryRequest());
@@ -74,22 +78,22 @@ public class CategoryController {
         return "/category/UpdateForm";
     }
 
-    @PostMapping("/update/save")
-    public String saveUpdateCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
-                               BindingResult result,
-                               Model model,RedirectAttributes redirectAttributes){
-
-        if(result.hasErrors()){
-            System.out.println(result);
-            model.addAttribute("category",categoryRequest);
-            return "category/UpdateForm";
-        }
-
-        categoryService.saveUpdateCategory(categoryRequest);
-
-        redirectAttributes.addFlashAttribute("message","Category updated successfully!!");
-        return "redirect:/category/table";
-    }
+//    @PostMapping("/update/save")
+//    public String saveUpdateCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
+//                               BindingResult result,
+//                               Model model,RedirectAttributes redirectAttributes){
+//
+//        if(result.hasErrors()){
+//            System.out.println(result);
+//            model.addAttribute("category",categoryRequest);
+//            return "category/UpdateForm";
+//        }
+//
+//        categoryService.saveUpdateCategory(categoryRequest);
+//
+//        redirectAttributes.addFlashAttribute("message","Category updated successfully!!");
+//        return "redirect:/category/table";
+//    }
 
     //delete a category
     @RequestMapping("/delete/{id}")

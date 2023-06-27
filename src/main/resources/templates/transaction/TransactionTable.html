@@ -14,9 +14,21 @@
     <div class="box-area">
 
       <div class="user_table_post  mt-5">
-        <div class="d-flex justify-content-between w-1024 desc" >
-          <h3>Transaction History</h3>
+        <div class="d-flex justify-content-between w-1024 desc" id="transactionHistory">
+          <div>
+            <h3>Transaction History</h3>
+          </div>
+          <div class="download">
+            <a th:href="@{/transaction/history}" >
+              <i class="fa-solid fa-file-arrow-down" style="color: #24a0d6;"></i>
+            </a>
+          </div>
+        </div>
 
+        <!-- success message -->
+        <div class="alert alert-success alert-dismissible fade show" th:if="${downloadMsg}">
+          <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i> <span th:text="${downloadMsg}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
 
 
@@ -53,7 +65,6 @@
 
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
-
 
 </body>
 </html>

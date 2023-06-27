@@ -20,32 +20,19 @@ public class AuthorServiceImpl implements AuthorService  {
     private final AuthorRepo authorRepo;
     //this method is used to add the author in our database
     public String addAuthorDb(AuthorRequest authorRequest){
+        authorRequest.setName(authorRequest.getName().trim());
+        authorRequest.setEmail(authorRequest.getEmail().trim());
         Optional<Author> dbAuthorEmailFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
         Optional<Author> dbAuthorNumberFalse = authorRepo.findByNumberAndDeletedIsFalse(authorRequest.getNumber());
 
         Author author = authorRequestToEntity(authorRequest);
 
         if(dbAuthorEmailFalse.isPresent()  ){
-            Author activeAuthor = dbAuthorEmailFalse.get();
-            //validate the author check if author already exist or not
-            Boolean validateAuthorActive = author.getEmail().equalsIgnoreCase(activeAuthor.getEmail())
-                    || author.getNumber().equals(activeAuthor.getNumber());
-
-            if(validateAuthorActive){
-                return "Author already exist!!";
-            }
-
+            return "Author already exist!!";
         }
 
         if(dbAuthorNumberFalse.isPresent()  ){
-            Author activeAuthor = dbAuthorNumberFalse.get();
-            //validate the author check if author already exist or not
-            Boolean validateAuthorActive = author.getEmail().equalsIgnoreCase(activeAuthor.getEmail())
-                    || author.getNumber().equals(activeAuthor.getNumber());
-
-            if(validateAuthorActive){
-                return "Author already exist!!";
-            }
+            return "Author already exist!!";
 
         }
 

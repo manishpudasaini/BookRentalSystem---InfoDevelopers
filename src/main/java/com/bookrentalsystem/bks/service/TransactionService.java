@@ -6,6 +6,8 @@ import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.model.Transaction;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public interface TransactionService {
@@ -25,6 +27,8 @@ public interface TransactionService {
     TransactionDto transactionToTransactionDto(Transaction transaction);
     List<TransactionDto> allTransaction();
     List<Transaction> allTransactionEntity();
+
+    String downloadHistoryInExcel() throws IOException;
 
 
 }

@@ -13,12 +13,15 @@ import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.Fileutils;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,20 +38,23 @@ public class BookController {
     private final BookService bookService;
     private final TransactionService transactionService;
     private final Fileutils fileutils;
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/table")
-    public String bookTable(Model model){
-       List<BookResponse> books =  bookService.allBooks();
-       model.addAttribute("book",books);
+    public String bookTable(Model model) {
+        List<BookResponse> books = bookService.allBooks();
+        model.addAttribute("book", books);
         return "book/BookTable";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/form")
-    public String bookForm(Model model){
+    public String bookForm(Model model) {
         List<AuthorResponse> authors = authorService.allAuthor();
         List<CategoryResponse> categories = categoryService.allCategory();
-        model.addAttribute("author",authors);
-        model.addAttribute("category",categories);
-        if(model.getAttribute("book") ==null){
+        model.addAttribute("author", authors);
+        model.addAttribute("category", categories);
+        if (model.getAttribute("book") == null) {
             model.addAttribute("book", new BookRequest());
         }
         return "book/BookForm";
@@ -57,76 +63,85 @@ public class BookController {
     @PostMapping("/save")
     public String saveBook(@Valid @ModelAttribute("book") BookRequest bookRequest,
                            BindingResult result,
-                           Model model,RedirectAttributes redirectAttributes) throws IOException {
+                           Model model, RedirectAttributes redirectAttributes) throws IOException {
 
-        //extract the type of the multipart file
-        String type =fileutils.photoValidation(bookRequest.getImageFile());
 
         //multipart file validation
-        if(bookRequest.getImageFile().getSize()== 0 && bookRequest.getId() == null){
+        if (bookRequest.getImageFile().getSize() == 0 && bookRequest.getId() == null) {
             String message = "Please select photo of your book";
             FieldError fieldError =
-                    new FieldError("bookRequest","imageFile",message);
+                    new FieldError("bookRequest", "imageFile", message);
             result.addError(fieldError);
         }
 
-        Boolean validType = type.equals("image/jpeg") || type.equals("image/png");
+        //THIS IS THE VALIDATION FOR MULTIPART FILE S
+        if (bookRequest.getId() == null) {
+            //extract the type of the multipart file
+            String type = fileutils.photoValidation(bookRequest.getImageFile());
 
-        //check if the multipart file is in Jpg, png format
-        if(!validType){
-            String message = "Image type should be jpg or png";
-            FieldError fieldError =
-                    new FieldError("bookRequest","imageFile",message);
-            result.addError(fieldError);
+            Boolean validType = type.equals("image/jpeg") || type.equals("image/png");
+
+            //check if the multipart file is in Jpg, png format
+            if (!validType) {
+                String message = "Image type should be jpg or png";
+                FieldError fieldError =
+                        new FieldError("bookRequest", "imageFile", message);
+                result.addError(fieldError);
+            }
         }
 
         if (result.hasErrors()) {
             List<AuthorResponse> authors = authorService.allAuthor();
             List<CategoryResponse> categories = categoryService.allCategory();
-            model.addAttribute("author",authors);
-            model.addAttribute("category",categories);
+            model.addAttribute("author", authors);
+            model.addAttribute("category", categories);
             model.addAttribute("book", bookRequest);
             return "book/BookForm";
         }
-        bookService.addBook(bookRequest);
-        redirectAttributes.addFlashAttribute("message","Book table updated");
+       String message = bookService.addBook(bookRequest);
+        if(message!=null){
+            ObjectError error = new ObjectError("globalError",message);
+            result.addError(error);
+            return "book/BookForm";
+        }
+        redirectAttributes.addFlashAttribute("message", "Book table updated");
         return "redirect:/book/table";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteBook(@PathVariable Short id,RedirectAttributes redirectAttributes){
-        List<Transaction> transactions =transactionService.allTransactionEntity();
+    public String deleteBook(@PathVariable Short id, RedirectAttributes redirectAttributes) {
+        List<Transaction> transactions = transactionService.allTransactionEntity();
 
-       List<Transaction> notDeleteTransaction = transactions.stream().filter(t ->t.getBook().getId() == id)
-                        .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
+        List<Transaction> notDeleteTransaction = transactions.stream().filter(t -> t.getBook().getId() == id)
+                .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
 
-       if(notDeleteTransaction.size() == 0){
+        if (notDeleteTransaction.size() == 0) {
 //         List<Transaction> deleteTransaction =  transactions.stream().filter(t -> t.getBook().getId() == id)
 //                   .filter(t -> t.getStatus().equals(BookRentStatus.RETURN)).toList();
-           bookService.deleteBook(id);
-       }else {
-           throw new BookCanNotBeDeletedException("Book cannot be deleted");
-       }
+            bookService.deleteBook(id);
+        } else {
+            throw new BookCanNotBeDeletedException("Book cannot be deleted");
+        }
         String message = "";
-        redirectAttributes.addFlashAttribute("message","Book Deleted Successfully!!");
+        redirectAttributes.addFlashAttribute("message", "Book Deleted Successfully!!");
         return "redirect:/book/table";
     }
 
     //update book
     @GetMapping("/update/{id}")
-    public String updateBook(@PathVariable short id, RedirectAttributes redirectAttributes){
-       Book book =  bookService.findBookByid(id);
-       BookResponse bookResponse =bookService.entityTBookResponse(book);
-        redirectAttributes.addFlashAttribute("book",bookResponse);
+    public String updateBook(@PathVariable short id, RedirectAttributes redirectAttributes) {
+        Book book = bookService.findBookByid(id);
+        BookResponse bookResponse = bookService.entityTBookResponse(book);
+        redirectAttributes.addFlashAttribute("book", bookResponse);
         return "redirect:/book/form";
     }
 
     //view the book details in separate page
     @GetMapping("view/{id}")
-    public String viewBook(@PathVariable Short id,Model model) throws IOException {
-      BookResponse singleBook =   bookService.viewBookId(id);
+    public String viewBook(@PathVariable Short id, Model model) throws IOException {
+        BookResponse singleBook = bookService.viewBookId(id);
         List<BookResponse> books = bookService.allBookView();
-        model.addAttribute("book",singleBook);
+        model.addAttribute("book", singleBook);
         return "book/BookDetail";
     }
 

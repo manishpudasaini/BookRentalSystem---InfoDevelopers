@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Length;
 public class CategoryRequest {
     private Short id;
     @NotBlank(message = "Please provide category name!!!")
-    @Pattern(regexp="^[A-Za-z]*$",message = "name should be string")
+    @Pattern(regexp="^[a-zA-Z].*[\\s\\.]*$",message = "name should be string")
     @Size(max = 100,min = 3,message = "Category name should be between 3 to 100 word")
     private String name;
     @NotEmpty(message = "Please give some information about the category you have entered..")

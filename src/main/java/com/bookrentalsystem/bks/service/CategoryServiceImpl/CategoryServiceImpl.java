@@ -20,13 +20,11 @@ public class CategoryServiceImpl implements CategoryService{
 
     //this is the business logic to create category
     public String addCategory(CategoryRequest categoryRequest){
+        categoryRequest.setName(categoryRequest.getName().trim());
         Optional<Category> dbCategoryDeletedFalse =  categoryRepo.findCategoryByNameAndDeletedIsFalse(categoryRequest.getName());
         Category category = categoryRequestToEntity(categoryRequest);
         if(dbCategoryDeletedFalse.isPresent()){
-            Category dbCategoryCheck = dbCategoryDeletedFalse.get();
-            if(dbCategoryCheck.getName().equalsIgnoreCase(category.getName())){
-                return "Category already exist!!";
-            }
+                    return "Category already exist!!";
         }
 
         Optional<Category> dbCategoryDeletedTrue =  categoryRepo.findCategoryByNameAndDeletedIsTrue(categoryRequest.getName());
@@ -79,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService{
     public Category categoryRequestToEntity(CategoryRequest categoryRequest){
         Category category = new Category();
         category.setId(categoryRequest.getId());
-        category.setName(categoryRequest.getName());
+        category.setName(categoryRequest.getName().trim());
         category.setDescription(categoryRequest.getDescription());
         return category;
     }

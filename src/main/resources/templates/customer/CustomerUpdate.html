@@ -23,7 +23,7 @@
           </a>
         </div>
 
-        <form th:object="${member}" th:action="@{/member/update/save}" th:method="POST">
+        <form th:object="${member}" th:action="@{/member/save}" th:method="POST">
           <div class="form-floating ">
             <input type="text" th:field="*{id}" hidden>
           </div>

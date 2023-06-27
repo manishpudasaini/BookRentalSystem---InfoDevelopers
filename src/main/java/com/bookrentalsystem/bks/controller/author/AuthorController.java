@@ -7,8 +7,10 @@ import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +32,7 @@ public class AuthorController {
 
     //author table
     @GetMapping("/table")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String authorTable(Model model){
       List<AuthorResponse> authors = authorService.allAuthor();
       model.addAttribute("author",authors);
@@ -38,6 +41,7 @@ public class AuthorController {
 
     //author form page
     @GetMapping("/form")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String authorForm(Model model){
         if(model.getAttribute("author") == null) {
             model.addAttribute("author", new AuthorRequest());
@@ -79,22 +83,22 @@ public class AuthorController {
       return "/author/UpdateForm";
     }
 
-    //update author controller
-    @PostMapping("/update/save")
-    public String saveUpdateAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
-                             BindingResult result,
-                                   Model model,RedirectAttributes redirectAttributes){
-
-        if(result.hasErrors()){
-            model.addAttribute("author",authorRequest);
-            System.out.println(result);
-            return "/author/UpdateForm";
-        }
-
-        authorService.updateAuthorAdd(authorRequest);
-        redirectAttributes.addFlashAttribute("message","Author updated successfully!");
-        return "redirect:/author/table";
-    }
+//    update author controller
+//    @PostMapping("/update/save")
+//    public String saveUpdateAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
+//                             BindingResult result,
+//                                   Model model,RedirectAttributes redirectAttributes){
+//
+//        if(result.hasErrors()){
+//            model.addAttribute("author",authorRequest);
+//            System.out.println(result);
+//            return "/author/UpdateForm";
+//        }
+//
+//        authorService.updateAuthorAdd(authorRequest);
+//        redirectAttributes.addFlashAttribute("message","Author updated successfully!");
+//        return "redirect:/author/table";
+//    }
 
     //delete author controller
     @RequestMapping("/delete/{id}")

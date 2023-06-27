@@ -28,7 +28,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
 
-                <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/update/save}">
+                <form class="login" th:object="${category}" th:method="POST" , th:action="@{/category/save}">
                     <div class="form-floating ">
                         <input type="text" th:field="*{id}" hidden>
                     </div>

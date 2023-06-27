@@ -2,7 +2,9 @@ package com.bookrentalsystem.bks.controller.landingPage;
 
 import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.service.BookService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

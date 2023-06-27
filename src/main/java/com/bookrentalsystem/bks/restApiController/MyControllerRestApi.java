@@ -33,7 +33,7 @@ public class MyControllerRestApi {
     private final MemberService memberService;
 
     @PostMapping("/add/book")
-    public BookResponse addBook(@RequestBody @Valid BookRequest bookRequest) throws IOException {
+    public String addBook(@RequestBody @Valid BookRequest bookRequest) throws IOException {
         return bookService.addBook(bookRequest);
     }
 

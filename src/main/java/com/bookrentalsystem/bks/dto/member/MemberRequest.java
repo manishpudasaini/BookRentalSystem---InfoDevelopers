@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Length;
 public class MemberRequest {
     private Short id;
     @NotBlank(message = "Please enter member name")
-    @Pattern(regexp="^[A-Za-z]*$",message = "name should be string")
+    @Pattern(regexp="^[a-zA-Z].*[\\s\\.]*$",message = "name should be string")
     @Length(min = 3,max = 20,message = "name length should be above 3 words!!")
     private String name;
 

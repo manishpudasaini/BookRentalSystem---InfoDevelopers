@@ -1,8 +1,11 @@
 package com.bookrentalsystem.bks.controller.login;
 
+import com.bookrentalsystem.bks.dto.ForgotPassword.ForgotPasswordDto;
 import com.bookrentalsystem.bks.dto.login.ChangePasswordDto;
 import com.bookrentalsystem.bks.dto.login.LoginUserDto;
+import com.bookrentalsystem.bks.model.SendEmail;
 import com.bookrentalsystem.bks.model.login.User;
+import com.bookrentalsystem.bks.service.ForgotPasswordService;
 import com.bookrentalsystem.bks.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private final ForgotPasswordService forgotPasswordService;
 
     //login page view
     @GetMapping("/signIn")
@@ -62,21 +67,50 @@ public class LoginController {
         return "redirect:/login/signup";
     }
 
-    //change password -forgot password
+    @GetMapping("/forgot/password")
+    public String changePasswordEmailPage(Model model){
+        model.addAttribute("change",new SendEmail());
+        return "/login/EnterEmailPage";
+    }
+
+    //send email to get otp
+    @PostMapping("/send/email")
+    public String emailSend(@ModelAttribute("change") SendEmail email,Model model){
+       Optional<User> singleUser = userService.findUsingEmail(email.getTo());
+       if(singleUser.isPresent()){
+           forgotPasswordService.sendEmail(email);
+           ForgotPasswordDto forgotPasswordDto = new ForgotPasswordDto();
+           forgotPasswordDto.setUserId(singleUser.get().getId());
+           model.addAttribute("newCode",forgotPasswordDto);
+           return "/login/CheckOtpPage";
+       }
+       return null;
+    }
+
+    //this api is used to check the otp code which we have enter & if the code is present then we get access to another page
     @PostMapping("/change")
-    public String changePassword(@ModelAttribute ChangePasswordDto changePasswordDto,Model model){
-        User user = userService.findUsingEmail(changePasswordDto.getEmail());
+    public String checkOtp(@ModelAttribute("newCode") ForgotPasswordDto forgotPasswordDto,Model model){
 
-        System.out.println(user.getPassword());
-        user.setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
+       String message = forgotPasswordService.checkCodeOtp(forgotPasswordDto.getCode());
+       if(message!=null){
+           User user = new User();
+           user.setId(forgotPasswordDto.getUserId());
+           model.addAttribute("user",user);
+           return "/login/ChangePassword";
+       }
+       model.addAttribute("errorMsg","Please enter the same otp which we have send to you");
+        return "login/CheckOtpPage";
+    }
 
-        userService.saveChangeUser(user);
-        System.out.println(user.getPassword());
+    //we change our password by using this api
+    @PostMapping("/change/password")
+    public String changePassword(@ModelAttribute("user") User user){
+      User singleUser =  userService.findById(user.getId());
 
-        String message = "Password changed successfully!!";
-        model.addAttribute("message",message);
-        model.addAttribute("changePassword",new ChangePasswordDto());
-        return "/login/LoginPage";
+      singleUser.setPassword(passwordEncoder.encode(user.getPassword()));
+      userService.saveUserEntity(singleUser);
+
+      return "/login/LoginPage";
     }
 
 

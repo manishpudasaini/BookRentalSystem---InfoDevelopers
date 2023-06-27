@@ -17,7 +17,7 @@
                 <i class="fas fa-user"></i>
                 <input type="text" placeholder="Name"
                        th:field="*{name}"
-                       th:classappend="${#fields.hasErrors('name')?'is-invalid':''}">
+                       th:classappend="${#fields.hasErrors('name')?'is-invalid':'is-valid'}">
             </div>
 
             <div class="row">

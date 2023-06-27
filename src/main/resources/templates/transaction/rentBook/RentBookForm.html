@@ -69,6 +69,12 @@
           <button class="btn btn-dark upload_btn mt-4 me-3" type="reset">Reset</button>
           <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Submit</button>
 
+          <!--  error message-->
+          <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMsg}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+
         </form>
       </div>
 

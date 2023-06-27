@@ -5,12 +5,15 @@ import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
+import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +33,7 @@ public class RentBookController {
     private final BookService bookService;
     private final TransactionService transactionService;
 
+    @PreAuthorize("hasAuthority('LIBRARIAN')")
     @GetMapping("/form")
     public String rentBookForm(Model model){
         List<MemberResponse> memberResponses = memberService.allMemberResponse();
@@ -46,7 +50,7 @@ public class RentBookController {
     @PostMapping("/save")
     public String saveRentBook(@Valid @ModelAttribute("rent") RentBookRequest rentBookRequest,
                                BindingResult bindingResult,
-                               Model model){
+                               Model model,RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
             System.out.println(bindingResult);
@@ -57,7 +61,14 @@ public class RentBookController {
             model.addAttribute("rent",rentBookRequest);
             return "transaction/rentBook/RentBookForm";
         }
-        transactionService.rentABook(rentBookRequest);
+        Book singleBook = bookService.findBookByid(rentBookRequest.getBookId());
+        if(singleBook.getStock() >= 1){
+            transactionService.rentABook(rentBookRequest);
+        }else {
+            redirectAttributes.addFlashAttribute("errorMsg","Book is out of stock!!");
+            return "redirect:/rent/book/form";
+        }
+
         return "redirect:/transaction/table";
     }
 }

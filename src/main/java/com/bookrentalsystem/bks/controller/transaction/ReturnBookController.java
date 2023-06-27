@@ -10,8 +10,10 @@ import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.ReturnBookTbl;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +33,7 @@ public class ReturnBookController {
     private final BookService bookService;
 
     //display return book form
+    @PreAuthorize("hasAuthority('LIBRARIAN')")
     @GetMapping("/form")
     public String returnBookForm(Model model){
         if(model.getAttribute("transaction") == null){

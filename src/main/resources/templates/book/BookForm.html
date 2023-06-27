@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <th:block th:replace="~{fragments/HtmlHeader :: html_head('Book Form')}"></th:block>
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
 
@@ -42,14 +43,16 @@
                                th:classappend="${#fields.hasErrors('name')?'is-invalid':''}"
                         >
                         <label for="floatingInput">Name</label>
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></p>
                     </div>
 
                     <div class="form-floating ">
-                        <input type="number" min="10" class="form-control"
+                        <input type="number"  class="form-control"
                                th:field="*{page}"
-
-                        >
+                               th:classappend="${#fields.hasErrors('page')?'is-invalid':''}">
                         <label for="floatingInput">Page Number</label>
+                        <p th:if="${#fields.hasErrors('page')}" th:errors="*{page}" style="color: red" ></p>
+
                     </div>
 
                     <div class="form-floating d-flex flex-fill justify-content-between gap-5 ">
@@ -93,14 +96,16 @@
                                    th:classappend="${#fields.hasErrors('stock')?'is-invalid':''}"
                             >
                             <label for="floatingInput">Stock</label>
+                            <p th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" style="color: red" ></p>
                         </div>
 
                         <div class="form-floating">
-                            <input type="date" min="10" class="form-control"
+                            <input type="date" id="inputDate" min="10" class="form-control"
                                    th:field="*{published_date}"
                                    th:classappend="${#fields.hasErrors('published_date')?'is-invalid':''}"
                             >
                             <label for="floatingInput">Published Date</label>
+                            <p th:if="${#fields.hasErrors('published_date')}" th:errors="*{published_date}" style="color: red"></p>
                         </div>
 
 
@@ -112,12 +117,14 @@
                                th:classappend="${#fields.hasErrors('imageFile')?'is-invalid':''}"
                         >
                         <p>(only jpg & png file)</p>
+                        <p th:if="${#fields.hasErrors('imageFile')}" th:errors="*{imageFile}" style="color: red"></p>
                     </div>
 
                     <div class="form-floating" th:if="${book.id}">
                         <input type="text" min="10" class="form-control"
                                th:field="*{image_path}"
                         >
+                        <p style="color: red" th:if="${#fields.hasErrors('image_path')}" th:errors="*{image_path}" ></p>
                     </div>
 
 
@@ -169,6 +176,23 @@
 
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
+<script>
+    $(function(){
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var minDate = year + '-' + month + '-' + day;
+        // alert(maxDate);
+        $('#inputDate').attr('max', minDate);
+    });
+</script>
 
 </body>
 </html>

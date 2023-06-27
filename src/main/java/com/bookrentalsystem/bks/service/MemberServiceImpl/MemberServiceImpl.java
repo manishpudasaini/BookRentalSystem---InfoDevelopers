@@ -21,16 +21,15 @@ public class MemberServiceImpl implements MemberService {
     //method to save members
     @Override
     public String addMember(MemberRequest memberRequest) {
+        memberRequest.setName(memberRequest.getName().trim());
+        memberRequest.setEmail(memberRequest.getEmail().trim());
        Optional<Member> memberDeleteFalse =  memberRepo.findMemberByEmailAndDeletedIsFalse(memberRequest.getEmail());
-       if(memberDeleteFalse.isPresent()){
-            Member notDeleteMember =memberDeleteFalse.get();
-            if(memberRequest.getEmail().equals(notDeleteMember.getEmail()) ||
-                    memberRequest.getPhone().equals(notDeleteMember.getPhone())){
-                return null;
-            }
+       Optional<Member> memberDeleteFalseNumber = memberRepo.findByPhoneAndDeletedIsFalse(memberRequest.getPhone());
+       if(memberDeleteFalse.isPresent() || memberDeleteFalseNumber.isPresent()){
+                return "Already exist!!";
         }
 
-
+        Optional<Member> memberDeletedTrueNumber = memberRepo.findByPhoneAndDeletedIsTrue(memberRequest.getPhone());
        Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
         if(memberDeleteTrue.isPresent()){
             Member deleteMember = memberDeleteTrue.get();
@@ -45,6 +44,18 @@ public class MemberServiceImpl implements MemberService {
                 memberRepo.save(deleteMember);
                 return null;
             }
+        }
+        if(memberDeletedTrueNumber.isPresent()){
+            Member deleteMemberNum = memberDeletedTrueNumber.get();
+
+            deleteMemberNum.setName(memberRequest.getName());
+            deleteMemberNum.setEmail(memberRequest.getEmail());
+            deleteMemberNum.setPhone(memberRequest.getPhone());
+            deleteMemberNum.setAddress(memberRequest.getAddress());
+            deleteMemberNum.setDeleted(Boolean.FALSE);
+            memberRepo.save(deleteMemberNum);
+            return null;
+
         }
 
         memberRepo.save(memberRequestToEtity(memberRequest));

@@ -20,7 +20,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     @Override
     public User saveUser(LoginUserDto userDto) {
-
+        userDto.setName(userDto.getName().trim());
+        userDto.setEmail(userDto.getEmail().trim());
         User user = User.builder()
                 .name(userDto.getName())
                 .password(passwordEncoder.encode(userDto.getPassword()))
@@ -43,16 +44,26 @@ public class UserServiceImpl implements UserService {
 
     //this method is used to handel the exception if occur
     @Override
-    public User findUsingEmail(String email) {
+    public Optional<User> findUsingEmail(String email) {
         Optional<User> singleUser = userRepo.findUserByEmail(email);
         if(singleUser.isPresent()){
-            return singleUser.get();
+            return singleUser;
         }
         throw new UserHavingThisEmailNotExist("User does not exist");
     }
 
     @Override
     public User saveChangeUser(User user) {
+        return userRepo.save(user);
+    }
+
+    @Override
+    public User findById(Short id) {
+        return userRepo.findById(id).get();
+    }
+
+    @Override
+    public User saveUserEntity(User user) {
         return userRepo.save(user);
     }
 

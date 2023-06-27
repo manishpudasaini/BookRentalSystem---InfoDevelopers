@@ -8,8 +8,10 @@ import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +30,7 @@ public class MemberController {
     private final TransactionService transactionService;
 
     //member list
+    @PreAuthorize("hasAuthority('LIBRARIAN')")
     @GetMapping("/table")
     public String memberTable(Model model){
         List<Member> members =memberService.allMemberEntity();
@@ -37,6 +40,7 @@ public class MemberController {
     }
 
     //add member form
+    @PreAuthorize("hasAuthority('LIBRARIAN')")
     @GetMapping("/form")
     public String memberForm(Model model){
         if(model.getAttribute("member") == null)

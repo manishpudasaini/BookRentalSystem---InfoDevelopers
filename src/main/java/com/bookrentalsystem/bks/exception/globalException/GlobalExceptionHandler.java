@@ -1,8 +1,12 @@
 package com.bookrentalsystem.bks.exception.globalException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -74,16 +78,27 @@ public class GlobalExceptionHandler {
 
         message.setMessage("Cannot change the password because the email you enter doest exist!!!");
         redirectAttributes.addFlashAttribute("errorMsg",message);
-        return "redirect:/api/signIn";
+        return "redirect:/api/forgot/password";
     }
 
-    //this is used to handel IO exception - if multipart file not selected
-//    @ExceptionHandler(value = {RuntimeException.class})
-//    public String handelCodeException(RuntimeException e, RedirectAttributes redirectAttributes) throws Exception {
+    //this is used to handel the error or access denied exception - try to access unauthorized role api
+    @ExceptionHandler(value = {RuntimeException.class})
+    public ModelAndView handelAccessDeniedException(AccessDeniedException accessDeniedException) {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("errorResponse", "Sorry, You dont have authority to access this api" );
+            mv.setViewName("/errorPage/ExceptionPage");
+            return mv;
+    }
+
+
+//    @ExceptionHandler(value = {DataIntegrityViolationException.class})
+//    public String handelUniqueException(DataIntegrityViolationException e, RedirectAttributes redirectAttributes) throws Exception {
 //        GlobalExceptionMessage message = new GlobalExceptionMessage();
 //
-//            message.setMessage("Please fill all the fields!!");
-//            redirectAttributes.addFlashAttribute("errorMsg",message);
-//            return "redirect:/book/form";
+//        message.setMessage("Already exist!!!");
+//        redirectAttributes.addFlashAttribute("errorMsg",message);
+//        return "redirect:/author/form";
 //    }
 }

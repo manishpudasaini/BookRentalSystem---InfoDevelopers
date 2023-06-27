@@ -16,8 +16,16 @@ import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,7 +34,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepo transactionRepo;
-    private final GenerateRandomNumber generateRandomNumber;
     private final ConvertToLocalDateTime localDateTime;
     private final BookService bookService;
     private final MemberService memberService;
@@ -132,6 +139,96 @@ public class TransactionServiceImpl implements TransactionService {
                .stream().filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
     }
 
+
+    @Override
+    public String downloadHistoryInExcel() throws IOException {
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+
+        XSSFSheet sheet = workbook.createSheet("Transaction_History");
+
+        List<Transaction> allTransactionHistory = transactionRepo.findAll();
+
+        String[] header = {"ID", "CODE", "Date Of Rent", "Date of Return"
+                ,"Status","Return Date","Book name","Member name"};
+
+        // Create a Font for styling header cells
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 13);
+        headerFont.setColor(IndexedColors.BLUE.getIndex());
+
+        // Create a CellStyle with the font
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+
+        // Create a Row
+        Row headerRow = sheet.createRow(0);
+
+        // Create cells
+        for(int i = 0; i < header.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(header[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        int rowNUm = 1;
+
+        for(Transaction transaction:allTransactionHistory){
+            Row row = sheet.createRow(rowNUm++);
+            createCell(transaction,row,workbook);
+        }
+
+        FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\eziom\\OneDrive\\Desktop\\excelFiles\\TransactionHistory.xlsx");
+        workbook.write(fileOutputStream);
+        fileOutputStream.close();
+
+
+
+        return "Transaction history saved in excel";
+    }
+
+     private void createCell(Transaction transaction, Row row, XSSFWorkbook workbook) // creating cells for each row
+    {
+
+        /* CreationHelper helps us create instances of various things like DataFormat,
+           Hyperlink  in a format (HSSF, XSSF)*/
+        CreationHelper createHelper = workbook.getCreationHelper();
+
+//        CellStyle dateCellStyle = workbook.createCellStyle();
+//        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("MMM/dd/yyyy"));
+
+
+        Cell cell = row.createCell(0);
+        cell.setCellValue(transaction.getId());
+
+        cell = row.createCell(1);
+        cell.setCellValue(transaction.getCode());
+
+        cell = row.createCell(2);
+        cell.setCellValue(transaction.getFrom().format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+
+        cell = row.createCell(3);
+        cell.setCellValue(transaction.getTo().format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+
+
+        cell = row.createCell(4);
+        cell.setCellValue(transaction.getStatus().toString());
+
+        cell = row.createCell(5);
+        if(transaction.getReturnDate() != null){
+            cell.setCellValue(transaction.getReturnDate().format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+        }else {
+            cell.setCellValue("");
+        }
+
+        cell = row.createCell(6);
+        cell.setCellValue(transaction.getBook().getName());
+
+        cell = row.createCell(7);
+        cell.setCellValue(transaction.getMember().getName());
+
+    }
 
 
 }

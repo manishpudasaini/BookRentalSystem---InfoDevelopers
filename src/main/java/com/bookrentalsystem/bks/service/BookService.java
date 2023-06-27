@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface BookService {
-    BookResponse addBook(BookRequest bookRequest) throws IOException;
+    String addBook(BookRequest bookRequest) throws IOException;
     Book findBookByid(Short id);
     List<BookResponse> allBooks();
     void deleteBook(Short id);
