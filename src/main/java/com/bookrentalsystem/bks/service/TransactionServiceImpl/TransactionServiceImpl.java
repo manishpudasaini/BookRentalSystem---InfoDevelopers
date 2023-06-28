@@ -15,15 +15,14 @@ import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -114,11 +113,11 @@ public class TransactionServiceImpl implements TransactionService {
     //convert transaction to transactionDto
     @Override
     public TransactionDto transactionToTransactionDto(Transaction transaction) {
-        String  memberName = memberService.findMemberById(transaction.getMember().getId()).getName();
-        String book_name = bookService.findBookByid(transaction.getBook().getId()).getName();
+        String  memberName = transaction.getMember().getName();
+        String bookName = transaction.getBook().getName();
         return TransactionDto.builder()
                 .id(transaction.getId())
-                .book_name(book_name)
+                .book_name(bookName)
                 .code(transaction.getCode())
                 .status(transaction.getStatus())
                 .member_name(memberName)
@@ -141,11 +140,14 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     @Override
-    public String downloadHistoryInExcel() throws IOException {
+    public ByteArrayInputStream downloadHistoryInExcel() throws IOException {
 
         XSSFWorkbook workbook = new XSSFWorkbook();
 
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
         XSSFSheet sheet = workbook.createSheet("Transaction_History");
+
 
         List<Transaction> allTransactionHistory = transactionRepo.findAll();
 
@@ -179,16 +181,21 @@ public class TransactionServiceImpl implements TransactionService {
             createCell(transaction,row,workbook);
         }
 
-        FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\eziom\\OneDrive\\Desktop\\excelFiles\\TransactionHistory.xlsx");
-        workbook.write(fileOutputStream);
-        fileOutputStream.close();
+        //FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\eziom\\OneDrive\\Desktop\\excelFiles\\TransactionHistory.xlsx");
+//        workbook.write(fileOutputStream);
+//        fileOutputStream.close();
+
+        workbook.write(byteArrayOutputStream);
+        byteArrayOutputStream.close();
 
 
 
-        return "Transaction history saved in excel";
+//        return "Transaction history saved in excel";
+        return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
-     private void createCell(Transaction transaction, Row row, XSSFWorkbook workbook) // creating cells for each row
+     private void createCell(Transaction transaction, Row row,
+                             XSSFWorkbook workbook) throws IOException // creating cells for each row
     {
 
         /* CreationHelper helps us create instances of various things like DataFormat,
@@ -227,6 +234,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         cell = row.createCell(7);
         cell.setCellValue(transaction.getMember().getName());
+
 
     }
 

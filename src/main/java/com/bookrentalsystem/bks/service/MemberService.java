@@ -9,7 +9,6 @@ import java.util.List;
 public interface MemberService {
 
     String addMember(MemberRequest memberRequest);
-    String addUpdateMember(MemberRequest memberRequest);
     Member memberRequestToEtity(MemberRequest memberRequest);
     MemberResponse entityToMemberResponse(Member member);
     Member findMemberById(Short id);

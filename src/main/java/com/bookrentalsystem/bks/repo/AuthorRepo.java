@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface AuthorRepo extends JpaRepository<Author,Short> {
     Optional<Author> findByEmailAndDeletedIsFalse(String name);
-    @Query(nativeQuery = true,value = "select * from author where author.email_address=?1 and author.deleted=true")
+    @Query(nativeQuery = true,value = "select * from author where author.email=?1 and author.deleted=true")
     Optional<Author> findByEmailAndDeletedIsTrue(String email);
 
     Optional<Author> findByNumberAndDeletedIsFalse(String number);

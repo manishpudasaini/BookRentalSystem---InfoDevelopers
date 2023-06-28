@@ -33,11 +33,7 @@ public class BookServiceImpl implements BookService {
     //this method is used to add book
     public String addBook(BookRequest bookRequest) throws IOException {
         bookRequest.setName(bookRequest.getName().trim());
-
-        Optional<Book> singleBookNotDelete = bookRepo.findByNameAndDeletedIsFalse(bookRequest.getName());
-        if(singleBookNotDelete.isPresent()){
-            return "Book having same name already exist!!!";
-        }
+        bookRequest.setIsbn(bookRequest.getIsbn().trim());
 
         String imagePath = null;
         if (bookRequest.getId() != null && bookRequest.getImageFile().isEmpty()) {

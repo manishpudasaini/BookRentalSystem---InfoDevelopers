@@ -22,19 +22,18 @@ public class AuthorServiceImpl implements AuthorService  {
     public String addAuthorDb(AuthorRequest authorRequest){
         authorRequest.setName(authorRequest.getName().trim());
         authorRequest.setEmail(authorRequest.getEmail().trim());
-        Optional<Author> dbAuthorEmailFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
-        Optional<Author> dbAuthorNumberFalse = authorRepo.findByNumberAndDeletedIsFalse(authorRequest.getNumber());
-
+//        Optional<Author> dbAuthorEmailFalse = authorRepo.findByEmailAndDeletedIsFalse(authorRequest.getEmail());
+//        Optional<Author> dbAuthorNumberFalse = authorRepo.findByNumberAndDeletedIsFalse(authorRequest.getNumber());
+//
         Author author = authorRequestToEntity(authorRequest);
-
-        if(dbAuthorEmailFalse.isPresent()  ){
-            return "Author already exist!!";
-        }
-
-        if(dbAuthorNumberFalse.isPresent()  ){
-            return "Author already exist!!";
-
-        }
+//
+//        if(dbAuthorEmailFalse.isPresent()){
+//            return "Author already exist!!";
+//        }
+//
+//        if(dbAuthorNumberFalse.isPresent()){
+//            return "Author already exist!!";
+//        }
 
         Optional<Author> dbAuthorEmailTrue = authorRepo.findByEmailAndDeletedIsTrue(authorRequest.getEmail());
         Optional<Author> dbAuthorNumberTrue = authorRepo.findByNumberAndDeletedIsTrue(authorRequest.getNumber());
@@ -62,6 +61,8 @@ public class AuthorServiceImpl implements AuthorService  {
          authorRepo.save(author);
         return null;
     }
+
+
 
     @Override
     public String updateAuthorAdd(AuthorRequest authorRequest) {

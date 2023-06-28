@@ -104,12 +104,18 @@ public class LoginController {
 
     //we change our password by using this api
     @PostMapping("/change/password")
-    public String changePassword(@ModelAttribute("user") User user){
+    public String changePassword(@ModelAttribute("user") User user,Model model){
       User singleUser =  userService.findById(user.getId());
 
+      if(user.getPassword().length() <= 3){
+          model.addAttribute("user",user);
+          model.addAttribute("errorMsg","Password should be at least 4 digit");
+          return "/login/ChangePassword";
+      }
       singleUser.setPassword(passwordEncoder.encode(user.getPassword()));
       userService.saveUserEntity(singleUser);
 
+      model.addAttribute("message","Password changed successfully...");
       return "/login/LoginPage";
     }
 

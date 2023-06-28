@@ -28,7 +28,7 @@ public class ForgotPasswordImpl implements ForgotPasswordService {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom("eziomanish111@gmail.com");
         simpleMailMessage.setTo(email.getTo());
-        simpleMailMessage.setText("Please use this OTP to change your password" + otpCode );
+        simpleMailMessage.setText("Please use this OTP to change your password" + "   "+otpCode );
         simpleMailMessage.setSubject("Change Password");
 
         ForgotPasswordDto forgotPasswordDto = new ForgotPasswordDto(email.getTo(), otpCode);

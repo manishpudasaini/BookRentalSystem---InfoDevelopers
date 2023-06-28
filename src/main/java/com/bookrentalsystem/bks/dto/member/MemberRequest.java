@@ -16,7 +16,7 @@ public class MemberRequest {
     private Short id;
     @NotBlank(message = "Please enter member name")
     @Pattern(regexp="^[a-zA-Z].*[\\s\\.]*$",message = "name should be string")
-    @Length(min = 3,max = 20,message = "name length should be above 3 words!!")
+    @Length(min = 3,max = 60,message = "name length should be above 3 words!!")
     private String name;
 
     @Email(message = "please enter email in proper format")

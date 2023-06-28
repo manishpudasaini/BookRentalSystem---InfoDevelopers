@@ -23,11 +23,7 @@ public class MemberServiceImpl implements MemberService {
     public String addMember(MemberRequest memberRequest) {
         memberRequest.setName(memberRequest.getName().trim());
         memberRequest.setEmail(memberRequest.getEmail().trim());
-       Optional<Member> memberDeleteFalse =  memberRepo.findMemberByEmailAndDeletedIsFalse(memberRequest.getEmail());
-       Optional<Member> memberDeleteFalseNumber = memberRepo.findByPhoneAndDeletedIsFalse(memberRequest.getPhone());
-       if(memberDeleteFalse.isPresent() || memberDeleteFalseNumber.isPresent()){
-                return "Already exist!!";
-        }
+
 
         Optional<Member> memberDeletedTrueNumber = memberRepo.findByPhoneAndDeletedIsTrue(memberRequest.getPhone());
        Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
@@ -57,18 +53,17 @@ public class MemberServiceImpl implements MemberService {
             return null;
 
         }
-
         memberRepo.save(memberRequestToEtity(memberRequest));
         return null;
     }
 
     //this method is used to update the member
-    @Override
-    public String addUpdateMember(MemberRequest memberRequest) {
-       Member member = memberRequestToEtity(memberRequest);
-        memberRepo.save(member);
-        return "updated";
-    }
+//    @Override
+//    public String addUpdateMember(MemberRequest memberRequest) {
+//       Member member = memberRequestToEtity(memberRequest);
+//        memberRepo.save(member);
+//        return "updated";
+//    }
 
     //convert memberRequest to Entity
     @Override

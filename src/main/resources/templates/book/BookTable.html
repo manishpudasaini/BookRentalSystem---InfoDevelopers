@@ -20,6 +20,11 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
 
+                        <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMessage}">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
                         <!-- success message -->
                         <div class="alert alert-success alert-dismissible fade show" th:if="${message}">
                             <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i> <span th:text="${message}"></span>
@@ -71,6 +76,15 @@
 
                             </tbody>
                         </table>
+
+                        <form th:action="@{/book/upload}" th:object="${fileChoose}" th:method="POST" enctype="multipart/form-data">
+                            <div class="form-floating" >
+                                <input type="file" class="form-control" th:field="*{multipartFile}"
+                                >
+                                <p>(only excel file)</p>
+                            </div>
+                            <button type="submit">Import</button>
+                        </form>
 
 
 

@@ -23,6 +23,11 @@
                     </a>
                 </div>
 
+                <div class="alert alert-danger alert-dismissible fade show mt-2"  th:if="${errorMsg}">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMsg.message}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
                 <form th:object="${member}" th:action="@{/member/save}" th:method="POST">
                     <div class="form-floating ">
                         <input type="text" th:field="*{id}" hidden>

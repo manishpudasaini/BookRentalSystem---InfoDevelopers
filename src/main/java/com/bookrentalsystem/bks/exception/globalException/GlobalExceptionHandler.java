@@ -1,12 +1,11 @@
 package com.bookrentalsystem.bks.exception.globalException;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -93,12 +92,27 @@ public class GlobalExceptionHandler {
     }
 
 
-//    @ExceptionHandler(value = {DataIntegrityViolationException.class})
-//    public String handelUniqueException(DataIntegrityViolationException e, RedirectAttributes redirectAttributes) throws Exception {
-//        GlobalExceptionMessage message = new GlobalExceptionMessage();
-//
-//        message.setMessage("Already exist!!!");
-//        redirectAttributes.addFlashAttribute("errorMsg",message);
-//        return "redirect:/author/form";
-//    }
+    @ExceptionHandler(value = {DataIntegrityViolationException.class})
+    public String handelUniqueException(DataIntegrityViolationException e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+        var errorMessage = e.getMessage();
+
+        if(errorMessage.contains("uk_author")){ //handel unique key exception of author
+            message.setMessage("Author having same information already exist!!!");
+            redirectAttributes.addFlashAttribute("errorMsg",message);
+            return "redirect:/author/form";
+        }else if(errorMessage.contains("uk_book")){ //handel unique key exception of book
+            message.setMessage("Book having same information already exist!!!");
+            redirectAttributes.addFlashAttribute("errorMsg",message);
+            return "redirect:/book/form";
+        }else if(errorMessage.contains("Uk_members")){ //handel unique key exception of memeber
+            message.setMessage("Member having same information already exist!!!");
+            redirectAttributes.addFlashAttribute("errorMsg",message);
+            return "redirect:/member/form";
+        } else {
+            throw e;
+        }
+
+    }
 }

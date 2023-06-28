@@ -58,11 +58,7 @@ public class MemberController {
         }
 
         String message= memberService.addMember(memberRequest);
-        if(message!=null){
-            ObjectError error = new ObjectError("globalError",message);
-            result.addError(error);
-            return "customer/CustomerForm";
-        }
+
         if(message==null){
             redirectAttributes.addFlashAttribute("message","Member added");
            return  "redirect:/member/table";
@@ -78,17 +74,17 @@ public class MemberController {
         return "/customer/CustomerUpdate";
     }
 
-    @PostMapping("/update/save")
-    public String saveUpdateMember(@Valid @ModelAttribute("member") MemberRequest memberRequest,
-                             BindingResult result,Model model){
-        if(result.hasErrors()){
-            model.addAttribute("member",memberRequest);
-            return "/customer/CustomerUpdate";
-        }
-
-        memberService.addUpdateMember(memberRequest);
-        return "redirect:/member/table";
-    }
+//    @PostMapping("/update/save")
+//    public String saveUpdateMember(@Valid @ModelAttribute("member") MemberRequest memberRequest,
+//                             BindingResult result,Model model){
+//        if(result.hasErrors()){
+//            model.addAttribute("member",memberRequest);
+//            return "/customer/CustomerUpdate";
+//        }
+//
+//        memberService.addUpdateMember(memberRequest);
+//        return "redirect:/member/table";
+//    }
 
     //delete the member - soft delete
     @RequestMapping("/delete/{id}")

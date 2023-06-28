@@ -14,7 +14,10 @@ import org.hibernate.annotations.Where;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@Table(name = "author")
+@Table(name = "author",uniqueConstraints = {
+        @UniqueConstraint(name = "uk_author_email",columnNames = "email"),
+        @UniqueConstraint(name = "uk_author_number",columnNames = "phone_number")
+})
 @SQLDelete(sql = "UPDATE author SET deleted=true WHERE id = ?")  //this is used for soft delete it helps to change the deleted status to true
 @Where(clause = "deleted = false")
 public class Author extends Auditable<String> {

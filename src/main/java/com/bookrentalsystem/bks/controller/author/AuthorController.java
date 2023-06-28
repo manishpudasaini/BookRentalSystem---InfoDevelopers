@@ -61,16 +61,10 @@ public class AuthorController {
             return "/author/AuthorForm";
         }
 
-        String message = authorService.addAuthorDb(authorRequest);
+          String  message = authorService.addAuthorDb(authorRequest);
 
-        if(message!= null){
-            ObjectError error = new ObjectError("globalError",message);
-//            FieldError fieldError = new FieldError("object_name","field_name","error message");
-            result.addError(error);
-            return "/author/AuthorForm";
-        }
         if(message == null){
-            redirectAttributes.addFlashAttribute("message","Author added!!");
+            redirectAttributes.addFlashAttribute("message","Author table updated!!");
             return "redirect:/author/table";
         }
         return "added";
