@@ -7,6 +7,7 @@ import com.bookrentalsystem.bks.model.SendEmail;
 import com.bookrentalsystem.bks.model.login.User;
 import com.bookrentalsystem.bks.service.ForgotPasswordService;
 import com.bookrentalsystem.bks.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,7 +76,7 @@ public class LoginController {
 
     //send email to get otp
     @PostMapping("/send/email")
-    public String emailSend(@ModelAttribute("change") SendEmail email,Model model){
+    public String emailSend(@ModelAttribute("change") SendEmail email,Model model) throws MessagingException {
        Optional<User> singleUser = userService.findUsingEmail(email.getTo());
        if(singleUser.isPresent()){
            forgotPasswordService.sendEmail(email);

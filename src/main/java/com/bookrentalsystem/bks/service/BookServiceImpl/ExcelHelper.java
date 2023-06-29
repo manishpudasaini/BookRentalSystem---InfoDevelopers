@@ -31,7 +31,7 @@ public class ExcelHelper {
         try {
 
            XSSFWorkbook workBook = new XSSFWorkbook(inputStream);
-          XSSFSheet sheet = workBook.getSheet("book");
+           XSSFSheet sheet = workBook.getSheet("book");
 
            int rowNum = 0;
            //iterat through row
@@ -48,7 +48,9 @@ public class ExcelHelper {
              Iterator<Cell> cells =  row.iterator();
 
              int cid=0;
+
              BookRequest bookRequest = new BookRequest();
+
              while (cells.hasNext()){
                  Cell cell = cells.next();
 

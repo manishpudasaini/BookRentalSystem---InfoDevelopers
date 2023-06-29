@@ -24,9 +24,8 @@ public class MemberServiceImpl implements MemberService {
         memberRequest.setName(memberRequest.getName().trim());
         memberRequest.setEmail(memberRequest.getEmail().trim());
 
-
         Optional<Member> memberDeletedTrueNumber = memberRepo.findByPhoneAndDeletedIsTrue(memberRequest.getPhone());
-       Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
+        Optional<Member> memberDeleteTrue = memberRepo.findMemberByEmailAndDeletedIsTrue(memberRequest.getEmail());
         if(memberDeleteTrue.isPresent()){
             Member deleteMember = memberDeleteTrue.get();
             if(memberRequest.getEmail().equals(deleteMember.getEmail()) ||

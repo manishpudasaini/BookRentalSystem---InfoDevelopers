@@ -15,6 +15,7 @@ import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
@@ -113,8 +114,17 @@ public class TransactionServiceImpl implements TransactionService {
     //convert transaction to transactionDto
     @Override
     public TransactionDto transactionToTransactionDto(Transaction transaction) {
-        String  memberName = transaction.getMember().getName();
-        String bookName = transaction.getBook().getName();
+        String memberName;
+        String bookName ;
+        try{
+            memberName = transaction.getMember().getName();
+             bookName = transaction.getBook().getName();
+        }catch (EntityNotFoundException e){
+            memberName = null;
+            bookName = null;
+            System.out.println(e);
+        }
+
         return TransactionDto.builder()
                 .id(transaction.getId())
                 .book_name(bookName)

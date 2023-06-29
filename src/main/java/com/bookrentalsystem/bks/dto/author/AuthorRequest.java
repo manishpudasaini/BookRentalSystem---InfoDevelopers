@@ -19,7 +19,7 @@ public class AuthorRequest {
     private Short id;
     @NotBlank(message = "Name should not be blank")
     @Length(max = 100,min = 3,message = "Name should be between 3 to 100 word ")
-    @Pattern(regexp="^[a-zA-Z].*[\\s\\.]*$",message = "name should be string")
+    @Pattern(regexp="^[a-zA-Z].*[\\s\\.]*$",message = "name is not valid")
     private String name;
 
     @Email(message = "email should be in format")

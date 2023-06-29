@@ -37,6 +37,19 @@ public class GlobalExceptionHandler {
         return "redirect:/book/table";
     }
 
+
+    //this is used to handel the Book already exist exception
+    @ExceptionHandler(value = {BookAlreadyExist.class})
+    public String handelBookAlreadyExistException(BookAlreadyExist e, RedirectAttributes redirectAttributes) throws Exception {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+
+        message.setMessage("This book can not be deleted as someone have rent this book!!");
+        redirectAttributes.addFlashAttribute("errorMsg",message);
+
+        return "redirect:/book/table";
+    }
+
     //this is used to handel members cannot be deleted exception
     @ExceptionHandler(value = {MemberCanNotBeDeletedException.class})
     public String handelMemberException(MemberCanNotBeDeletedException e, RedirectAttributes redirectAttributes) throws Exception {
@@ -70,6 +83,7 @@ public class GlobalExceptionHandler {
     }
 
 
+
     //this is used when forgot password email not found
     @ExceptionHandler(value = {UserHavingThisEmailNotExist.class})
     public String handelUserException(UserHavingThisEmailNotExist e, RedirectAttributes redirectAttributes) throws Exception {
@@ -101,15 +115,15 @@ public class GlobalExceptionHandler {
         if(errorMessage.contains("uk_author")){ //handel unique key exception of author
             message.setMessage("Author having same information already exist!!!");
             redirectAttributes.addFlashAttribute("errorMsg",message);
-            return "redirect:/author/form";
+            return "redirect:/author/table";
         }else if(errorMessage.contains("uk_book")){ //handel unique key exception of book
             message.setMessage("Book having same information already exist!!!");
             redirectAttributes.addFlashAttribute("errorMsg",message);
-            return "redirect:/book/form";
+            return "redirect:/book/table";
         }else if(errorMessage.contains("Uk_members")){ //handel unique key exception of memeber
             message.setMessage("Member having same information already exist!!!");
             redirectAttributes.addFlashAttribute("errorMsg",message);
-            return "redirect:/member/form";
+            return "redirect:/member/table";
         } else {
             throw e;
         }

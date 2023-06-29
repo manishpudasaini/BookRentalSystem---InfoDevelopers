@@ -44,7 +44,7 @@ public class TransactionController {
     @RequestMapping("/download/excel")
     public ResponseEntity<Resource> downloadExcelFile() throws IOException {
         //main excel work is done here
-        transactionService.downloadHistoryInExcel();
+        //transactionService.downloadHistoryInExcel();
 
         String fileName = "TransactionHistory.xlsx";
         ByteArrayInputStream actualData = transactionService.downloadHistoryInExcel();

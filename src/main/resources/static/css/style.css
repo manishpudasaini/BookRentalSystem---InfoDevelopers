@@ -477,3 +477,9 @@ th i{
     margin-left: 80px;
 }
 
+/*excel choose file css*/
+#excelTitle{
+    font-size: 20px;
+    margin-top: 20px;
+
+}

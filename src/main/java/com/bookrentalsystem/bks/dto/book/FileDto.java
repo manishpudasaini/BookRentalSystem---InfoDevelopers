@@ -11,5 +11,6 @@ import java.nio.channels.MulticastChannel;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileDto {
+
     private MultipartFile multipartFile;
 }
