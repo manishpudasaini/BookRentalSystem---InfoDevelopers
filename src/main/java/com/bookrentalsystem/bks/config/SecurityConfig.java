@@ -59,7 +59,7 @@ public class SecurityConfig {
 //                .permitAll()
 //        );
 
-        //when the session policy is stateless it will creat new session in every request
+        //when the session policy is stateless it will creat neew session in every request
         http.sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
