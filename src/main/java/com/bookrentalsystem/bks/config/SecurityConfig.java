@@ -47,25 +47,19 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated());
 
-//        http.formLogin(form -> form
-//                .loginPage("/api/signIn")
-//                .loginProcessingUrl("/login")
-//                .defaultSuccessUrl("/home")
-//                .permitAll()
-//        );
-//        http.logout(logout -> logout
-//                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                .logoutSuccessUrl("/api/signIn")
-//                .permitAll()
-//        );
+        http.formLogin(form -> form
+                .loginPage("/api/signIn")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/home")
+                .permitAll()
+        );
+        http.logout(logout -> logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/api/signIn")
+                .permitAll()
+        );
 
-        //when the session policy is stateless it will creat new session in every request
-        http.sessionManagement(sessionManagement ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.authenticationProvider(authenticationProvider());
-
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
