@@ -47,31 +47,35 @@ public class BookExcelImportService {
     }
 
 
-    public void save(MultipartFile file) throws IOException {
+    public String save(MultipartFile file) throws IOException {
 
        List<BookRequest> bookRequests = ExcelHelper.convertToListOfBookRequest(file.getInputStream());
        for(BookRequest b:bookRequests){
           Optional<Book> bookDeletedFalse =  bookRepo.findByNameAndDeletedIsFalse(b.getName());
           Optional<Book> bookDeletedTrue = bookRepo.findByNameAndDeletedIsTrue(b.getName());
 
-           if(bookDeletedFalse.isEmpty()){
-               bookRepo.save(convertToEntity(b));
+           if(bookDeletedFalse.isPresent()){
+               continue;
            }
 
-           if (bookDeletedTrue.isPresent()) {
-              Book book = bookDeletedTrue.get();
-               book.setDeleted(false);
+           if(bookDeletedTrue.isPresent()){
+               Book book = bookDeletedTrue.get();
                book.setPage(b.getPage());
-               book.setIsbn(b.getIsbn());
-               book.setStock(b.getStock());
                book.setRating(b.getRating());
-               book.setImage_path(b.getImage_path());
+               book.setStock(b.getStock());
+               book.setIsbn(b.getIsbn());
+               book.setDeleted(Boolean.FALSE);
 
                bookRepo.save(book);
+               continue;
            }
+
+           bookRepo.save(convertToEntity(b));
+
        }
        // bookRequests.stream().forEach(b -> bookRepo.save(convertToEntity(b)));
 
+        return null;
     }
 
     public String saveFile(String imagePath) {

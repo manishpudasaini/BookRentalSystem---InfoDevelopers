@@ -22,4 +22,6 @@ public class TransactionDto {
     private BookRentStatus status;
     private String book_name;
     private String member_name;
+    private LocalDate returnDate;
+    private LocalDate from;
 }

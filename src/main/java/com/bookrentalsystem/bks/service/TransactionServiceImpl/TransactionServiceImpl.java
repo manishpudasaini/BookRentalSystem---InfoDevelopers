@@ -130,6 +130,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .book_name(bookName)
                 .code(transaction.getCode())
                 .status(transaction.getStatus())
+                .returnDate(transaction.getReturnDate())
+                .from(transaction.getFrom())
                 .member_name(memberName)
                 .build();
     }

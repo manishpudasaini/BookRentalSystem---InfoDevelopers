@@ -38,7 +38,9 @@
             <th>S.N.</th>
             <th><i class="fa-solid fa-book"></i>Book Name</th>
             <th><i class="fa-solid fa-user"></i> Customer Name</th>
+            <th>Rent from</th>
             <th>Status</th>
+            <th>Return Date</th>
             <th><i class="fa-solid fa-code"></i>Code</th>
 
           </tr>
@@ -48,7 +50,9 @@
             <td th:text="${Index.count}">1</td>
             <td th:text="${t.book_name}"></td>
             <td th:text="${t.member_name}"></td>
+            <td th:text="${t.from}"></td>
             <td th:text="${t.status}"></td>
+            <td th:text="${t.returnDate}"></td>
             <td th:text="${t.code}"></td>
 
           </tr>

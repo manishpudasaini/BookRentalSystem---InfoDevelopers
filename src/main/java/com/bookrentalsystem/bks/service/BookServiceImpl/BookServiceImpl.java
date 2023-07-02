@@ -35,6 +35,7 @@ public class BookServiceImpl implements BookService {
         bookRequest.setName(bookRequest.getName().trim());
         bookRequest.setIsbn(bookRequest.getIsbn().trim());
 
+
         String imagePath = null;
         if (bookRequest.getId() != null && bookRequest.getImageFile().isEmpty()) {
             Book book = bookRepo.findById(bookRequest.getId()).orElseThrow();
@@ -44,7 +45,6 @@ public class BookServiceImpl implements BookService {
 
         }
 //        else if (bookRequest.getId() != null && bookRequest.getImageFile() != null) {
-
         Book book = Book.builder()
                 .id(bookRequest.getId())
                 .name(bookRequest.getName())
@@ -59,6 +59,18 @@ public class BookServiceImpl implements BookService {
                 .deleted(false)
                 .build();
         bookRepo.save(book);
+
+//        Optional<Book> bookDeletedTrue  = bookRepo.findByNameAndDeletedIsTrue(bookRequest.getName());
+//        if(bookDeletedTrue.isPresent()){
+//            Book bookDeleted = bookDeletedTrue.get();
+//            book.setPage(bookRequest.getPage());
+//            book.setRating(bookRequest.getRating());
+//            book.setStock(bookRequest.getStock());
+//            book.setImage_path(imagePath);
+//
+//            bookRepo.save(bookDeleted);
+//
+//        }
 
         List<Short> authorIds = book.getAuthors().stream().map(Author::getId).collect(Collectors.toList());
 

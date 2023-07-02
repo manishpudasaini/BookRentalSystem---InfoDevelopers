@@ -76,7 +76,15 @@ public class LoginController {
 
     //send email to get otp
     @PostMapping("/send/email")
-    public String emailSend(@ModelAttribute("change") SendEmail email,Model model) throws MessagingException {
+    public String emailSend(@Valid @ModelAttribute("change") SendEmail email,
+                            BindingResult result,
+                            Model model) throws MessagingException {
+
+        //check if email is valid or not
+        if(result.hasErrors()){
+            model.addAttribute("change",email);
+            return "/login/EnterEmailPage";
+        }
        Optional<User> singleUser = userService.findUsingEmail(email.getTo());
        if(singleUser.isPresent()){
            forgotPasswordService.sendEmail(email);

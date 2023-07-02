@@ -95,15 +95,15 @@ public class GlobalExceptionHandler {
     }
 
     //this is used to handel the error or access denied exception - try to access unauthorized role api
-    @ExceptionHandler(value = {RuntimeException.class})
-    public ModelAndView handelAccessDeniedException(AccessDeniedException accessDeniedException) {
-        GlobalExceptionMessage message = new GlobalExceptionMessage();
-
-            ModelAndView mv = new ModelAndView();
-            mv.addObject("errorResponse", "Sorry, You dont have authority to access this api" );
-            mv.setViewName("/errorPage/ExceptionPage");
-            return mv;
-    }
+//    @ExceptionHandler(value = {RuntimeException.class})
+//    public ModelAndView handelAccessDeniedException(AccessDeniedException accessDeniedException) {
+//        GlobalExceptionMessage message = new GlobalExceptionMessage();
+//
+//            ModelAndView mv = new ModelAndView();
+//            mv.addObject("errorResponse", "Sorry, You dont have authority to access this api" );
+//            mv.setViewName("/errorPage/ExceptionPage");
+//            return mv;
+//    }
 
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class})

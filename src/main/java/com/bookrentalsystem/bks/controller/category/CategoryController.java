@@ -64,7 +64,7 @@ public class CategoryController {
         }
 
         if(message == null){
-            redirectAttributes.addFlashAttribute("message","Category added");
+            redirectAttributes.addFlashAttribute("message","Category table updated");
             return "redirect:/category/table";
         }
        return "redirect:/category/table";

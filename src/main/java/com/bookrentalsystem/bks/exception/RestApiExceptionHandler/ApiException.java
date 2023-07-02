@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.exception;
+package com.bookrentalsystem.bks.exception.RestApiExceptionHandler;
 
 import org.springframework.http.HttpStatus;
 
