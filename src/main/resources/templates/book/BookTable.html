@@ -26,8 +26,12 @@
                         </div>
 
                         <!-- success message -->
-                        <div class="alert alert-success alert-dismissible fade show" th:if="${message}">
-                            <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i> <span th:text="${message}"></span>
+                        <div class="alert alert-success alert-dismissible fade show" th:if="${bookName}">
+                            <p>Books Added</p>
+                            <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i>
+                            <ul  th:each="b :${bookName}" >
+                                <li th:text="${b}"></li>
+                            </ul>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
 

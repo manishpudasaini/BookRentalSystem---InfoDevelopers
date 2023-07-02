@@ -155,8 +155,8 @@ public class BookController {
     public String upload(@ModelAttribute("fileChoose") FileDto file,
                          RedirectAttributes redirectAttributes) throws IOException {
         if(ExcelHelper.checkExcelFormat(file.getMultipartFile())){
-            bookExcel.save(file.getMultipartFile());
-            redirectAttributes.addFlashAttribute("message","Book Table updated");
+          List<String> booksAdded =   bookExcel.save(file.getMultipartFile());
+            redirectAttributes.addFlashAttribute("bookName",booksAdded);
         }else {
             redirectAttributes.addFlashAttribute("errorMessage","Please only select excel file");
         }

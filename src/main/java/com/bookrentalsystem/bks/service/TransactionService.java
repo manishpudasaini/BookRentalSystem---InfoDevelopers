@@ -5,6 +5,7 @@ import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.model.Transaction;
+import org.springframework.data.domain.Page;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,8 @@ public interface TransactionService {
     List<Transaction> allTransactionEntity();
 
     ByteArrayInputStream downloadHistoryInExcel() throws IOException;
+
+    Page<TransactionDto> getPaginatedTransaction(Integer pageNo, Integer pageSize);
 
 
 }

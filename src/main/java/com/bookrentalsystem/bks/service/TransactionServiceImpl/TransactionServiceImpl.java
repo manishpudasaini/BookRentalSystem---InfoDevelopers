@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -206,7 +209,22 @@ public class TransactionServiceImpl implements TransactionService {
         return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
-     private void createCell(Transaction transaction, Row row,
+
+    //pagination
+    @Override
+    public Page<TransactionDto> getPaginatedTransaction(Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Page<Transaction> transactions = transactionRepo.findAll(pageable);
+
+//        List<TransactionDto> transactionDtoList = transactions.stream().
+//                map(this::transactionToTransactionDto).collect(Collectors.toList());
+
+        Page<TransactionDto> transactionDtos = transactions.map(this::transactionToTransactionDto);
+
+        return transactionDtos;
+    }
+
+    private void createCell(Transaction transaction, Row row,
                              XSSFWorkbook workbook) throws IOException // creating cells for each row
     {
 

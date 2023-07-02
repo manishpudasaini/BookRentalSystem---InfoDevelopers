@@ -5,6 +5,7 @@ import com.bookrentalsystem.bks.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,16 +32,25 @@ public class TransactionController {
     @GetMapping("/table")
     public String transactionTable(Model model){
        List<TransactionDto> allTransactionsDto = transactionService.allTransaction();
-       model.addAttribute("transaction",allTransactionsDto);
+//       model.addAttribute("transaction",allTransactionsDto);
+//        return "transaction/TransactionTable";
+        return findPaginated(1,model);
+    }
+
+    //pagination method
+    @GetMapping("/page/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+        int pageSize = 5;
+        Page<TransactionDto> page = transactionService.getPaginatedTransaction(pageNo, pageSize);
+        List<TransactionDto> transactionList = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("transaction", transactionList);
+
         return "transaction/TransactionTable";
     }
-//    @GetMapping("/history")
-//    public String transactionHistory(RedirectAttributes redirectAttributes) throws IOException {
-//       //String message = transactionService.downloadHistoryInExcel();
-//
-//       redirectAttributes.addFlashAttribute("downloadMsg",message);
-//       return "redirect:/transaction/table";
-//    }
 
     @RequestMapping("/download/excel")
     public ResponseEntity<Resource> downloadExcelFile() throws IOException {

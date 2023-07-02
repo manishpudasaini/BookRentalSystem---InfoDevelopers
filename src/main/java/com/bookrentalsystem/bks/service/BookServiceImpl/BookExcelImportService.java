@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +48,11 @@ public class BookExcelImportService {
     }
 
 
-    public String save(MultipartFile file) throws IOException {
+    public List<String> save(MultipartFile file) throws IOException {
 
        List<BookRequest> bookRequests = ExcelHelper.convertToListOfBookRequest(file.getInputStream());
+       List<String > bookName = new ArrayList<>();
+
        for(BookRequest b:bookRequests){
           Optional<Book> bookDeletedFalse =  bookRepo.findByNameAndDeletedIsFalse(b.getName());
           Optional<Book> bookDeletedTrue = bookRepo.findByNameAndDeletedIsTrue(b.getName());
@@ -70,12 +73,13 @@ public class BookExcelImportService {
                continue;
            }
 
+           bookName.add(b.getName());
            bookRepo.save(convertToEntity(b));
 
        }
        // bookRequests.stream().forEach(b -> bookRepo.save(convertToEntity(b)));
 
-        return null;
+        return bookName;
     }
 
     public String saveFile(String imagePath) {

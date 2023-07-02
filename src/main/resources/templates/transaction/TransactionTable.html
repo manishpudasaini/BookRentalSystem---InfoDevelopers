@@ -59,13 +59,42 @@
 
           </tbody>
         </table>
+      </div>
 
+      <div aria-label="Page navigation example">
+        <ul class="pagination">
+          <li th:if="${currentPage > 0}"
+              class="page-item">
+            <a th:href="@{'/transaction/page/' + ${currentPage - 1}}"
+               class="page-link"
+               th:classappend="${currentPage <= 1}? 'disabled':''"
+            >Previous</a>
+          </li>
+          <li th:each="i: ${#numbers.sequence(1, totalPages)}"
+              class="page-item">
+            <a  th:href="@{'/transaction/page/' + ${i}}"
+                class="page-link"
+                th:classappend="${currentPage == i}?'active':''"
+            >[[${i}]]</a>
+          </li>
+          <!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+          <!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+          <li class="page-item">
+            <a  th:href="@{'/transaction/page/' + ${currentPage + 1}}"
+                class="page-link"
+                th:classappend="${currentPage >= totalPages}?'disabled':''"
+            >Next</a>
+          </li>
+        </ul>
       </div>
 
     </div>
   </div>
+
   <!--            <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>-->
 </div>
+
+
 
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
