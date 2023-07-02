@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class ForgotPasswordImpl implements ForgotPasswordService {
 
 
     //this method is used to send email
+    @Async("taskExecutor")
     @Override
     public void sendEmail(SendEmail email) {
         Integer otpCode = GenerateRandomNumber.generateRandomNumber();
@@ -46,6 +48,7 @@ public class ForgotPasswordImpl implements ForgotPasswordService {
         forgotPasswordRepo.save(changeDtoToEntity(forgotPasswordDto));
 
         javaMailSender.send(simpleMailMessage);
+        System.out.println("Mail send successfully!!!");
     }
 
     @Override
