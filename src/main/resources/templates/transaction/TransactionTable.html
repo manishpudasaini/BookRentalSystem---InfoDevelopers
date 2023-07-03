@@ -31,6 +31,29 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
 
+        <div>
+          <form th:action="@{/transaction/filter}" th:object="${filter}" th:method="POST">
+
+            <div class="form-floating d-flex flex-fill justify-content-between gap-5">
+              <div class="form-floating">
+                <input type="date" class="form-control" th:field="*{from}">
+                <label for="floatingInput">from</label>
+              </div>
+
+              <div class="form-floating">
+                <input type="date" id="inputDate" min="10" th:field="*{to}" class="form-control">
+                <label for="floatingInput">To Date</label>
+              </div>
+
+              <div class="form-floating">
+                <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Search</button>
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+
 
         <table class="table table-bordered table-striped mt-3" >
           <thead>

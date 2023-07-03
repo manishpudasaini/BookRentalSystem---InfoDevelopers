@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionService {
@@ -34,5 +35,6 @@ public interface TransactionService {
 
     Page<TransactionDto> getPaginatedTransaction(Integer pageNo, Integer pageSize);
 
-
+//    Page<TransactionDto> getPaginatedForTransaction();
+    List<TransactionDto> findTransactionFromDate(LocalDate from, LocalDate to);
 }

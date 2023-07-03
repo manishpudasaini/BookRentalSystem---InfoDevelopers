@@ -139,6 +139,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .build();
     }
 
+
+
     @Override
     public List<TransactionDto> allTransaction() {
        List<Transaction> transactions= transactionRepo.findAll();
@@ -268,5 +270,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    @Override
+    public List<TransactionDto> findTransactionFromDate(LocalDate from, LocalDate to){
+
+        List<Transaction> allTransactions =  transactionRepo.findByDate(from,to);
+        List<TransactionDto> transactionDtos  = allTransactions.stream()
+                .map(this::transactionToTransactionDto).collect(Collectors.toList());
+
+        System.out.println(allTransactions);
+        return transactionDtos;
+    }
 
 }

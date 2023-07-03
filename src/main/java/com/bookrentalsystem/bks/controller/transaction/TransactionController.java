@@ -1,7 +1,11 @@
 package com.bookrentalsystem.bks.controller.transaction;
 
+import com.bookrentalsystem.bks.dto.transaction.FilterTransaction;
 import com.bookrentalsystem.bks.dto.transaction.TransactionDto;
+import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.TransactionService;
+import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -12,13 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -26,12 +29,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
+    private final ConvertToLocalDateTime convertToLocalDateTime;
 
     //transaction table view
     @PreAuthorize("hasAuthority('LIBRARIAN')")
     @GetMapping("/table")
     public String transactionTable(Model model){
-       List<TransactionDto> allTransactionsDto = transactionService.allTransaction();
+        model.addAttribute("filter",new FilterTransaction());
+//        List<TransactionDto> allTransactionsDto = transactionService.allTransaction();
 //       model.addAttribute("transaction",allTransactionsDto);
 //        return "transaction/TransactionTable";
         return findPaginated(1,model);
@@ -44,10 +49,15 @@ public class TransactionController {
         Page<TransactionDto> page = transactionService.getPaginatedTransaction(pageNo, pageSize);
         List<TransactionDto> transactionList = page.getContent();
 
+        model.addAttribute("filter",new FilterTransaction());
+
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
 //        model.addAttribute("totalItems", page.getTotalElements());
-        model.addAttribute("transaction", transactionList);
+
+        if(model.getAttribute("transaction") == null){
+            model.addAttribute("transaction", transactionList);
+        }
 
         return "transaction/TransactionTable";
     }
@@ -68,5 +78,24 @@ public class TransactionController {
                 .body(isr);
 
       return body;
+    }
+
+    @PostMapping("/filter")
+    public String filterTransaction(@ModelAttribute @NotNull FilterTransaction filterTransaction,
+                                    Model model){
+        LocalDate from  = convertToLocalDateTime.convertToDate(filterTransaction.getFrom()); //convert to localDate
+        LocalDate toDate  = convertToLocalDateTime.convertToDate(filterTransaction.getTo());
+
+        System.out.println(from);
+        System.out.println(toDate);
+        System.out.println(filterTransaction);
+
+       List<TransactionDto> filteredTransactions =  transactionService.findTransactionFromDate(from,toDate);
+       model.addAttribute("transaction",filteredTransactions);
+
+       return "/transaction/FilterTransactionTable";
+
+//       model.addAttribute("transaction",filteredTransactions);
+
     }
 }

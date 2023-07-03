@@ -6,12 +6,9 @@ import com.bookrentalsystem.bks.model.SendEmail;
 import com.bookrentalsystem.bks.repo.ForgotPasswordRepo;
 import com.bookrentalsystem.bks.service.ForgotPasswordService;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +23,7 @@ public class ForgotPasswordImpl implements ForgotPasswordService {
 
 
     //this method is used to send email
-    @Async("taskExecutor")
+    @Async
     @Override
     public void sendEmail(SendEmail email) {
         Integer otpCode = GenerateRandomNumber.generateRandomNumber();
