@@ -21,7 +21,7 @@ public class JwtService {
     private final String SECRETE_KEY= "4226452948404D635166546A576E5A7234753777217A25432A462D4A614E6452";
 
 
-    //generate token from username
+    //generate token from username - by passing username token is created
     public String generateToken(String username){
         Map<String,Object> claims = new HashMap<>();
         return createToken(claims,username);
