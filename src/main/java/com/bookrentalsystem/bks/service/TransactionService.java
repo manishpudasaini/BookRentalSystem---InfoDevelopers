@@ -36,5 +36,5 @@ public interface TransactionService {
     Page<TransactionDto> getPaginatedTransaction(Integer pageNo, Integer pageSize);
 
 //    Page<TransactionDto> getPaginatedForTransaction();
-    List<TransactionDto> findTransactionFromDate(LocalDate from, LocalDate to);
+    Page<TransactionDto> findTransactionFromDate(Integer pageNo, Integer pageSize,LocalDate from, LocalDate to);
 }

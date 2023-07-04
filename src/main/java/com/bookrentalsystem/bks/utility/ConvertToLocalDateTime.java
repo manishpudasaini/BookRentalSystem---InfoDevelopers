@@ -17,7 +17,11 @@ public class ConvertToLocalDateTime {
         LocalDate currentTime = LocalDate.now();
         String date = currentTime.format(formatter);
         return LocalDate.parse(date,formatter);
+    }
 
+    public String convertDateToString(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(formatter);
     }
 
 }

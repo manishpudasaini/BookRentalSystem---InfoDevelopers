@@ -7,21 +7,17 @@ import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/author")
@@ -56,8 +52,6 @@ public class AuthorController {
 
         if(result.hasErrors()){
             model.addAttribute("author",authorRequest);
-//            System.out.println(model.asMap());
-            System.out.println(result);
             return "/author/AuthorForm";
         }
 
@@ -77,23 +71,6 @@ public class AuthorController {
       return "/author/UpdateForm";
     }
 
-//    update author controller
-//    @PostMapping("/update/save")
-//    public String saveUpdateAuthor(@Valid @ModelAttribute("author") AuthorRequest authorRequest,
-//                             BindingResult result,
-//                                   Model model,RedirectAttributes redirectAttributes){
-//
-//        if(result.hasErrors()){
-//            model.addAttribute("author",authorRequest);
-//            System.out.println(result);
-//            return "/author/UpdateForm";
-//        }
-//
-//        authorService.updateAuthorAdd(authorRequest);
-//        redirectAttributes.addFlashAttribute("message","Author updated successfully!");
-//        return "redirect:/author/table";
-//    }
-
     //delete author controller
     @RequestMapping("/delete/{id}")
     public String deleteAuthor(@PathVariable Short id,RedirectAttributes redirectAttributes){
@@ -111,7 +88,6 @@ public class AuthorController {
            throw new AuthorCanNotBeDeletedException("Author cannot be deleted!!");
        }
        authorService.deleteAuthor(id);
-        String message = "";
         redirectAttributes.addFlashAttribute("message","Author Deleted Successfully!!");
         return "redirect:/author/table?success";
     }

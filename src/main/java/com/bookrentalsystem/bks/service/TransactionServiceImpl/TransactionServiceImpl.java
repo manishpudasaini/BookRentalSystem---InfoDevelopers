@@ -16,17 +16,18 @@ import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -198,16 +199,10 @@ public class TransactionServiceImpl implements TransactionService {
             createCell(transaction,row,workbook);
         }
 
-        //FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\eziom\\OneDrive\\Desktop\\excelFiles\\TransactionHistory.xlsx");
-//        workbook.write(fileOutputStream);
-//        fileOutputStream.close();
-
         workbook.write(byteArrayOutputStream);
         byteArrayOutputStream.close();
 
 
-
-//        return "Transaction history saved in excel";
         return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
@@ -218,8 +213,6 @@ public class TransactionServiceImpl implements TransactionService {
         Pageable pageable = PageRequest.of(pageNo,pageSize);
         Page<Transaction> transactions = transactionRepo.findAll(pageable);
 
-//        List<TransactionDto> transactionDtoList = transactions.stream().
-//                map(this::transactionToTransactionDto).collect(Collectors.toList());
 
         Page<TransactionDto> transactionDtos = transactions.map(this::transactionToTransactionDto);
 
@@ -233,10 +226,6 @@ public class TransactionServiceImpl implements TransactionService {
         /* CreationHelper helps us create instances of various things like DataFormat,
            Hyperlink  in a format (HSSF, XSSF)*/
         CreationHelper createHelper = workbook.getCreationHelper();
-
-//        CellStyle dateCellStyle = workbook.createCellStyle();
-//        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("MMM/dd/yyyy"));
-
 
         Cell cell = row.createCell(0);
         cell.setCellValue(transaction.getId());
@@ -271,13 +260,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> findTransactionFromDate(LocalDate from, LocalDate to){
-
-        List<Transaction> allTransactions =  transactionRepo.findByDate(from,to);
-        List<TransactionDto> transactionDtos  = allTransactions.stream()
-                .map(this::transactionToTransactionDto).collect(Collectors.toList());
-
-        System.out.println(allTransactions);
+    public Page<TransactionDto> findTransactionFromDate(Integer pageNo, Integer pageSize,
+                                                        LocalDate from, LocalDate to){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Page<Transaction> allTransactions =  transactionRepo.findByDate(from,to,pageable);
+        Page<TransactionDto> transactionDtos  = allTransactions
+                .map(this::transactionToTransactionDto);
         return transactionDtos;
     }
 

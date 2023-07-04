@@ -2,10 +2,8 @@ package com.bookrentalsystem.bks.controller.transaction;
 
 import com.bookrentalsystem.bks.dto.transaction.FilterTransaction;
 import com.bookrentalsystem.bks.dto.transaction.TransactionDto;
-import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -36,10 +34,7 @@ public class TransactionController {
     @GetMapping("/table")
     public String transactionTable(Model model){
         model.addAttribute("filter",new FilterTransaction());
-//        List<TransactionDto> allTransactionsDto = transactionService.allTransaction();
-//       model.addAttribute("transaction",allTransactionsDto);
-//        return "transaction/TransactionTable";
-        return findPaginated(1,model);
+        return findPaginated(0,model);
     }
 
     //pagination method
@@ -49,11 +44,13 @@ public class TransactionController {
         Page<TransactionDto> page = transactionService.getPaginatedTransaction(pageNo, pageSize);
         List<TransactionDto> transactionList = page.getContent();
 
-        model.addAttribute("filter",new FilterTransaction());
+        if(model.getAttribute("filter") == null){
+            model.addAttribute("filter",new FilterTransaction());
+        }
+
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
-//        model.addAttribute("totalItems", page.getTotalElements());
 
         if(model.getAttribute("transaction") == null){
             model.addAttribute("transaction", transactionList);
@@ -64,8 +61,6 @@ public class TransactionController {
 
     @RequestMapping("/download/excel")
     public ResponseEntity<Resource> downloadExcelFile() throws IOException {
-        //main excel work is done here
-        //transactionService.downloadHistoryInExcel();
 
         String fileName = "TransactionHistory.xlsx";
         ByteArrayInputStream actualData = transactionService.downloadHistoryInExcel();
@@ -80,22 +75,78 @@ public class TransactionController {
       return body;
     }
 
-    @PostMapping("/filter")
-    public String filterTransaction(@ModelAttribute @NotNull FilterTransaction filterTransaction,
-                                    Model model){
-        LocalDate from  = convertToLocalDateTime.convertToDate(filterTransaction.getFrom()); //convert to localDate
-        LocalDate toDate  = convertToLocalDateTime.convertToDate(filterTransaction.getTo());
+    @PostMapping("/page/filter/first/{pageNo}")
+    public String findPaginatedForFilter(@ModelAttribute FilterTransaction filterTransaction,
+                                         @PathVariable(value = "pageNo") int pageNo, Model model,
+                                         @RequestParam(required = false) String fromDate,
+                                         @RequestParam(required = false) String todate,
+                                         RedirectAttributes redirectAttributes) {
+            int pageSize = 5;
 
-        System.out.println(from);
-        System.out.println(toDate);
-        System.out.println(filterTransaction);
+        /**
+         *this is used to check if the from date is empty or not .
+         * If empty then send
+         */
+            if(filterTransaction.getFrom().isEmpty()){
+                String message = "Please select the date from where you want to find the transaction!!";
+                redirectAttributes.addFlashAttribute("errorMsg",message);
+                return "redirect:/transaction/table";
+            }
 
-       List<TransactionDto> filteredTransactions =  transactionService.findTransactionFromDate(from,toDate);
-       model.addAttribute("transaction",filteredTransactions);
 
-       return "/transaction/FilterTransactionTable";
+                LocalDate from  = convertToLocalDateTime.convertToDate(filterTransaction.getFrom());//convert to localDate
+                LocalDate toDate;
 
-//       model.addAttribute("transaction",filteredTransactions);
+        /**
+         *this is used to check if the to date is empty or not .
+         * If empty then to date will be todays date
+         */
+                if(filterTransaction.getTo().isEmpty()){
+                    toDate = convertToLocalDateTime.convertToDate();
+                }else {
+                    toDate  = convertToLocalDateTime.convertToDate(filterTransaction.getTo());
+                }
+
+
+                Page<TransactionDto> page = transactionService.findTransactionFromDate(pageNo,pageSize,from,toDate);
+                List<TransactionDto> transactionList = page.getContent();
+
+//                model.addAttribute("filter",new FilterTransaction(convertToLocalDateTime.convertDateToString(from),
+//                        convertToLocalDateTime.convertDateToString(toDate)));
+
+                model.addAttribute("filter",new FilterTransaction(filterTransaction.getFrom(),
+                        convertToLocalDateTime.convertDateToString(toDate)));
+                model.addAttribute("currentPage", pageNo);
+                model.addAttribute("totalPages", page.getTotalPages());
+                model.addAttribute("transaction", transactionList);
+                model.addAttribute("fromDate",filterTransaction.getFrom());
+                model.addAttribute("todate",convertToLocalDateTime.convertDateToString(toDate));
+
+                return "transaction/FilterTransactionTable";
+
+    }
+
+    @GetMapping("/page/filter/{pageNo}")
+    public String secondFilter( @PathVariable(value = "pageNo") int pageNo, Model model,
+                                @RequestParam(required = false,name = "fromDate") String fromDate,
+                                @RequestParam(required = false,name = "todate") String todate){
+
+        int pageSize =5;
+
+        LocalDate from  = convertToLocalDateTime.convertToDate(fromDate);
+        LocalDate toDate  = convertToLocalDateTime.convertToDate(todate);
+        Page<TransactionDto> page = transactionService.findTransactionFromDate(pageNo,pageSize,from,toDate);
+        List<TransactionDto> transactionList = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("transaction", transactionList);
+        model.addAttribute("fromDate",fromDate);
+        model.addAttribute("todate",todate);
+
+        model.addAttribute("filter",new FilterTransaction(fromDate,todate));
+
+        return "transaction/FilterTransactionTable";
 
     }
 }

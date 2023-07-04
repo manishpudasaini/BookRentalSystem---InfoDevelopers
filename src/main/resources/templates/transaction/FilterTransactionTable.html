@@ -26,30 +26,32 @@
             </a>
           </div>
         </div>
-<!--        -->
 
-<!--        <div>-->
-<!--          <form th:action="@{/transaction/filter}" th:object="${filter}" th:method="POST">-->
+         <div th:if="${filter}">
+          <form th:action="@{/transaction/page/filter/first/1}" th:object="${filter}" th:method="POST">
 
-<!--            <div class="form-floating d-flex flex-fill justify-content-between gap-5">-->
-<!--              <div class="form-floating">-->
-<!--                <input type="date" class="form-control" th:field="*{from}">-->
-<!--                <label for="floatingInput">from</label>-->
-<!--              </div>-->
+            <div class="form-floating d-flex flex-fill justify-content-between gap-5">
+              <div class="form-floating">
+                <input type="date" class="form-control"
+                       th:field="*{from}" >
+                <label for="floatingInput">from</label>
+              </div>
 
-<!--              <div class="form-floating">-->
-<!--                <input type="date" id="inputDate" min="10" th:field="*{to}" class="form-control">-->
-<!--                <label for="floatingInput">To Date</label>-->
-<!--              </div>-->
+              <div class="form-floating">
+                <input type="date" id="inputDate" min="10"
+                       th:field="*{to}"
+                       class="form-control" >
+                <label for="floatingInput">To Date</label>
+              </div>
 
-<!--              <div class="form-floating">-->
-<!--                <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Search</button>-->
-<!--              </div>-->
+              <div class="form-floating">
+                <button class="btn  btn-primary upload_btn_submit ms-4 mt-4" type="submit">Search</button>
+              </div>
 
-<!--            </div>-->
+            </div>
 
-<!--          </form>-->
-<!--        </div>-->
+          </form>
+        </div>
 
 
         <table class="table table-bordered table-striped mt-3" >
@@ -79,6 +81,34 @@
 
           </tbody>
         </table>
+      </div>
+
+
+      <div aria-label="Page navigation example" th:if="!${#lists.isEmpty(transaction)}">
+        <ul class="pagination">
+          <li
+              class="page-item">
+            <a th:href="@{'/transaction/page/filter/' + ${currentPage - 1}+'?fromDate=' + ${fromDate} + '&todate=' + ${todate}}"
+               class="page-link"
+               th:classappend="${currentPage <= 0}? 'disabled':''"
+            >Previous</a>
+          </li>
+          <li th:each="i: ${#numbers.sequence(0, totalPages - 1)}"
+              class="page-item">
+            <a  th:href="@{'/transaction/page/filter/' + ${i}+'?fromDate=' + ${fromDate} + '&todate=' + ${todate}}"
+                class="page-link"
+                th:classappend="${currentPage == i}?'active':''"
+            >[[${i+1}]]</a>
+          </li>
+          <!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+          <!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+          <li class="page-item">
+            <a  th:href="@{'/transaction/page/filter/' + ${currentPage + 1}+'?fromDate=' + ${fromDate} + '&todate=' + ${todate}}"
+                class="page-link"
+                th:classappend="${currentPage >= totalPages - 1}?'disabled':''"
+            >Next</a>
+          </li>
+        </ul>
       </div>
 
     </div>

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
   <th:block th:replace="~{fragments/HtmlHeader :: html_head('Transaction History Table')}"></th:block>
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
 
@@ -30,18 +31,28 @@
           <i class="fa-solid fa-badge-check" style="color: #16e37a;"></i> <span th:text="${downloadMsg}"></span>
           <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+        <!--                        error message-->
+        <div class="alert alert-danger alert-dismissible fade show" th:if="${errorMsg}">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #ff0505;"></i> <span th:text="${errorMsg}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
 
         <div>
-          <form th:action="@{/transaction/filter}" th:object="${filter}" th:method="POST">
+          <form th:action="@{/transaction/page/filter/first/0}" th:object="${filter}" th:method="POST">
 
             <div class="form-floating d-flex flex-fill justify-content-between gap-5">
               <div class="form-floating">
-                <input type="date" class="form-control" th:field="*{from}">
+                <input type="date" class="form-control" id="inputDate"
+                       th:field="*{from}"
+                       th:classappend="${errorMsg}?'is-invalid':''">
                 <label for="floatingInput">from</label>
               </div>
 
               <div class="form-floating">
-                <input type="date" id="inputDate" min="10" th:field="*{to}" class="form-control">
+                <input type="date"  min="10"
+                       th:field="*{to}"
+                       th:classappend="${#fields.hasErrors('from')?'is-invalid':''}"
+                       class="form-control">
                 <label for="floatingInput">To Date</label>
               </div>
 
@@ -86,26 +97,26 @@
 
       <div aria-label="Page navigation example">
         <ul class="pagination">
-          <li th:if="${currentPage > 0}"
+          <li
               class="page-item">
             <a th:href="@{'/transaction/page/' + ${currentPage - 1}}"
                class="page-link"
-               th:classappend="${currentPage <= 1}? 'disabled':''"
+               th:classappend="${currentPage <= 0}? 'disabled':''"
             >Previous</a>
           </li>
-          <li th:each="i: ${#numbers.sequence(1, totalPages)}"
+          <li th:each="i: ${#numbers.sequence(0, totalPages - 1)}"
               class="page-item">
             <a  th:href="@{'/transaction/page/' + ${i}}"
                 class="page-link"
                 th:classappend="${currentPage == i}?'active':''"
-            >[[${i}]]</a>
+            >[[${i+1}]]</a>
           </li>
           <!--                    <li class="page-item"><a class="page-link" href="#">2</a></li>-->
           <!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
           <li class="page-item">
             <a  th:href="@{'/transaction/page/' + ${currentPage + 1}}"
                 class="page-link"
-                th:classappend="${currentPage >= totalPages}?'disabled':''"
+                th:classappend="${currentPage >= totalPages - 1}?'disabled':''"
             >Next</a>
           </li>
         </ul>
@@ -118,9 +129,25 @@
 </div>
 
 
+<script>
+  $(function(){
+    var dtToday = new Date();
 
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 10)
+      month = '0' + month.toString();
+    if(day < 10)
+      day = '0' + day.toString();
+
+    var minDate = year + '-' + month + '-' + day;
+    $('#inputDate').attr('max', minDate);
+  });
+</script>
 
 <div th:replace="~{fragments/Footer :: footer}"></div>
+
 
 </body>
 </html>
