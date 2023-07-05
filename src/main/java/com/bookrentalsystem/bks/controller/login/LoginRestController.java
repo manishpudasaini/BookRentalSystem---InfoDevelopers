@@ -29,7 +29,7 @@ public class LoginRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    //it will generate the token & by using this token we can access to the api according to its role or athority
+    //it will generate the token & by using this token we can access to the api according to its role or authority
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest authRequest){
         return new ResponseEntity<>(authService.generateToken(authRequest),HttpStatus.OK);
