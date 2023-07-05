@@ -6,7 +6,6 @@ import com.bookrentalsystem.bks.exception.globalException.CategoryCanNotBeDelete
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/category")
@@ -50,7 +48,6 @@ public class CategoryController {
                                BindingResult result,
                                Model model,RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
-            System.out.println(result);
             model.addAttribute("category",categoryRequest);
             return "category/CategoryForm";
         }
@@ -109,7 +106,6 @@ public class CategoryController {
             throw new CategoryCanNotBeDeletedException("Cannot delete this category!!");
         }
 
-        String message = "";
         redirectAttributes.addFlashAttribute("message","Category Deleted Successfully!!");
         return "redirect:/category/table?success";
     }

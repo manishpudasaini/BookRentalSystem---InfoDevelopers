@@ -17,7 +17,7 @@ public interface TransactionRepo extends JpaRepository<Transaction, Short> {
     //searching code according to the code name & status
     List<Transaction> findByCodeContainingAndStatus(String code, BookRentStatus status);
 
-    @Query(nativeQuery = true, value = "select * from transaction where transaction.from_date BETWEEN ?1 And ?2 AND transaction.to_date BETWEEN ?1 And ?2")
-    Page<Transaction> findByDate(LocalDate from, LocalDate to,Pageable pageable);
+    @Query(nativeQuery = true, value = "select * from transaction where transaction.from_date BETWEEN ?1 And ?2 OR transaction.return_date BETWEEN ?1 And ?2")
+    Page<Transaction> findByDate(LocalDate from, LocalDate returnDate,Pageable pageable);
 
 }

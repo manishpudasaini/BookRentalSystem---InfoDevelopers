@@ -43,6 +43,11 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated());
 
+        http.rememberMe(remember -> remember
+                .userDetailsService(this.userDetailsService())
+                .rememberMeCookieName("rememberlogin") // it is name of the cookie
+                .tokenValiditySeconds(300));  //expire in 5 minute - 300 second
+
         http.formLogin(form -> form
                 .loginPage("/api/signIn")
                 .loginProcessingUrl("/login")

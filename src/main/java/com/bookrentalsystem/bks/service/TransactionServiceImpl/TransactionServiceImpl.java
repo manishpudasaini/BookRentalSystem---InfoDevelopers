@@ -126,7 +126,7 @@ public class TransactionServiceImpl implements TransactionService {
         }catch (EntityNotFoundException e){
             memberName = null;
             bookName = null;
-            System.out.println(e);
+//            System.out.println(e);
         }
 
         return TransactionDto.builder()
@@ -223,6 +223,9 @@ public class TransactionServiceImpl implements TransactionService {
                              XSSFWorkbook workbook) throws IOException // creating cells for each row
     {
 
+        //this is the format for the date
+       DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM/dd/yyyy");
+
         /* CreationHelper helps us create instances of various things like DataFormat,
            Hyperlink  in a format (HSSF, XSSF)*/
         CreationHelper createHelper = workbook.getCreationHelper();
@@ -234,10 +237,10 @@ public class TransactionServiceImpl implements TransactionService {
         cell.setCellValue(transaction.getCode());
 
         cell = row.createCell(2);
-        cell.setCellValue(transaction.getFrom().format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+        cell.setCellValue(transaction.getFrom().format(dateTimeFormatter));
 
         cell = row.createCell(3);
-        cell.setCellValue(transaction.getTo().format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+        cell.setCellValue(transaction.getTo().format(dateTimeFormatter));
 
 
         cell = row.createCell(4);
@@ -245,7 +248,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         cell = row.createCell(5);
         if(transaction.getReturnDate() != null){
-            cell.setCellValue(transaction.getReturnDate().format(DateTimeFormatter.ofPattern("MMM/dd/yyyy")));
+            cell.setCellValue(transaction.getReturnDate().format(dateTimeFormatter));
         }else {
             cell.setCellValue("");
         }
@@ -261,9 +264,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<TransactionDto> findTransactionFromDate(Integer pageNo, Integer pageSize,
-                                                        LocalDate from, LocalDate to){
+                                                        LocalDate from, LocalDate returnDate){
         Pageable pageable = PageRequest.of(pageNo,pageSize);
-        Page<Transaction> allTransactions =  transactionRepo.findByDate(from,to,pageable);
+        Page<Transaction> allTransactions =  transactionRepo.findByDate(from,returnDate,pageable);
         Page<TransactionDto> transactionDtos  = allTransactions
                 .map(this::transactionToTransactionDto);
         return transactionDtos;
