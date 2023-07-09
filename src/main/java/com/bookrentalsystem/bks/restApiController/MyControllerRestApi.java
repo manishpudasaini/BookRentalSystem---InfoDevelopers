@@ -1,16 +1,12 @@
 package com.bookrentalsystem.bks.restApiController;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
-import com.bookrentalsystem.bks.dto.author.AuthorResponse;
 import com.bookrentalsystem.bks.dto.book.BookRequest;
-import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.dto.category.CategoryRequest;
-import com.bookrentalsystem.bks.dto.category.CategoryResponse;
 import com.bookrentalsystem.bks.dto.member.MemberRequest;
-import com.bookrentalsystem.bks.dto.member.MemberResponse;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
-import com.bookrentalsystem.bks.service.AuthorServiceImpl.AuthorServiceImpl;
+import com.bookrentalsystem.bks.service.authorserviceimpl.AuthorServiceImpl;
 import com.bookrentalsystem.bks.service.BookServiceImpl.BookServiceImpl;
 import com.bookrentalsystem.bks.service.CategoryServiceImpl.CategoryServiceImpl;
 import com.bookrentalsystem.bks.service.MemberService;

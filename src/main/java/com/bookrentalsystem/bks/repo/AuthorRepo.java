@@ -18,4 +18,7 @@ public interface AuthorRepo extends JpaRepository<Author,Short> {
     @Query(nativeQuery = true,value = "select * from author where author.phone_number=?1 and author.deleted=true")
     Optional<Author> findByNumberAndDeletedIsTrue(String number);
 
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Author a WHERE a.email = ?1")
+    Boolean findUsingEmail(String email);
+
 }

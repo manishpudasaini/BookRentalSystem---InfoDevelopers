@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.service.AuthorServiceImpl;
+package com.bookrentalsystem.bks.service.authorserviceimpl;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class AuthorServiceImpl implements AuthorService  {
                 inActiveAuthor.setEmail(author.getEmail());
                 inActiveAuthor.setDeleted(Boolean.FALSE);
                 authorRepo.save(inActiveAuthor);
-                return null;
+                return "bring data back from the db";
             }
 
         if(dbAuthorNumberTrue.isPresent()){
@@ -45,11 +44,11 @@ public class AuthorServiceImpl implements AuthorService  {
                 inActiveAuthor.setEmail(author.getEmail());
                 inActiveAuthor.setDeleted(Boolean.FALSE);
                 authorRepo.save(inActiveAuthor);
-                return null;
+                return "check and set the same data";
         }
 
          authorRepo.save(author);
-        return null;
+        return "save the author in db";
     }
 
 
@@ -89,7 +88,7 @@ public class AuthorServiceImpl implements AuthorService  {
     * returning the author list
      */
     public List<Author> convertToAuthorList(List<Short> ids){
-        return ids.stream().map(this::findAuthorById).collect(Collectors.toList());
+        return ids.stream().map(this::findAuthorById).toList();
     }
 
     /*
@@ -97,7 +96,7 @@ public class AuthorServiceImpl implements AuthorService  {
      */
     public List<AuthorResponse> convertToAuthorResponseList(List<Author> authors){
         return authors.stream()
-                .map(this::entityToAuthorResponse).collect(Collectors.toList());
+                .map(this::entityToAuthorResponse).toList();
     }
 
     //this method is used to find all the author list and return it in AuthorResponse form

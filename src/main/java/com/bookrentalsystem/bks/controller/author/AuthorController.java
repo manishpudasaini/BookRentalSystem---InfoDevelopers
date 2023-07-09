@@ -56,14 +56,12 @@ public class AuthorController {
 
         if(result.hasErrors()){
             model.addAttribute("author",authorRequest);
-//            System.out.println(model.asMap());
-            System.out.println(result);
             return "/author/AuthorForm";
         }
 
           String  message = authorService.addAuthorDb(authorRequest);
 
-        if(message == null){
+        if(message != null){
             redirectAttributes.addFlashAttribute("message","Author table updated!!");
             return "redirect:/author/table";
         }
