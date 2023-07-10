@@ -1,7 +1,7 @@
 package com.bookrentalsystem.bks.config.jwtFilter;
 
-import com.bookrentalsystem.bks.service.UserDetailService.MyUserDetailService;
-import com.bookrentalsystem.bks.service.jwtService.JwtService;
+import com.bookrentalsystem.bks.service.userdetailservice.MyUserDetailService;
+import com.bookrentalsystem.bks.service.jwtservice.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

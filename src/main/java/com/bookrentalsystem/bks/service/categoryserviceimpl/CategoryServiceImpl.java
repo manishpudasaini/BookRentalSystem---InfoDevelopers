@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.service.CategoryServiceImpl;
+package com.bookrentalsystem.bks.service.categoryserviceimpl;
 
 import com.bookrentalsystem.bks.dto.category.CategoryRequest;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;

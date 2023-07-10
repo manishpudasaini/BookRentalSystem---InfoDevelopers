@@ -3,7 +3,7 @@ package com.bookrentalsystem.bks.controller.member;
 import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
-import com.bookrentalsystem.bks.exception.globalException.MemberCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.MemberCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.MemberService;
@@ -59,7 +59,7 @@ public class MemberController {
 
         String message= memberService.addMember(memberRequest);
 
-        if(message==null){
+        if(message!=null){
             redirectAttributes.addFlashAttribute("message","Member added");
            return  "redirect:/member/table";
         }

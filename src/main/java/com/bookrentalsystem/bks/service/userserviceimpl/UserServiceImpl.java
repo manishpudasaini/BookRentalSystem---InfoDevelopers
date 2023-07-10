@@ -1,8 +1,8 @@
-package com.bookrentalsystem.bks.service.UserServiceImpl;
+package com.bookrentalsystem.bks.service.userserviceimpl;
 
 import com.bookrentalsystem.bks.dto.login.LoginUserDto;
 import com.bookrentalsystem.bks.enums.RoleName;
-import com.bookrentalsystem.bks.exception.globalException.UserHavingThisEmailNotExist;
+import com.bookrentalsystem.bks.exception.globalexception.UserHavingThisEmailNotExist;
 import com.bookrentalsystem.bks.model.login.User;
 import com.bookrentalsystem.bks.repo.UserRepo;
 import com.bookrentalsystem.bks.service.UserService;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

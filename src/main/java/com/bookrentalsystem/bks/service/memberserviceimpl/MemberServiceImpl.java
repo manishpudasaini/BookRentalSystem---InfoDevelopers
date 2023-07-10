@@ -1,8 +1,8 @@
-package com.bookrentalsystem.bks.service.MemberServiceImpl;
+package com.bookrentalsystem.bks.service.memberserviceimpl;
 
 import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
-import com.bookrentalsystem.bks.exception.globalException.MemberCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.MemberCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.repo.MemberRepo;
 import com.bookrentalsystem.bks.service.MemberService;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
                 deleteMember.setDeleted(Boolean.FALSE);
 
                 memberRepo.save(deleteMember);
-                return null;
+                return "revive the member which is already deleted";
             }
         }
         if(memberDeletedTrueNumber.isPresent()){
@@ -49,20 +48,14 @@ public class MemberServiceImpl implements MemberService {
             deleteMemberNum.setAddress(memberRequest.getAddress());
             deleteMemberNum.setDeleted(Boolean.FALSE);
             memberRepo.save(deleteMemberNum);
-            return null;
+            return "revive the member which is already deleted";
 
         }
         memberRepo.save(memberRequestToEtity(memberRequest));
-        return null;
+        return "save the member in db";
     }
 
-    //this method is used to update the member
-//    @Override
-//    public String addUpdateMember(MemberRequest memberRequest) {
-//       Member member = memberRequestToEtity(memberRequest);
-//        memberRepo.save(member);
-//        return "updated";
-//    }
+
 
     //convert memberRequest to Entity
     @Override
@@ -121,13 +114,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberResponse> allMemberResponse() {
        List<Member> members = memberRepo.findAll();
-        return members.stream().map(this::entityToMemberResponse).collect(Collectors.toList());
+        return members.stream().map(this::entityToMemberResponse).toList();
     }
 
     @Override
     public List<MemberResponse> allMemberResponseDTo(List<Member> members) {
         return members.stream()
-                 .map(this::entityToMemberResponse).collect(Collectors.toList());
+                 .map(this::entityToMemberResponse).toList();
     }
 
     //delete member from its ID

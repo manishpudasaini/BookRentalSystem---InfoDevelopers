@@ -1,6 +1,6 @@
-package com.bookrentalsystem.bks.service.UserServiceImpl;
+package com.bookrentalsystem.bks.service.userserviceimpl;
 
-import com.bookrentalsystem.bks.dto.AuthorizationDto.RegisterUserDto;
+import com.bookrentalsystem.bks.dto.authorizationdto.RegisterUserDto;
 import com.bookrentalsystem.bks.model.login.User;
 import com.bookrentalsystem.bks.repo.UserRepo;
 import lombok.RequiredArgsConstructor;

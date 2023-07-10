@@ -1,11 +1,13 @@
 package com.bookrentalsystem.bks.controller.login;
 
-import com.bookrentalsystem.bks.dto.AuthorizationDto.AuthRequest;
-import com.bookrentalsystem.bks.dto.AuthorizationDto.AuthResponse;
-import com.bookrentalsystem.bks.dto.AuthorizationDto.RegisterUserDto;
+
+import com.bookrentalsystem.bks.dto.authorizationdto.AuthRequest;
+import com.bookrentalsystem.bks.dto.authorizationdto.AuthResponse;
+
+import com.bookrentalsystem.bks.dto.authorizationdto.RegisterUserDto;
 import com.bookrentalsystem.bks.model.login.User;
-import com.bookrentalsystem.bks.service.UserServiceImpl.RestUserService;
-import com.bookrentalsystem.bks.service.jwtService.AuthService;
+import com.bookrentalsystem.bks.service.userserviceimpl.RestUserService;
+import com.bookrentalsystem.bks.service.jwtservice.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

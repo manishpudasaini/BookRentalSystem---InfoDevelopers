@@ -2,7 +2,7 @@ package com.bookrentalsystem.bks.service.authorserviceimpl;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
-import com.bookrentalsystem.bks.exception.globalException.AuthorCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.AuthorCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.repo.AuthorRepo;
 import com.bookrentalsystem.bks.service.AuthorService;

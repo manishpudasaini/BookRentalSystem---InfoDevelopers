@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.service.BookServiceImpl;
+package com.bookrentalsystem.bks.service.bookserviceimpl;
 
 import com.bookrentalsystem.bks.dto.book.BookRequest;
 import org.apache.poi.ss.usermodel.Cell;

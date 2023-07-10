@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.dto.AuthorizationDto;
+package com.bookrentalsystem.bks.dto.authorizationdto;
 
 import com.bookrentalsystem.bks.enums.RoleName;
 import jakarta.persistence.EnumType;

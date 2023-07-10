@@ -19,6 +19,6 @@ public interface AuthorRepo extends JpaRepository<Author,Short> {
     Optional<Author> findByNumberAndDeletedIsTrue(String number);
 
     @Query("SELECT CASE WHEN COUNT(a) > 0 THEN TRUE ELSE FALSE END FROM Author a WHERE a.email = ?1")
-    Boolean findUsingEmail(String email);
+    Optional<Author> findUsingEmail(String email);
 
 }

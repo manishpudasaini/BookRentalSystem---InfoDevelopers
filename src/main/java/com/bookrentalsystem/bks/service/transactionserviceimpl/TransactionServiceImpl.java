@@ -1,11 +1,11 @@
-package com.bookrentalsystem.bks.service.TransactionServiceImpl;
+package com.bookrentalsystem.bks.service.transactionserviceimpl;
 
 import com.bookrentalsystem.bks.dto.transaction.TransactionDto;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
-import com.bookrentalsystem.bks.exception.globalException.CodeNotFoundException;
+import com.bookrentalsystem.bks.exception.globalexception.CodeNotFoundException;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.model.Transaction;
@@ -16,19 +16,18 @@ import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.time.LocalDate;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +78,7 @@ public class TransactionServiceImpl implements TransactionService {
     public List<RentBookResponse> allRentBooks() {
        List<Transaction> transactions = transactionRepo.findAll();
         return transactions.stream()
-                .map(this::transactionToRentBookResponse).collect(Collectors.toList());
+                .map(this::transactionToRentBookResponse).toList();
     }
 
 
@@ -122,7 +121,6 @@ public class TransactionServiceImpl implements TransactionService {
         }catch (EntityNotFoundException e){
             memberName = null;
             bookName = null;
-            System.out.println(e);
         }
 
         return TransactionDto.builder()
@@ -140,14 +138,14 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionDto> allTransaction() {
        List<Transaction> transactions= transactionRepo.findAll();
         return transactions.stream()
-                .map(this::transactionToTransactionDto).collect(Collectors.toList());
+                .map(this::transactionToTransactionDto).toList();
     }
 
     @Override
     public List<Transaction> allTransactionEntity() {
         List<Transaction> transactions = transactionRepo.findAll();
         return transactions
-               .stream().filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
+               .stream().filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
     }
 
 
@@ -193,29 +191,22 @@ public class TransactionServiceImpl implements TransactionService {
             createCell(transaction,row,workbook);
         }
 
-        //FileOutputStream fileOutputStream = new FileOutputStream("C:\\Users\\eziom\\OneDrive\\Desktop\\excelFiles\\TransactionHistory.xlsx");
-//        workbook.write(fileOutputStream);
-//        fileOutputStream.close();
+
 
         workbook.write(byteArrayOutputStream);
         byteArrayOutputStream.close();
 
 
-
-//        return "Transaction history saved in excel";
         return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
     }
 
      private void createCell(Transaction transaction, Row row,
-                             XSSFWorkbook workbook) throws IOException // creating cells for each row
+                             XSSFWorkbook workbook) // creating cells for each row
     {
 
         /* CreationHelper helps us create instances of various things like DataFormat,
            Hyperlink  in a format (HSSF, XSSF)*/
-        CreationHelper createHelper = workbook.getCreationHelper();
-
-//        CellStyle dateCellStyle = workbook.createCellStyle();
-//        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("MMM/dd/yyyy"));
+         workbook.getCreationHelper();
 
 
         Cell cell = row.createCell(0);

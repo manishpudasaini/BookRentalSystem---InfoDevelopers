@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.service.UserDetailService;
+package com.bookrentalsystem.bks.service.userdetailservice;
 
 import com.bookrentalsystem.bks.model.login.CustomeUserDetails;
 import com.bookrentalsystem.bks.model.login.User;

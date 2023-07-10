@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.service.SendingEmailImpl;
+package com.bookrentalsystem.bks.service.sendingemailimpl;
 
 import com.bookrentalsystem.bks.dto.ForgotPassword.ForgotPasswordDto;
 import com.bookrentalsystem.bks.model.ForgotPassword;
@@ -6,12 +6,9 @@ import com.bookrentalsystem.bks.model.SendEmail;
 import com.bookrentalsystem.bks.repo.ForgotPasswordRepo;
 import com.bookrentalsystem.bks.service.ForgotPasswordService;
 import com.bookrentalsystem.bks.utility.GenerateRandomNumber;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,12 +32,6 @@ public class ForgotPasswordImpl implements ForgotPasswordService {
         simpleMailMessage.setText(" Please use this OTP to change your password " + "   "+otpCode );
         simpleMailMessage.setSubject("Change Password");
 
-//        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
-//        mimeMessageHelper.setFrom("eziomanish111@gmail.com");
-//        mimeMessageHelper.setTo(email.getTo());
-//        mimeMessageHelper.setText(" Please use this OTP to change your password " + "   "+otpCode );
-//        mimeMessageHelper.setSubject("Change Password");
 
         ForgotPasswordDto forgotPasswordDto = new ForgotPasswordDto(email.getTo(), otpCode);
         forgotPasswordRepo.save(changeDtoToEntity(forgotPasswordDto));

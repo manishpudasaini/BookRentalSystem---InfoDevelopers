@@ -1,4 +1,4 @@
-package com.bookrentalsystem.bks.service.jwtService;
+package com.bookrentalsystem.bks.service.jwtservice;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
