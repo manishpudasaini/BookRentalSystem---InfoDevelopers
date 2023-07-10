@@ -61,7 +61,7 @@ public class AuthorController {
             redirectAttributes.addFlashAttribute("message","Author table updated!!");
             return "redirect:/author/table";
         }
-        return "added";
+        return "redirect:/author/table";
     }
 
     @GetMapping("/update/{id}")

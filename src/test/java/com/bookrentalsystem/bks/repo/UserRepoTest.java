@@ -38,7 +38,7 @@ class UserRepoTest {
 
     @DisplayName("Junit test to check if the user having the email is present or not")
     @Test
-    void checkIfUserByEmailIsPresent() {
+    void shouldCheckIfUserByEmailIsPresent() {
         Optional<User> singleUser = userRepo.findUserByEmail("toni@gmail.com");
 
         //verify the result

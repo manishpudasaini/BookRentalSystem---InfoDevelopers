@@ -2,6 +2,7 @@ package com.bookrentalsystem.bks.repo;
 
 import com.bookrentalsystem.bks.model.Member;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -38,7 +39,8 @@ class MemberRepoTest {
     }
 
     @Test
-    void whenFindMemberByEmail_AND_DeletedIsTrue_ReturnMember() {
+    @DisplayName("shouldFindMemberByEmailANDDeletedIsTrueReturnMember")
+    void shouldFindMemberByEmailANDDeletedIsTrueReturnMember() {
      Optional<Member> member = memberRepo.findMemberByEmailAndDeletedIsTrue("toni@gmail.com");
 
      assertThat(member.isPresent());
@@ -47,7 +49,8 @@ class MemberRepoTest {
 
 
     @Test
-    void whenFindMemberByPhone_AND_DeletedIsTrue_ReturnMember() {
+    @DisplayName("shouldFindMemberByPhoneANDDeletedIsTrueReturnMember")
+    void shouldFindMemberByPhoneANDDeletedIsTrueReturnMember() {
        Optional<Member> member = memberRepo.findByPhoneAndDeletedIsTrue("8127318922");
        assertThat(member.isPresent());
     }

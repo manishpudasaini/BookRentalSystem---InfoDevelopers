@@ -12,7 +12,7 @@ public interface AuthorRepo extends JpaRepository<Author,Short> {
     @Query(nativeQuery = true,value = "select * from author where author.email=?1 and author.deleted=true")
     Optional<Author> findByEmailAndDeletedIsTrue(String email);
 
-    Optional<Author> findByNumberAndDeletedIsFalse(String number);
+//    Optional<Author> findByNumberAndDeletedIsFalse(String number);
     @Query(nativeQuery = true,value = "select * from author where author.phone_number=?1 and author.deleted=true")
     Optional<Author> findByNumberAndDeletedIsTrue(String number);
 

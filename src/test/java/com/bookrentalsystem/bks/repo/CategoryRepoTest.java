@@ -2,6 +2,7 @@ package com.bookrentalsystem.bks.repo;
 
 import com.bookrentalsystem.bks.model.Category;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -37,7 +38,8 @@ class CategoryRepoTest {
     }
 
     @Test
-    void whenFindCategoryByName_And_DeletedIsTrue() {
+    @DisplayName("shouldFindCategoryUsingNameAndDeletedTrue")
+    void shouldFindCategoryByNameAndDeletedIsTrue() {
         Optional<Category> category = categoryRepo.findCategoryByNameAndDeletedIsTrue("info");
 
         assertThat(category).isPresent();

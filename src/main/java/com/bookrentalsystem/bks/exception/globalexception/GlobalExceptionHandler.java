@@ -1,8 +1,10 @@
 package com.bookrentalsystem.bks.exception.globalexception;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
@@ -94,6 +96,16 @@ public class GlobalExceptionHandler {
     }
 
 
+    //this is used to handel the error or access denied exception - try to access unauthorized role api
+    @ExceptionHandler(value = {RuntimeException.class})
+    public ModelAndView handelAccessDeniedException(AccessDeniedException accessDeniedException) {
+        GlobalExceptionMessage message = new GlobalExceptionMessage();
+
+            ModelAndView mv = new ModelAndView();
+            mv.addObject("errorResponse", "Sorry, You dont have authority to access this api" );
+            mv.setViewName("/errorPage/ExceptionPage");
+            return mv;
+    }
 
     @ExceptionHandler(value = {DataIntegrityViolationException.class})
     public String handelUniqueException(DataIntegrityViolationException e, RedirectAttributes redirectAttributes) throws Exception {

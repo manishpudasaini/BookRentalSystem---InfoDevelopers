@@ -2,6 +2,7 @@ package com.bookrentalsystem.bks.service.memberserviceimpl;
 
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.repo.MemberRepo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,7 +27,8 @@ class MemberServiceImplTest {
     private MemberServiceImpl memberService;
 
     @Test
-    void checkMemberById() {
+    @DisplayName("should check if member present or not")
+    void shouldCheckMemberByIdReturnMember() {
 
         when(memberRepo.findById((short)100))
                 .thenReturn(Optional.of(new Member((short)100,"manish","manish@gmail.com","bhadrabas","2731981281",false)));
@@ -38,7 +40,7 @@ class MemberServiceImplTest {
     }
 
     @Test
-    void allMemberEntity() {
+    void shouldReturnAllMemberEntity() {
         List<Member> members = new ArrayList<>();
         members.add(new Member((short)100,"manish","manish@gmail.com","bhadrabas","83891282109",false));
         members.add(new Member((short)100,"ronaldo","ronaldo@gmail.com","jorpati","91280391821",false));
