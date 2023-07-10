@@ -2,7 +2,7 @@ package com.bookrentalsystem.bks.controller.author;
 
 import com.bookrentalsystem.bks.dto.author.AuthorRequest;
 import com.bookrentalsystem.bks.dto.author.AuthorResponse;
-import com.bookrentalsystem.bks.exception.globalException.AuthorCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.AuthorCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Author;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.AuthorService;
@@ -57,7 +57,7 @@ public class AuthorController {
 
           String  message = authorService.addAuthorDb(authorRequest);
 
-        if(message == null){
+        if(message != null){
             redirectAttributes.addFlashAttribute("message","Author table updated!!");
             return "redirect:/author/table";
         }
@@ -75,13 +75,12 @@ public class AuthorController {
     @RequestMapping("/delete/{id}")
     public String deleteAuthor(@PathVariable Short id,RedirectAttributes redirectAttributes){
         List<Book> allBooks = bookService.allBookEntity();
-        List<Author> allAuthors = authorService.allAuthors();
 
        List<Short> allIds = allBooks.stream()
                .flatMap(b -> b.getAuthors().stream())
                .map(Author::getId).toList();
 
-       Optional<Short> singleId = allIds.stream().filter(i -> i == id).findFirst();
+       Optional<Short> singleId = allIds.stream().filter(i -> i.equals(id)).findFirst();
 
        //if the id is present in the book then it will throw exception
        if(singleId.isPresent()){

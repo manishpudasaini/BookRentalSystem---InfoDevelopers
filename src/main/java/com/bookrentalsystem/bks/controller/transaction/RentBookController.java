@@ -1,16 +1,12 @@
 package com.bookrentalsystem.bks.controller.transaction;
 
 import com.bookrentalsystem.bks.dto.book.BookResponse;
-import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
 import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookRequest;
-import com.bookrentalsystem.bks.dto.transaction.rentBook.RentBookResponse;
 import com.bookrentalsystem.bks.model.Book;
-import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,7 +49,6 @@ public class RentBookController {
                                Model model,RedirectAttributes redirectAttributes){
 
         if(bindingResult.hasErrors()){
-            System.out.println(bindingResult);
             List<MemberResponse> memberResponses = memberService.allMemberResponse();
             List<BookResponse> bookResponses = bookService.allBooks();
             model.addAttribute("member",memberResponses);

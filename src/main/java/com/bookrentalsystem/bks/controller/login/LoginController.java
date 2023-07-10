@@ -1,6 +1,6 @@
 package com.bookrentalsystem.bks.controller.login;
 
-import com.bookrentalsystem.bks.dto.ForgotPassword.ForgotPasswordDto;
+import com.bookrentalsystem.bks.dto.forgotpassword.ForgotPasswordDto;
 import com.bookrentalsystem.bks.dto.login.ChangePasswordDto;
 import com.bookrentalsystem.bks.dto.login.LoginUserDto;
 import com.bookrentalsystem.bks.model.SendEmail;

@@ -1,6 +1,6 @@
 package com.bookrentalsystem.bks.service;
 
-import com.bookrentalsystem.bks.dto.ForgotPassword.ForgotPasswordDto;
+import com.bookrentalsystem.bks.dto.forgotpassword.ForgotPasswordDto;
 import com.bookrentalsystem.bks.model.ForgotPassword;
 import com.bookrentalsystem.bks.model.SendEmail;
 import jakarta.mail.MessagingException;

@@ -1,6 +1,6 @@
 package com.bookrentalsystem.bks.config;
 
-import com.bookrentalsystem.bks.service.UserDetailService.MyUserDetailService;
+import com.bookrentalsystem.bks.service.userdetailservice.MyUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -36,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests((auth) ->
+        http.authorizeHttpRequests(auth ->
                 auth.requestMatchers("/api/**", "/resources/**",
                                 "/static/**", "/css/**","/api/v1/**","/api/user/**")
                         .permitAll()
@@ -60,6 +61,12 @@ public class SecurityConfig {
                 .permitAll()
         );
 
+        // Other security configurations...
+            http.headers(header ->
+                    header.addHeaderWriter
+                            (new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.DENY)));
+
+
 
 
         return http.build();
@@ -67,7 +74,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web) ->
+        return web ->
                 web.ignoring().requestMatchers("/favicon.ico", "/resources/**", "/error");
     }
 

@@ -35,10 +35,9 @@ public class Fileutils {
     }
 
     //this is used to extract the file type to check the file type
-    public String photoValidation(MultipartFile multipartFile) throws IOException {
+    public String photoValidation(MultipartFile multipartFile) {
         Tika tika = new Tika();
-        String type = tika.detect(multipartFile.getOriginalFilename());
-        return type;
+        return tika.detect(multipartFile.getOriginalFilename());
     }
 
 

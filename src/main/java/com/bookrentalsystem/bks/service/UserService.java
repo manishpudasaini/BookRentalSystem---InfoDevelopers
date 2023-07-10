@@ -2,7 +2,6 @@ package com.bookrentalsystem.bks.service;
 
 import com.bookrentalsystem.bks.dto.login.LoginUserDto;
 import com.bookrentalsystem.bks.model.login.User;
-import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 
 import java.util.Optional;
 

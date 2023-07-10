@@ -2,7 +2,7 @@ package com.bookrentalsystem.bks.controller.category;
 
 import com.bookrentalsystem.bks.dto.category.CategoryRequest;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
-import com.bookrentalsystem.bks.exception.globalException.CategoryCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.CategoryCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.service.BookService;
 import com.bookrentalsystem.bks.service.CategoryService;
@@ -75,22 +75,6 @@ public class CategoryController {
         return "/category/UpdateForm";
     }
 
-//    @PostMapping("/update/save")
-//    public String saveUpdateCategory(@Valid @ModelAttribute("category") CategoryRequest categoryRequest,
-//                               BindingResult result,
-//                               Model model,RedirectAttributes redirectAttributes){
-//
-//        if(result.hasErrors()){
-//            System.out.println(result);
-//            model.addAttribute("category",categoryRequest);
-//            return "category/UpdateForm";
-//        }
-//
-//        categoryService.saveUpdateCategory(categoryRequest);
-//
-//        redirectAttributes.addFlashAttribute("message","Category updated successfully!!");
-//        return "redirect:/category/table";
-//    }
 
     //delete a category
     @RequestMapping("/delete/{id}")
@@ -98,9 +82,9 @@ public class CategoryController {
 
         List<Book> allBooks = bookService.allBookEntity();
         List<Book> booksHavingCategory =allBooks.stream()
-                .filter(b -> b.getCategory().getId()==id).toList();
+                .filter(b -> b.getCategory().getId().equals(id)).toList();
 
-        if(booksHavingCategory.size()==0){
+        if(booksHavingCategory.isEmpty()){
             categoryService.deleteCategory(id);
         }else {
             throw new CategoryCanNotBeDeletedException("Cannot delete this category!!");

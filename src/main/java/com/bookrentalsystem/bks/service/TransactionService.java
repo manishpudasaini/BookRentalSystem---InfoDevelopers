@@ -8,7 +8,6 @@ import com.bookrentalsystem.bks.model.Transaction;
 import org.springframework.data.domain.Page;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +34,5 @@ public interface TransactionService {
 
     Page<TransactionDto> getPaginatedTransaction(Integer pageNo, Integer pageSize);
 
-//    Page<TransactionDto> getPaginatedForTransaction();
     Page<TransactionDto> findTransactionFromDate(Integer pageNo, Integer pageSize,LocalDate from, LocalDate to);
 }

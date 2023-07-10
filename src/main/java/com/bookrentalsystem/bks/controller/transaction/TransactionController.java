@@ -67,12 +67,10 @@ public class TransactionController {
 
         InputStreamResource isr = new InputStreamResource(actualData);
 
-      ResponseEntity<Resource> body =   ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename="+ fileName)
-                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                .body(isr);
-
-      return body;
+      return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                      "attachment; filename="+ fileName)
+              .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+              .body(isr);
     }
 
     @PostMapping("/page/filter/first/{pageNo}")
@@ -111,8 +109,6 @@ public class TransactionController {
                 Page<TransactionDto> page = transactionService.findTransactionFromDate(pageNo,pageSize,from,toDate);
                 List<TransactionDto> transactionList = page.getContent();
 
-//                model.addAttribute("filter",new FilterTransaction(convertToLocalDateTime.convertDateToString(from),
-//                        convertToLocalDateTime.convertDateToString(toDate)));
 
                 model.addAttribute("filter",new FilterTransaction(filterTransaction.getFrom(),
                         convertToLocalDateTime.convertDateToString(toDate)));

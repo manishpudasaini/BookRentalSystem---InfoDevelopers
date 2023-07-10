@@ -3,24 +3,22 @@ package com.bookrentalsystem.bks.controller.member;
 import com.bookrentalsystem.bks.dto.member.MemberRequest;
 import com.bookrentalsystem.bks.dto.member.MemberResponse;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
-import com.bookrentalsystem.bks.exception.globalException.MemberCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.MemberCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Member;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.MemberService;
 import com.bookrentalsystem.bks.service.TransactionService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequestMapping("/member")
@@ -59,7 +57,7 @@ public class MemberController {
 
         String message= memberService.addMember(memberRequest);
 
-        if(message==null){
+        if(message!=null){
             redirectAttributes.addFlashAttribute("message","Member added");
            return  "redirect:/member/table";
         }
@@ -74,32 +72,20 @@ public class MemberController {
         return "/customer/CustomerUpdate";
     }
 
-//    @PostMapping("/update/save")
-//    public String saveUpdateMember(@Valid @ModelAttribute("member") MemberRequest memberRequest,
-//                             BindingResult result,Model model){
-//        if(result.hasErrors()){
-//            model.addAttribute("member",memberRequest);
-//            return "/customer/CustomerUpdate";
-//        }
-//
-//        memberService.addUpdateMember(memberRequest);
-//        return "redirect:/member/table";
-//    }
-
     //delete the member - soft delete
     @RequestMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Short id,RedirectAttributes redirectAttributes){
        List<Transaction> transaction =  transactionService.allTransactionEntity();
-       List<Transaction> filterTransaction =transaction.stream().filter(t -> t.getMember().getId() == id)
-                       .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).collect(Collectors.toList());
+       List<Transaction> filterTransaction =transaction.stream().filter(t -> t.getMember().getId().equals(id))
+                       .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
 
-       if(filterTransaction.size() == 0){
+       if(filterTransaction.isEmpty()){
            memberService.deleteMemberById(id);
        }else {
            throw new MemberCanNotBeDeletedException("Cannot delete this member");
        }
 
-        String message = "";
+
         redirectAttributes.addFlashAttribute("message","Member Deleted Successfully!!");
         return "redirect:/member/table?success";
     }

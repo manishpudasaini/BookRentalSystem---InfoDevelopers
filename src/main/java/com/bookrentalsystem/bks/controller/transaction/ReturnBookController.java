@@ -4,13 +4,10 @@ import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.dto.transaction.returnBook.ReturnBookRequest;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
 import com.bookrentalsystem.bks.model.Book;
-import com.bookrentalsystem.bks.model.ReturnBookTable;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.BookService;
-import com.bookrentalsystem.bks.service.ReturnBookTbl;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.ConvertToLocalDateTime;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/return/book")
@@ -38,7 +34,7 @@ public class ReturnBookController {
     public String returnBookForm(Model model){
         if(model.getAttribute("transaction") == null){
            List<Transaction> allTransaction = transactionService.allTransactionEntity();
-           List<String> allCodes = allTransaction.stream().map(Transaction::getCode).collect(Collectors.toList());
+           List<String> allCodes = allTransaction.stream().map(Transaction::getCode).toList();
 
            model.addAttribute("transaction",new ReturnBookRequest());
            model.addAttribute("codes",allCodes);
@@ -99,7 +95,7 @@ public class ReturnBookController {
 
         transactionService.saveTransaction(transaction);
 
-//        returnBookTbl.addReturnBook(transaction);
+
         return "redirect:/transaction/table";
     }
 

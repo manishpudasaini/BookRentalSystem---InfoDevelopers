@@ -6,32 +6,28 @@ import com.bookrentalsystem.bks.dto.book.BookResponse;
 import com.bookrentalsystem.bks.dto.book.FileDto;
 import com.bookrentalsystem.bks.dto.category.CategoryResponse;
 import com.bookrentalsystem.bks.enums.BookRentStatus;
-import com.bookrentalsystem.bks.exception.globalException.BookCanNotBeDeletedException;
+import com.bookrentalsystem.bks.exception.globalexception.BookCanNotBeDeletedException;
 import com.bookrentalsystem.bks.model.Book;
 import com.bookrentalsystem.bks.model.Transaction;
 import com.bookrentalsystem.bks.service.AuthorService;
 import com.bookrentalsystem.bks.service.BookService;
-import com.bookrentalsystem.bks.service.BookServiceImpl.BookExcelImportService;
-import com.bookrentalsystem.bks.service.BookServiceImpl.ExcelHelper;
+import com.bookrentalsystem.bks.service.bookserviceimpl.BookExcelImportService;
+import com.bookrentalsystem.bks.service.bookserviceimpl.ExcelHelper;
 import com.bookrentalsystem.bks.service.CategoryService;
 import com.bookrentalsystem.bks.service.TransactionService;
 import com.bookrentalsystem.bks.utility.Fileutils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/book")
@@ -85,7 +81,7 @@ public class BookController {
             //extract the type of the multipart file
             String type = fileutils.photoValidation(bookRequest.getImageFile());
 
-            Boolean validType = type.equals("image/jpeg") || type.equals("image/png");
+            boolean validType = type.equals("image/jpeg") || type.equals("image/png");
 
             //check if the multipart file is in Jpg, png format
             if (!validType) {
@@ -116,17 +112,14 @@ public class BookController {
     public String deleteBook(@PathVariable Short id, RedirectAttributes redirectAttributes) {
         List<Transaction> transactions = transactionService.allTransactionEntity();
 
-        List<Transaction> notDeleteTransaction = transactions.stream().filter(t -> t.getBook().getId() == id)
+        List<Transaction> notDeleteTransaction = transactions.stream().filter(t -> t.getBook().getId().equals(id))
                 .filter(t -> t.getStatus().equals(BookRentStatus.RENT)).toList();
 
-        if (notDeleteTransaction.size() == 0) {
-//         List<Transaction> deleteTransaction =  transactions.stream().filter(t -> t.getBook().getId() == id)
-//                   .filter(t -> t.getStatus().equals(BookRentStatus.RETURN)).toList();
+        if (notDeleteTransaction.isEmpty()) {
             bookService.deleteBook(id);
         } else {
             throw new BookCanNotBeDeletedException("Book cannot be deleted");
         }
-        String message = "";
         redirectAttributes.addFlashAttribute("message", "Book Deleted Successfully!!");
         return "redirect:/book/table";
     }
@@ -144,7 +137,6 @@ public class BookController {
     @GetMapping("view/{id}")
     public String viewBook(@PathVariable Short id, Model model) throws IOException {
         BookResponse singleBook = bookService.viewBookId(id);
-        List<BookResponse> books = bookService.allBookView();
         model.addAttribute("book", singleBook);
         return "book/BookDetail";
     }

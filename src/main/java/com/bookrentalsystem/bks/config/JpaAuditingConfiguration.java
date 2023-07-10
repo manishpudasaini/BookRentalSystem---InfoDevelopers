@@ -16,13 +16,6 @@ public class JpaAuditingConfiguration {
     @Bean
     public AuditorAware<String> auditorProvider(){
 
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-//        Set<String> roles = authentication.getAuthorities().stream()
-//                .map(r -> r.getAuthority()).collect(Collectors.toSet());
-//        Optional<String> roles = authentication.getAuthorities().stream()
-//                .map(r -> r.getAuthority()).findFirst();
-
         return new AuditingConfigUserDetail();
     }
 }
