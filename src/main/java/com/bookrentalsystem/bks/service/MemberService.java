@@ -16,6 +16,6 @@ public interface MemberService {
     List<Member > allMemberEntity();
     List<MemberResponse> allMemberResponse();
     List<MemberResponse> allMemberResponseDTo(List<Member> members);
-    void deleteMemberById(short id);
+    String deleteMemberById(short id);
 
 }

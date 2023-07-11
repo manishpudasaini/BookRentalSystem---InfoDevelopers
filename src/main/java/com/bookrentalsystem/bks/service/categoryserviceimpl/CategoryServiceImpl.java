@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService{
        if(singleCategory.isPresent()){
            return singleCategory.get();
        }
-       throw new CategoryCanNotBeDeletedException("Category having this id "+ id +" does not exist..");
+       throw new CategoryCanNotBeDeletedException("Category having this id does not exist");
     }
 
 
@@ -69,7 +69,6 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryResponse entityToCategory(Category category){
         return CategoryResponse.builder()
                 .id(category.getId())
-                .categoryId(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
                 .build();
@@ -101,14 +100,14 @@ public class CategoryServiceImpl implements CategoryService{
             Category category = singleCategory.get();
             return entityToCategory(category);
         }
-        throw new CategoryCanNotBeDeletedException("Category having this id "+ id +" does not exist..");
+        throw new CategoryCanNotBeDeletedException("Category having this id does not exist");
     }
 
     //this method is used to delete the category in database using the category ID
     @Override
-    public void deleteCategory(Short id) {
+    public String deleteCategory(Short id) {
         categoryRepo.deleteById(id);
-
+        return "deleted";
     }
 
     //this method take parameter as Category entity list & return List of CategoryResponse dto

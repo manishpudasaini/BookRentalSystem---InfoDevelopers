@@ -14,5 +14,4 @@ public class CategoryResponse {
     private Short id;
     private String name;
     private String description;
-    private short categoryId;
 }

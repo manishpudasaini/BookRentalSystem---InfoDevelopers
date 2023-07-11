@@ -117,7 +117,7 @@ public class AuthorServiceImpl implements AuthorService  {
         if(singleAuthor.isPresent()){
             return singleAuthor.get();
         }
-        throw new AuthorCanNotBeDeletedException("Author having this"+ id +" doesnot exist!!!");
+        throw new AuthorCanNotBeDeletedException("Author having this does not exist!!!");
     }
 
     //take parameter as Id  & return AuthorResponse
@@ -128,13 +128,14 @@ public class AuthorServiceImpl implements AuthorService  {
            Author author = singleAuthor.get();
            return entityToAuthorResponse(author);
        }
-        throw new AuthorCanNotBeDeletedException("Author having this id : "+ id +" does not exist!!!");
+        throw new AuthorCanNotBeDeletedException("Author having this id does not exist!!!");
     }
 
     //this method is used to delete author by its id
     @Override
-    public void deleteAuthor(Short id) {
+    public String deleteAuthor(Short id) {
         authorRepo.deleteById(id);
+        return "deleted successfully";
     }
 
 }

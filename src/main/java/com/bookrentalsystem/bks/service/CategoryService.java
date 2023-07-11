@@ -14,6 +14,6 @@ public interface CategoryService {
      Category categoryRequestToEntity(CategoryRequest categoryRequest);
      List<CategoryResponse> allCategory();
      CategoryResponse findCategoryResponseById(short id);
-     void deleteCategory(Short id);
+     String deleteCategory(Short id);
 
 }

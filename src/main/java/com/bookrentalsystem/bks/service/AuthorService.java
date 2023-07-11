@@ -17,5 +17,5 @@ public interface AuthorService {
      List<Author> allAuthors();
      Author findAuthorById(short id);
      AuthorResponse findAuthorResponseById(Short id);
-     void deleteAuthor(Short id);
+     String deleteAuthor(Short id);
 }

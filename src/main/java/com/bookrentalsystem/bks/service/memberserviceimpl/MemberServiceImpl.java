@@ -49,10 +49,9 @@ public class MemberServiceImpl implements MemberService {
             deleteMemberNum.setDeleted(Boolean.FALSE);
             memberRepo.save(deleteMemberNum);
             return  "revive the deleted member having same phone number";
-
         }
         memberRepo.save(memberRequestToEtity(memberRequest));
-        return "memeber added to db";
+        return "member added to db";
     }
 
     //convert memberRequest to Entity
@@ -123,7 +122,8 @@ public class MemberServiceImpl implements MemberService {
 
     //delete member from its ID
     @Override
-    public void deleteMemberById(short id) {
+    public String deleteMemberById(short id) {
         memberRepo.deleteById(id);
+        return "deleted";
     }
 }
